@@ -8,7 +8,7 @@ namespace BlueShadowMon
         static void Main()
         {
             ConsoleManager.WindowSetup();
-            ConsoleManager.WriteText("Blue Shadow Mon", Console.WindowWidth / 2, Console.WindowHeight / 2, true);
+            ConsoleManager.WriteText("Blue Shadow Mon", Console.WindowWidth / 2, Console.WindowHeight / 2, ConsoleColor.Blue, true);
 
             // Create a new map
             Map map = new Map(5, 5);
