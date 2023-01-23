@@ -44,8 +44,8 @@ namespace BlueShadowMon
             Console.CursorVisible = false;
 
             // Set console size to 80% of the largest possible size
-            int width = (int)(Console.LargestWindowWidth * 0.8 / Tile.Width) * Tile.Width;
-            int height = (int)(Console.LargestWindowHeight * 0.8 / Tile.Height) * Tile.Height;
+            int width = (int)(Console.LargestWindowWidth * 0.8);
+            int height = (int)(Console.LargestWindowHeight * 0.8);
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
         }
@@ -121,17 +121,6 @@ namespace BlueShadowMon
                 inputs.Add(Console.ReadKey(true));
             }
             return inputs;
-        }
-
-        /// <summary>
-        /// Print a map in the console, with the given tile centered in the window.
-        /// </summary>
-        /// <param name="map">The map to print</param>
-        /// <param name="centeredX">Tile x coordinates</param>
-        /// <param name="centeredY">Number of lines from the top</param>
-        public static void PrintMap(Map map, int centeredX, int centeredY)
-        {
-            // TODO: Print map
         }
     }
 }

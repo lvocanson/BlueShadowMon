@@ -7,24 +7,10 @@
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Map">
-    <Position X="6.5" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAACAAA=</HashCode>
-      <FileName>Map.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlueShadowMon.Tile">
-    <Position X="9.5" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAQAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAAYAAAA=</HashCode>
-      <FileName>Tile.cs</FileName>
-    </TypeIdentifier>
-  </Class>
   <Class Name="BlueShadowMon.ConsoleManager">
     <Position X="0.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>BAwAAEAAAAAECAAAAAAIAAAAAgAAAAIAAixAAAAgAII=</HashCode>
+      <HashCode>BAQAAEAAAAAEAAAAAAAAAAAAAAAAAAIAAixAAAAgAAI=</HashCode>
       <FileName>ConsoleManager.cs</FileName>
     </TypeIdentifier>
   </Class>
