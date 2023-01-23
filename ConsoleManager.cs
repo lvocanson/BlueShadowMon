@@ -20,6 +20,14 @@ namespace BlueShadowMon
         public static ConsoleColor DefaultBgColor { get; set; } = ConsoleColor.Black;
         public static int FrameRate { get; set; } = 30;
         private static DateTime LastFrame = DateTime.Now;
+        public static int MiddleX
+        {
+            get { return Console.WindowHeight / 2; }
+        }
+        public static int MiddleY
+        {
+            get { return Console.WindowHeight / 2; }
+        }
 
         /// <summary>
         /// Disable resizing, minimize and maximize buttons.

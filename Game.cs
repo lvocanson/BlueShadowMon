@@ -10,6 +10,12 @@ namespace BlueShadowMon
             ConsoleManager.WindowSetup();
             ConsoleManager.WriteText("Blue Shadow Mon", Console.WindowWidth / 2, Console.WindowHeight / 2 - 3, ConsoleColor.Blue, true);
 
+
+            Map map = new Map("Map/Map.txt");
+            //int meaningOfLife = 42;
+
+            map.DrawMap(0, 0);
+
             // This is the main game loop
             while (true)
             {
@@ -25,8 +31,8 @@ namespace BlueShadowMon
                         inputs += key.Key.ToString() + " ";
                     }
 
-                    ConsoleManager.EraseLine(Console.WindowHeight / 2);
-                    ConsoleManager.WriteText(inputs, Console.WindowWidth / 2, Console.WindowHeight / 2, true);
+                    //ConsoleManager.EraseLine(Console.WindowHeight / 2);
+                    //ConsoleManager.WriteText(inputs, Console.WindowWidth / 2, Console.WindowHeight / 2, true);
                 }
 
                 // Update the console
