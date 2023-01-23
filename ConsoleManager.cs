@@ -85,7 +85,7 @@ namespace BlueShadowMon
         /// <param name="bcolor">Color of the background</param>
         /// <param name="centered">Writes the text centered around the position</param>
         public static void WriteText(string text, int x, int y, ConsoleColor fcolor, ConsoleColor bcolor, bool centered = false)
-        { 
+        {
             Console.ForegroundColor = fcolor;
             Console.BackgroundColor = bcolor;
             if (centered)
@@ -96,7 +96,29 @@ namespace BlueShadowMon
             Console.SetCursorPosition(x, y);
             Console.Write(text);
         }
-        
+
+        /// <summary>
+        /// Erase a line of text.
+        /// </summary>
+        /// <param name="y">The line</param>
+        public static void EraseLine(int y)
+        {
+            EraseLine(y, DefaultBgColor);
+        }
+
+        /// <summary>
+        /// Erase a line of text.
+        /// </summary>
+        /// <param name="y">The line</param>
+        /// <param name="bcolor">Background color</param>
+        public static void EraseLine(int y, ConsoleColor bcolor)
+        {
+            Console.BackgroundColor = bcolor;
+            
+            Console.SetCursorPosition(0, y);
+            Console.Write(new string(' ', Console.WindowWidth));
+        }
+
         /// <summary>
         /// Wait for next frame
         /// </summary>
@@ -113,7 +135,7 @@ namespace BlueShadowMon
         /// Catch all inputs waiting in the buffer.
         /// </summary>
         /// <returns>List of inputs caught</returns>
-        public static List<ConsoleKeyInfo> catchInputs()
+        public static List<ConsoleKeyInfo> CatchInputs()
         {
             List<ConsoleKeyInfo> inputs = new List<ConsoleKeyInfo>();
             while (Console.KeyAvailable)
