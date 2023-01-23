@@ -10,8 +10,22 @@
   <Class Name="BlueShadowMon.ConsoleManager">
     <Position X="0.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>BAQAAEAAAAAEAAAAAAAAAAAAAAAAAAIAAixAAAAgAAI=</HashCode>
+      <HashCode>BBwAAEAAAAAEAAAAAAAAAEAAAAAABAIAAihAAAAgAAI=</HashCode>
       <FileName>ConsoleManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Map">
+    <Position X="6.5" Y="0.5" Width="2.75" />
+    <NestedTypes>
+      <Enum Name="BlueShadowMon.Map.TileColor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Map.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAABAAAAAAAAAAAAEABAAAAAAAAAAAEAAABAAA=</HashCode>
+      <FileName>Map.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

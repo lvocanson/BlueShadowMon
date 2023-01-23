@@ -4,15 +4,17 @@ namespace BlueShadowMon
 {
     internal class Map
     {
-        enum TileColor
-        {
-            Ground = ConsoleColor.DarkGray,
-            Wall = ConsoleColor.DarkRed,
-            Water = ConsoleColor.DarkBlue,
-            Grass = ConsoleColor.DarkGreen,
-            Sand = ConsoleColor.Yellow,
-            Vegetation = ConsoleColor.Green,
-        }
+        // Colors
+        private const ConsoleColor GroundColor = ConsoleColor.DarkGray;
+        private const ConsoleColor WallColor = ConsoleColor.DarkRed;
+        private const ConsoleColor WaterColor = ConsoleColor.DarkBlue;
+        private const ConsoleColor TallGrassColor = ConsoleColor.DarkGreen;
+
+        // Map characters
+        private const char GroundChar = ' ';
+        private const char WallChar = '#';
+        private const char WaterChar = 'o';
+        private const char TallGrassOnGroundChar = '*';
 
         /// <summary>
         /// Translates a map character into a tuple with a new char and colors.
@@ -23,14 +25,16 @@ namespace BlueShadowMon
         {
             switch (c)
             {
-                case ' ': // Ground
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(' ', (ConsoleColor)TileColor.Ground, (ConsoleColor)TileColor.Ground);
-                case '%': // Bush on ground
-                    return new Tuple<char, ConsoleColor, ConsoleColor>('%', (ConsoleColor)TileColor.Vegetation, (ConsoleColor)TileColor.Ground);
-                case '.': // Water
-                    return new Tuple<char, ConsoleColor, ConsoleColor>('.', (ConsoleColor)TileColor.Water, (ConsoleColor)TileColor.Water);
-                default: // wall
-                    return new Tuple<char, ConsoleColor, ConsoleColor>('W', (ConsoleColor)TileColor.Wall, (ConsoleColor)TileColor.Wall);
+                case GroundChar:
+                    return new Tuple<char, ConsoleColor, ConsoleColor>(GroundChar, GroundColor, GroundColor);
+                case WallChar:
+                    return new Tuple<char, ConsoleColor, ConsoleColor>(WallChar, WallColor, WallColor);
+                case WaterChar:
+                    return new Tuple<char, ConsoleColor, ConsoleColor>(WaterChar, WaterColor, WaterColor);
+                case TallGrassOnGroundChar:
+                    return new Tuple<char, ConsoleColor, ConsoleColor>(TallGrassOnGroundChar, TallGrassColor, GroundColor);
+                default:
+                    return new Tuple<char, ConsoleColor, ConsoleColor>(c, ConsoleColor.White, ConsoleColor.Black);
             }
         }
 
@@ -56,7 +60,7 @@ namespace BlueShadowMon
                 mapY = j - y;
                 if (mapY < 0 || Height <= mapY) // If the map is out of bounds
                 {
-                    ConsoleManager.EraseLine(j, (ConsoleColor)TileColor.Wall);
+                    ConsoleManager.EraseLine(j, WallColor);
                     continue;
                 }
                 for (int i = 0; i < Console.WindowWidth; i++)
@@ -64,7 +68,7 @@ namespace BlueShadowMon
                     mapX = i - x - ConsoleManager.MiddleX;
                     if (mapX < 0 || Width <= mapX) // Out of bounds
                     {
-                        ConsoleManager.WriteText(" ", i, j, (ConsoleColor)TileColor.Wall, (ConsoleColor)TileColor.Wall);
+                        ConsoleManager.WriteText(" ", i, j, WallColor, WallColor);
                         continue;
                     }
 
