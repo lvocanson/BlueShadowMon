@@ -21,9 +21,9 @@ namespace BlueShadowMon
         private static Action[] Actions = new Action[]
         {
              new Action{ name = "Attack", fcolor = FSelectedColor, bcolor = BSelectedColor },
-             new Action{ name = "Inventory", fcolor = FSelectedColor, bcolor = BSelectedColor },
-             new Action{ name = "Pets", fcolor = FSelectedColor, bcolor = BSelectedColor },
-             new Action{ name = "Flee", fcolor = FSelectedColor, bcolor = BSelectedColor },
+             new Action{ name = "Inventory", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+             new Action{ name = "Pets", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+             new Action{ name = "Flee", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
         };
 
         public static ConsoleColor FSelectedColor { get; set; } = ConsoleManager.DefaultBgColor;
@@ -51,10 +51,11 @@ namespace BlueShadowMon
 
             // Draw the actions
             y = Console.WindowHeight - 3;
-            for (int i = 0; i < Actions.Length; i++)
+            for (int i = 0; i < Actions.Length; ++i)
             {
                 int x = (int)(Console.WindowWidth * (i + 0.5) / Actions.Length);
-                ConsoleManager.WriteText(Actions[i], x, y, ConsoleManager.DefaultFgColor, ConsoleManager.DefaultBgColor, true);
+                Action choice = Actions[i];
+                ConsoleManager.WriteText(choice.name, x, y, choice.fcolor, choice.bcolor, true);
             }            
         }
 
@@ -81,10 +82,13 @@ namespace BlueShadowMon
             {
                 case ConsoleKey.LeftArrow:
                     SelectedOption = (SelectedOption - 1) % Actions.Length;
+                    if (SelectedOption < 0)
+                        SelectedOption += Actions.Length;
                     SelectOption(SelectedOption);
                     break;
                 case ConsoleKey.RightArrow:
                     SelectedOption = (SelectedOption + 1) % Actions.Length;
+                    SelectOption(SelectedOption);
                     break;
                 case ConsoleKey.Enter:
                     switch (Actions[SelectedOption].name)

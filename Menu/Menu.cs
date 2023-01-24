@@ -62,6 +62,8 @@ namespace BlueShadowMon
             {
                 case ConsoleKey.UpArrow:
                     SelectedOption = (SelectedOption - 1) % MenuOptions_.Length;
+                    if (SelectedOption < 0)
+                        SelectedOption += MenuOptions_.Length;
                     SelectOption(SelectedOption);
                     break;
                 case ConsoleKey.DownArrow:
