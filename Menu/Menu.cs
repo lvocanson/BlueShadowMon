@@ -1,84 +1,94 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using System.Runtime.Versioning;
 
 namespace BlueShadowMon
 {
-    class Menu
+
+    [SupportedOSPlatform("windows")]
+    internal static class Menu
     {
-        //Variables
-        private ConsoleColor defaultFColor;
-        private ConsoleColor defaultBColor;
-        private ConsoleColor selectedFColor;
-        private ConsoleColor selectedBColor;
-        public bool isSelected { get; set; } = false;
-
-        //Constructor
-        public Menu()
+        public static ConsoleColor FSelectedColor { get; set; } = ConsoleManager.DefaultBgColor;
+        public static ConsoleColor BSelectedColor { get; set; } = ConsoleManager.DefaultFgColor;
+        private static int SelectedOption { get; set; } = 0;
+        public struct MenuOption
         {
-            InitVariables();
-            DisplayOption("PLAY", 1, ConsoleColor.White, ConsoleColor.Black);
-            DisplayOption("EXIT", 3, ConsoleColor.White, ConsoleColor.Black);
-
+            public string name;
+            public ConsoleColor fcolor;
+            public ConsoleColor bcolor;
         }
 
-        //Public functions
-        public void DisplayOption(String msg, int offset, ConsoleColor f_color, ConsoleColor b_color)
+        private static MenuOption[] MenuOptions_ = new MenuOption[]
         {
-            msg = String.Format("==== {0} ====", msg);
-            int x, y;
-            x = Console.WindowWidth / 2;
-            y = Console.WindowHeight / 2 + offset;
+            new MenuOption { name= "PLAY", fcolor = FSelectedColor, bcolor = BSelectedColor },
+            new MenuOption { name= "SETTINGS", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+            new MenuOption { name= "EXIT", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+        };
 
-            x = x - (msg.Length / 2);
-            y = y - (msg.Split(Environment.NewLine).Length / 2);
-
-            Console.ForegroundColor = f_color;
-            Console.BackgroundColor = b_color;
-
-            Console.SetCursorPosition(x, y);
-            Console.Write(msg);
-        }
-
-        public void InitVariables()
+        public static void DrawMenu()
         {
-            defaultFColor = ConsoleColor.White;
-            defaultBColor = ConsoleColor.Black;
+            // Write the Game name
+            ConsoleManager.WriteText(Game.GameTitle, ConsoleManager.MiddleX, ConsoleManager.MiddleY - MenuOptions_.Length - 3, ConsoleColor.Blue, ConsoleManager.DefaultBgColor, true);
 
-            selectedFColor = ConsoleColor.Yellow;
-            selectedBColor = ConsoleColor.White;
-        }
-
-
-        public void keyActions(String input)
-        {
-
-            switch (input)
+            // Write the options
+            for (int i = 0; i < MenuOptions_.Length; i++)
             {
-                case "UpArrow":
-                   DisplayOption("PLAY", 1, selectedFColor, selectedBColor);
+                int y = ConsoleManager.MiddleY - MenuOptions_.Length + i * 2;
+                MenuOption option = MenuOptions_[i];
+                ConsoleManager.WriteText(option.name, ConsoleManager.MiddleX, y, option.fcolor, option.bcolor, true);
+            }
+        }
+
+        public static void SelectOption(int option)
+        {
+            for (int i = 0; i < MenuOptions_.Length; i++)
+            {
+                if (i == option)
+                {
+                    MenuOptions_[i].fcolor = FSelectedColor;
+                    MenuOptions_[i].bcolor = BSelectedColor;
+
+                }
+                else
+                {
+                    MenuOptions_[i].fcolor = ConsoleManager.DefaultFgColor;
+                    MenuOptions_[i].bcolor = ConsoleManager.DefaultBgColor;
+                }
+            }
+        }
+
+        public static void KeyPressed(ConsoleKey key)
+        {
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    SelectedOption = (SelectedOption - 1) % MenuOptions_.Length;
+                    SelectOption(SelectedOption);
                     break;
-
-                case "DownArrow":
-
+                case ConsoleKey.DownArrow:
+                    SelectedOption = (SelectedOption + 1) % MenuOptions_.Length;
+                    SelectOption(SelectedOption);
+                    break;
+                case ConsoleKey.Enter:
+                    switch (MenuOptions_[SelectedOption].name)
+                    {
+                        case "PLAY":
+                            Game.CurrState = Game.State.Map;
+                            break;
+                        case "SETTINGS":
+                            Game.CurrState = Game.State.Settings;
+                            break;
+                        case "EXIT":
+                            Environment.Exit(0);
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                case ConsoleKey.Escape:
+                    // Back
                     break;
                 default:
-
                     break;
-
             }
-
         }
-
-
-
-        //Private functions
-
-
-
     }
 }

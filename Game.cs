@@ -5,18 +5,25 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal static class Game
     {
+        public static string GameTitle { get; set; } = "Blue Shadow Mon";
         private static int FrameRate = 60;
         private static DateTime LastFrame = DateTime.Now;
-        
+        public static State CurrState { get; set; } = State.Menu;
+
+        public enum State
+        {
+            Menu     = 0,
+            Map      = 1,
+            Combat   = 2,
+            Settings = 3,
+        }
         static void Main()
         {
             ConsoleManager.WindowSetup();
+
+
             Map map = new Map("Map/Map.txt");
             var playerPos = (X: 0, Y: 0);
-
-            //Add Menu 
-            Menu menu = new();
-            Console.WriteLine(Gui.HealthBar(10, 5, 40));
 
             // This is the main game loop
             while (true)
@@ -28,26 +35,51 @@ namespace BlueShadowMon
                 {
                     foreach (ConsoleKeyInfo key in ConsoleManager.Inputs)
                     {
-                        switch (key.Key)
+                        switch (CurrState)
                         {
-                            case ConsoleKey.UpArrow:
-                                playerPos.Y--;
+                            case State.Menu:
+                                Menu.KeyPressed(key.Key);
                                 break;
-                            case ConsoleKey.DownArrow:
-                                playerPos.Y++;
+                            case State.Map:
+                                switch (key.Key)
+                                {
+                                    case ConsoleKey.UpArrow:
+                                        playerPos.Y--;
+                                        break;
+                                    case ConsoleKey.DownArrow:
+                                        playerPos.Y++;
+                                        break;
+                                    case ConsoleKey.LeftArrow:
+                                        playerPos.X--;
+                                        break;
+                                    case ConsoleKey.RightArrow:
+                                        playerPos.X++;
+                                        break;
+                                }
                                 break;
-                            case ConsoleKey.LeftArrow:
-                                playerPos.X--;
+                            case State.Combat:
                                 break;
-                            case ConsoleKey.RightArrow:
-                                playerPos.X++;
+                            default:
                                 break;
                         }
                     }
                 }
 
                 // Draw
-                map.Draw(playerPos.X, playerPos.Y);
+                switch (CurrState)
+                {
+                    case State.Menu:
+                        Menu.DrawMenu();
+                        break;
+                    case State.Map:
+                        map.Draw(playerPos.X, playerPos.Y);
+                        break;
+                    case State.Combat:
+                        // Todo: combat scene
+                        break;
+                    default:
+                        break;
+                }
 
                 // Wait the next frame
                 while (DateTime.Now - LastFrame < TimeSpan.FromSeconds(1.0 / FrameRate))

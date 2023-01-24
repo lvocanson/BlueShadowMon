@@ -16,7 +16,6 @@ namespace BlueShadowMon
         [DllImport("kernel32.dll", ExactSpelling = true)]
         private static extern IntPtr GetConsoleWindow();
 
-        public static string GameTitle { get; set; } = "Blue Shadow Mon";
         public static ConsoleColor DefaultFgColor { get; set; } = ConsoleColor.White;
         public static ConsoleColor DefaultBgColor { get; set; } = ConsoleColor.Black;
         public static int MiddleX { get { return Console.WindowWidth / 2; }}
@@ -41,7 +40,7 @@ namespace BlueShadowMon
             DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND);
 
             // Set console properties
-            Console.Title = GameTitle;
+            Console.Title = Game.GameTitle;
             Console.TreatControlCAsInput = true;
             Console.CursorVisible = false;
 
