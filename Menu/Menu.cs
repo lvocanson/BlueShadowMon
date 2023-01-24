@@ -16,12 +16,26 @@ namespace BlueShadowMon
             public ConsoleColor bcolor;
         }
 
+        public struct SettingOption
+        {
+            public string name;
+            public ConsoleColor fcolor;
+            public ConsoleColor bcolor;
+        };
+
         private static MenuOption[] MenuOptions_ = new MenuOption[]
         {
-            new MenuOption { name= "PLAY", fcolor = FSelectedColor, bcolor = BSelectedColor },
-            new MenuOption { name= "SETTINGS", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
-            new MenuOption { name= "EXIT", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+            new MenuOption { name = "PLAY", fcolor = FSelectedColor, bcolor = BSelectedColor },
+            new MenuOption { name = "SETTINGS", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+            new MenuOption { name = "EXIT", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
         };
+
+        private static SettingOption[] SettingOptions_ = new SettingOption[]
+        {
+            new SettingOption { name = "CHANGE    WINDOW   SIZE" , fcolor = FSelectedColor, bcolor = BSelectedColor},
+            new SettingOption { name = "CHANGE BACKGROUND COLOR" , fcolor = FSelectedColor, bcolor = BSelectedColor},
+        };
+
 
         public static void DrawMenu()
         {
@@ -33,6 +47,20 @@ namespace BlueShadowMon
             {
                 int y = ConsoleManager.MiddleY - MenuOptions_.Length + i * 2;
                 MenuOption option = MenuOptions_[i];
+                ConsoleManager.WriteText(option.name, ConsoleManager.MiddleX, y, option.fcolor, option.bcolor, true);
+            }
+        }
+
+        public static void DrawSetting()
+        {
+            //Write the setting title
+            ConsoleManager.WriteText("SETTING", ConsoleManager.MiddleX, ConsoleManager.MiddleY - SettingOptions_.Length - 3, ConsoleColor.DarkGray, ConsoleManager.DefaultBgColor, true);
+
+            //Write the setting's option
+            for (int i = 0; i < SettingOptions_.Length; i++)
+            {
+                int y = ConsoleManager.MiddleY - SettingOptions_.Length + i * 2;
+                SettingOption option = SettingOptions_[i];
                 ConsoleManager.WriteText(option.name, ConsoleManager.MiddleX, y, option.fcolor, option.bcolor, true);
             }
         }
@@ -89,6 +117,16 @@ namespace BlueShadowMon
                 default:
                     break;
             }
+        }
+
+        public static void ChangeWinSize()
+        {
+
+        }
+
+        public static void ChangeColor()
+        {
+
         }
     }
 }

@@ -12,9 +12,9 @@ namespace BlueShadowMon
 
         public enum State
         {
-            Menu     = 0,
-            Map      = 1,
-            Combat   = 2,
+            Menu = 0,
+            Map = 1,
+            Combat = 2,
             Settings = 3,
         }
         static void Main()
@@ -35,6 +35,7 @@ namespace BlueShadowMon
                 {
                     foreach (ConsoleKeyInfo key in ConsoleManager.Inputs)
                     {
+
                         switch (CurrState)
                         {
                             case State.Menu:
@@ -54,6 +55,12 @@ namespace BlueShadowMon
                                         break;
                                     case ConsoleKey.RightArrow:
                                         playerPos.X++;
+                                        break;
+                                    case ConsoleKey.Escape:
+                                        CurrState = State.Menu;
+                                        Console.ResetColor();
+                                        Console.Clear();
+                                        Menu.DrawMenu();
                                         break;
                                 }
                                 break;
@@ -76,6 +83,10 @@ namespace BlueShadowMon
                         break;
                     case State.Combat:
                         // Todo: combat scene
+                        break;
+                    case State.Settings:
+
+                        Menu.DrawSetting();
                         break;
                     default:
                         break;
