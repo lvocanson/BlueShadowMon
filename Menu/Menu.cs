@@ -19,6 +19,7 @@ namespace BlueShadowMon
         private static MenuOption[] MenuOptions_ = new MenuOption[]
         {
             new MenuOption { name= "PLAY", fcolor = FSelectedColor, bcolor = BSelectedColor },
+            new MenuOption { name= "COMBAT TEST", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
             new MenuOption { name= "SETTINGS", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
             new MenuOption { name= "EXIT", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
         };
@@ -61,6 +62,8 @@ namespace BlueShadowMon
             {
                 case ConsoleKey.UpArrow:
                     SelectedOption = (SelectedOption - 1) % MenuOptions_.Length;
+                    if (SelectedOption < 0)
+                        SelectedOption += MenuOptions_.Length;
                     SelectOption(SelectedOption);
                     break;
                 case ConsoleKey.DownArrow:
@@ -72,6 +75,10 @@ namespace BlueShadowMon
                     {
                         case "PLAY":
                             Game.CurrState = Game.State.Map;
+                            break;
+                        case "COMBAT TEST":
+                            Console.Clear();
+                            Game.CurrState = Game.State.Combat;
                             break;
                         case "SETTINGS":
                             Game.CurrState = Game.State.Settings;
