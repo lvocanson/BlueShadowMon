@@ -24,9 +24,13 @@ namespace BlueShadowMon
             {
                 bar += "H";
             }
+            for (int i = 0; i <= damage; i++)
+            {
+                bar = bar.Substring(0, maxHealth - damage + 1);
+            }
             for (int i = 0; i < damage; i++)
             {
-                bar.Remove(bar.Length - 1 - i);
+                bar += "-";
             }
 
             bar += "]";
