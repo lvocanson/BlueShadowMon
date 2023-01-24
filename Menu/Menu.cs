@@ -11,61 +11,48 @@ namespace BlueShadowMon
     class Menu
     {
         //Variables
-        private ArrayList menuOptions;
-        private int selectedIndex;
-        private ConsoleColor f_selectedColor;
-        private ConsoleColor b_selectedColor;
-        private ConsoleColor df_selectedColor;
-        private ConsoleColor db_selectedColor;
+        private ConsoleColor defaultFColor;
+        private ConsoleColor defaultBColor;
+        private ConsoleColor selectedFColor;
+        private ConsoleColor selectedBColor;
         public bool isSelected { get; set; } = false;
 
         //Constructor
         public Menu()
         {
-            addOptions();
-
-
+            InitVariables();
+            DisplayOption("PLAY", 1, ConsoleColor.White, ConsoleColor.Black);
+            DisplayOption("EXIT", 3, ConsoleColor.White, ConsoleColor.Black);
 
         }
 
         //Public functions
-        public void DisplayMenu()
+        public void DisplayOption(String msg, int offset, ConsoleColor f_color, ConsoleColor b_color)
         {
-            for (int i = 0; i < 2; i++)
-            {
-                ConsoleManager.WriteText(menuOptions[i].ToString(), Console.WindowWidth / 2, Console.WindowHeight / 2 + 2 * i, df_selectedColor, db_selectedColor, true);
-            }
+            msg = String.Format("==== {0} ====", msg);
+            int x, y;
+            x = Console.WindowWidth / 2;
+            y = Console.WindowHeight / 2 + offset;
+
+            x = x - (msg.Length / 2);
+            y = y - (msg.Split(Environment.NewLine).Length / 2);
+
+            Console.ForegroundColor = f_color;
+            Console.BackgroundColor = b_color;
+
+            Console.SetCursorPosition(x, y);
+            Console.Write(msg);
         }
 
-        public void addOptions()
+        public void InitVariables()
         {
-            menuOptions = new ArrayList();
-            menuOptions.Add("PLAY");
-            menuOptions.Add("EXIT");
+            defaultFColor = ConsoleColor.White;
+            defaultBColor = ConsoleColor.Black;
 
-            f_selectedColor = ConsoleColor.White;
-            b_selectedColor = ConsoleColor.Black;
-
-            df_selectedColor = ConsoleColor.Black;
-            db_selectedColor = ConsoleColor.White;
-
-            selectedIndex = 0;
+            selectedFColor = ConsoleColor.Yellow;
+            selectedBColor = ConsoleColor.White;
         }
 
-        public void Selected()
-        {
-            if (selectedIndex == 1)
-            {
-                ConsoleManager.WriteText(menuOptions[selectedIndex - selectedIndex].ToString(), Console.WindowWidth / 2, Console.WindowHeight / 2 + 2 * selectedIndex, f_selectedColor, b_selectedColor, true);
-                ConsoleManager.WriteText(menuOptions[selectedIndex].ToString(), Console.WindowWidth / 2, Console.WindowHeight / 2 + 2 * selectedIndex, df_selectedColor, db_selectedColor, true);
-            }
-            else if (selectedIndex == 2)
-            {
-                ConsoleManager.WriteText(menuOptions[selectedIndex - selectedIndex].ToString(), Console.WindowWidth / 2, Console.WindowHeight / 2 + 2 * selectedIndex, df_selectedColor, db_selectedColor, true);
-                ConsoleManager.WriteText(menuOptions[selectedIndex -1].ToString(), Console.WindowWidth / 2, Console.WindowHeight / 2 + 2 * selectedIndex, f_selectedColor, b_selectedColor, true);
-            }
-
-        }
 
         public void keyActions(String input)
         {
@@ -73,13 +60,11 @@ namespace BlueShadowMon
             switch (input)
             {
                 case "UpArrow":
-                    selectedIndex = 1;
-                    Selected();
+                   DisplayOption("PLAY", 1, selectedFColor, selectedBColor);
                     break;
 
                 case "DownArrow":
-                    selectedIndex = 2;
-                    Selected();
+
                     break;
                 default:
 
