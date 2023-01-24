@@ -5,38 +5,51 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal static class Game
     {
+        private static int FrameRate = 60;
+        private static DateTime LastFrame = DateTime.Now;
+        
         static void Main()
         {
             ConsoleManager.WindowSetup();
-            ConsoleManager.WriteText("Blue Shadow Mon", Console.WindowWidth / 2, Console.WindowHeight / 2 - 3, ConsoleColor.Blue, true);
-
-
             Map map = new Map("Map/Map.txt");
-            //int meaningOfLife = 42;
-
-            map.DrawMap(0, 0);
+            var playerPos = (X: 0, Y: 0);
 
             // This is the main game loop
             while (true)
             {
-                // Get inputs
-                List<ConsoleKeyInfo> keys = ConsoleManager.CatchInputs();
+                ConsoleManager.CatchInputs();
 
                 // Process inputs
-                if (keys.Count > 0)
+                if (ConsoleManager.Inputs.Count > 0)
                 {
-                    string inputs = "";
-                    foreach (ConsoleKeyInfo key in keys)
+                    foreach (ConsoleKeyInfo key in ConsoleManager.Inputs)
                     {
-                        inputs += key.Key.ToString() + " ";
+                        switch (key.Key)
+                        {
+                            case ConsoleKey.UpArrow:
+                                playerPos.Y--;
+                                break;
+                            case ConsoleKey.DownArrow:
+                                playerPos.Y++;
+                                break;
+                            case ConsoleKey.LeftArrow:
+                                playerPos.X--;
+                                break;
+                            case ConsoleKey.RightArrow:
+                                playerPos.X++;
+                                break;
+                        }
                     }
-
-                    //ConsoleManager.EraseLine(Console.WindowHeight / 2);
-                    //ConsoleManager.WriteText(inputs, Console.WindowWidth / 2, Console.WindowHeight / 2, true);
                 }
 
-                // Update the console
-                ConsoleManager.Update();
+                // Draw
+                map.Draw(playerPos.X, playerPos.Y);
+
+                // Wait the next frame
+                while (DateTime.Now - LastFrame < TimeSpan.FromSeconds(1.0 / FrameRate))
+                {
+                    Thread.Sleep(1);
+                }
             }
         }
     }

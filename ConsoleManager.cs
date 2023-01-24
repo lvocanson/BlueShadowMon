@@ -1,5 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Text;
 
 namespace BlueShadowMon
 {
@@ -18,16 +19,9 @@ namespace BlueShadowMon
         public static string GameTitle { get; set; } = "Blue Shadow Mon";
         public static ConsoleColor DefaultFgColor { get; set; } = ConsoleColor.White;
         public static ConsoleColor DefaultBgColor { get; set; } = ConsoleColor.Black;
-        public static int FrameRate { get; set; } = 30;
-        private static DateTime LastFrame = DateTime.Now;
-        public static int MiddleX
-        {
-            get { return Console.WindowHeight / 2; }
-        }
-        public static int MiddleY
-        {
-            get { return Console.WindowHeight / 2; }
-        }
+        public static int MiddleX { get { return Console.WindowWidth / 2; }}
+        public static int MiddleY { get { return Console.WindowHeight / 2; }}
+        public static List<ConsoleKeyInfo> Inputs { get; private set; } = new List<ConsoleKeyInfo>();
 
         /// <summary>
         /// Disable resizing, minimize and maximize buttons.
@@ -56,35 +50,14 @@ namespace BlueShadowMon
             int height = (int)(Console.LargestWindowHeight * 0.8);
             Console.SetWindowSize(width, height);
             Console.SetBufferSize(width, height);
+
+            // Set console colors
+            Console.ForegroundColor = DefaultFgColor;
+            Console.BackgroundColor = DefaultBgColor;
         }
 
         /// <summary>
-        /// Writes text to the console at the specified position.
-        /// </summary>
-        /// <param name="text">The text</param>
-        /// <param name="x">Number of column from the left</param>
-        /// <param name="y">Number of lines from the top</param>
-        /// <param name="centered">Writes the text centered around the position</param>
-        public static void WriteText(string text, int x, int y, bool centered = false)
-        {
-            WriteText(text, x, y, DefaultFgColor, DefaultBgColor, centered);
-        }
-
-        /// <summary>
-        /// Writes text to the console at the specified position.
-        /// </summary>
-        /// <param name="text">The text</param>
-        /// <param name="x">Number of column from the left</param>
-        /// <param name="y">Number of lines from the top</param>
-        /// <param name="fcolor">Color of the text</param>
-        /// <param name="centered">Writes the text centered around the position</param>
-        public static void WriteText(string text, int x, int y, ConsoleColor fcolor, bool centered = false)
-        {
-            WriteText(text, x, y, fcolor, DefaultBgColor, centered);
-        }
-
-        /// <summary>
-        /// Writes text to the console at the specified position.
+        /// Set a text in the string builder at the specified position.
         /// </summary>
         /// <param name="text">The text</param>
         /// <param name="x">Number of column from the left</param>
@@ -103,6 +76,22 @@ namespace BlueShadowMon
             }
             Console.SetCursorPosition(x, y);
             Console.Write(text);
+        }
+
+        /// <summary>
+        /// Set a character in the string builder at the specified position.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="fcolor"></param>
+        /// <param name="bcolor"></param>
+        public static void WriteChar(char c, int x, int y, ConsoleColor fcolor, ConsoleColor bcolor)
+        {
+            Console.ForegroundColor = fcolor;
+            Console.BackgroundColor = bcolor;
+            Console.SetCursorPosition(x, y);
+            Console.Write(c);
         }
 
         /// <summary>
@@ -128,29 +117,16 @@ namespace BlueShadowMon
         }
 
         /// <summary>
-        /// Wait for next frame
-        /// </summary>
-        public static void Update()
-        {
-            while (DateTime.Now - LastFrame < TimeSpan.FromSeconds(1.0 / FrameRate))
-            {
-                // Wait until the next frame
-                Thread.Sleep(1);
-            }
-        }
-
-        /// <summary>
         /// Catch all inputs waiting in the buffer.
         /// </summary>
         /// <returns>List of inputs caught</returns>
-        public static List<ConsoleKeyInfo> CatchInputs()
+        public static void CatchInputs()
         {
-            List<ConsoleKeyInfo> inputs = new List<ConsoleKeyInfo>();
+            Inputs.Clear();
             while (Console.KeyAvailable)
             {
-                inputs.Add(Console.ReadKey(true));
+                Inputs.Add(Console.ReadKey(true));
             }
-            return inputs;
         }
     }
 }

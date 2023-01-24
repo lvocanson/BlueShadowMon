@@ -1,10 +1,12 @@
-﻿using System.Runtime.Versioning;
+﻿using System;
+using System.Runtime.Versioning;
 
 namespace BlueShadowMon
 {
     internal class Map
     {
         // Colors
+        private const ConsoleColor PlayerColor = ConsoleColor.White;
         private const ConsoleColor GroundColor = ConsoleColor.DarkGray;
         private const ConsoleColor WallColor = ConsoleColor.DarkRed;
         private const ConsoleColor WaterColor = ConsoleColor.DarkBlue;
@@ -16,65 +18,101 @@ namespace BlueShadowMon
         private const char WaterChar = 'o';
         private const char TallGrassOnGroundChar = '*';
 
+        public struct MapChar
+        {
+            public char Char;
+            public ConsoleColor ForegroundColor;
+            public ConsoleColor BackgroundColor;
+        }
+
+        private MapChar[,] Map_ { get; set; }
+        public MapChar this[int x, int y]
+        {
+            get { return Map_[y, x]; }
+        }
+        public int Width { get { return Map_.GetLength(1); } }
+        public int Height { get { return Map_.GetLength(0); } }
+
         /// <summary>
         /// Translates a map character into a tuple with a new char and colors.
         /// </summary>
         /// <param name="c"></param>
         /// <returns>Tuple<char c, ConsoleColor ForegroundColor, ConsoleColor BackgroundColor></returns>
-        public static Tuple<char, ConsoleColor, ConsoleColor> Translate(char c)
+        public static MapChar Parse(char c)
         {
             switch (c)
             {
                 case GroundChar:
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(GroundChar, GroundColor, GroundColor);
+                    return new MapChar { Char = GroundChar, ForegroundColor = GroundColor, BackgroundColor = GroundColor };
                 case WallChar:
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(WallChar, WallColor, WallColor);
+                    return new MapChar { Char = WallChar, ForegroundColor = WallColor, BackgroundColor = WallColor };
                 case WaterChar:
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(WaterChar, WaterColor, WaterColor);
+                    return new MapChar { Char = WaterChar, ForegroundColor = WaterColor, BackgroundColor = WaterColor };
                 case TallGrassOnGroundChar:
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(TallGrassOnGroundChar, TallGrassColor, GroundColor);
-                default:
-                    return new Tuple<char, ConsoleColor, ConsoleColor>(c, ConsoleColor.White, ConsoleColor.Black);
+                    return new MapChar { Char = TallGrassOnGroundChar, ForegroundColor = TallGrassColor, BackgroundColor = GroundColor };
+                default: // Unknown
+                    return new MapChar { Char = c, ForegroundColor = ConsoleColor.White, BackgroundColor = ConsoleColor.Black };
             }
         }
 
         public Map(string path)
         {
-            MapString = File.ReadAllLines(path);
+            // Load file
+            string[] lines = File.ReadAllLines(path);
+
+            int width = lines[0].Length;
+            Map_ = new MapChar[lines.Length, width];
+
+            for (int y = 0; y < lines.Length; y++)
+            {
+                // Check if all lines are the same width
+                if (lines[y].Length != width) throw new Exception("Loaded map is not rectangular!");
+
+                // Create the map
+                for (int x = 0; x < width; x++)
+                {
+                    Map_[y, x] = Parse(lines[y][x]);
+                }
+            }
         }
-        private string[] MapString { get; set; }
-        public int Width { get { return MapString[0].Length; } }
-        public int Height { get { return MapString.Length; } }
 
         /// <summary>
-        /// Draws the map on the console, centered around the player.
+        /// Draws the map on the console around the player coordinates.
+        /// The player is centered on the console.
         /// </summary>
-        /// <param name="x">X position of the player</param>
-        /// <param name="y">Y position of the player</param>
+        /// <param name="playerX">X position of the player</param>
+        /// <param name="playerY">Y position of the player</param>
         [SupportedOSPlatform("windows")]
-        public void DrawMap(int x, int y)
+        public void Draw(int playerX, int playerY)
         {
-            int mapX, mapY;
-            for (int j = 0; j < Console.WindowHeight; j++)
+            int consoleX, consoleY, mapX, mapY;
+            MapChar c;
+
+            // For each line of the console
+            for (consoleY = 0; consoleY < Console.WindowHeight; consoleY++)
             {
-                mapY = j - y;
-                if (mapY < 0 || Height <= mapY) // If the map is out of bounds
+                mapY = playerY - ConsoleManager.MiddleY + consoleY;
+                if (mapY < 0 || Height <= mapY) // Out of bounds
                 {
-                    ConsoleManager.EraseLine(j, WallColor);
+                    ConsoleManager.EraseLine(consoleY, WallColor);
                     continue;
                 }
-                for (int i = 0; i < Console.WindowWidth; i++)
+
+                // For each char of the line
+                for (consoleX = 0; consoleX < Console.WindowWidth; consoleX++)
                 {
-                    mapX = i - x - ConsoleManager.MiddleX;
+                    mapX = playerX - ConsoleManager.MiddleX + consoleX;
                     if (mapX < 0 || Width <= mapX) // Out of bounds
                     {
-                        ConsoleManager.WriteText(" ", i, j, WallColor, WallColor);
+                        ConsoleManager.WriteChar(' ', consoleX, consoleY, WallColor, WallColor);
                         continue;
                     }
 
-                    // Write the transleted char
-                    var t = Translate(MapString[mapY][mapX]);
-                    ConsoleManager.WriteText(t.Item1.ToString(), i, j, t.Item2, t.Item3);
+                    c = Map_[mapY, mapX];
+                    if (mapX == playerX && mapY == playerY)
+                        ConsoleManager.WriteChar('@', consoleX, consoleY, PlayerColor, c.BackgroundColor);
+                    else
+                        ConsoleManager.WriteChar(c.Char, consoleX, consoleY, c.ForegroundColor, c.BackgroundColor);
                 }
             }
         }
