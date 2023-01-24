@@ -44,11 +44,8 @@ namespace BlueShadowMon
             Console.TreatControlCAsInput = true;
             Console.CursorVisible = false;
 
-            // Set console size to 80% of the largest possible size
-            int width = (int)(Console.LargestWindowWidth * 0.8);
-            int height = (int)(Console.LargestWindowHeight * 0.8);
-            Console.SetWindowSize(width, height);
-            Console.SetBufferSize(width, height);
+            // Set console size to 75% of the largest possible size
+            ChangeSize(0.75);
 
             // Set console colors
             Console.ForegroundColor = DefaultFgColor;
@@ -56,9 +53,44 @@ namespace BlueShadowMon
         }
 
         /// <summary>
-        /// Set a text in the string builder at the specified position.
+        /// Change the size of the console.
         /// </summary>
-        /// <param name="text">The text</param>
+        /// <param name="percent">Percentage of the largest possible size</param>
+        public static void ChangeSize(double percent)
+        {
+            int width = (int)(Console.LargestWindowWidth * percent);
+            int height = (int)(Console.LargestWindowHeight * percent);
+            ChangeSize(width, height);
+        }
+
+        /// <summary>
+        /// Change the size of the console.
+        /// </summary>
+        /// <param name="width">Number of columns</param>
+        /// <param name="height">Number of lines</param>
+        public static void ChangeSize(int width, int height)
+        {
+            Console.SetWindowSize(width, height);
+            Console.SetBufferSize(width, height);
+        }
+
+        /// <summary>
+        /// Write a string in the console.
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="fcolor"></param>
+        /// <param name="bcolor"></param>
+        public static void WriteText(string text, ConsoleColor fcolor, ConsoleColor bcolor)
+        {
+            Console.ForegroundColor = fcolor;
+            Console.BackgroundColor = bcolor;
+            Console.Write(text);
+        }
+
+        /// <summary>
+        /// Write a string in the console at the specified position.
+        /// </summary>
+        /// <param name="text">The string</param>
         /// <param name="x">Number of column from the left</param>
         /// <param name="y">Number of lines from the top</param>
         /// <param name="fcolor">Color of the text</param>
@@ -66,31 +98,40 @@ namespace BlueShadowMon
         /// <param name="centered">Writes the text centered around the position</param>
         public static void WriteText(string text, int x, int y, ConsoleColor fcolor, ConsoleColor bcolor, bool centered = false)
         {
-            Console.ForegroundColor = fcolor;
-            Console.BackgroundColor = bcolor;
             if (centered)
             {
                 x = x - (text.Length / 2);
                 y = y - (text.Split(Environment.NewLine).Length / 2);
             }
             Console.SetCursorPosition(x, y);
-            Console.Write(text);
+            WriteText(text, fcolor, bcolor);
         }
 
         /// <summary>
-        /// Set a character in the string builder at the specified position.
+        /// Write a character in the console.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <param name="fcolor"></param>
+        /// <param name="bcolor"></param>
+        public static void WriteText(char c, ConsoleColor fcolor, ConsoleColor bcolor)
+        {
+            Console.ForegroundColor = fcolor;
+            Console.BackgroundColor = bcolor;
+            Console.Write(c);
+        }
+        
+        /// <summary>
+        /// Write a character in the console at the specified position.
         /// </summary>
         /// <param name="c"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
         /// <param name="fcolor"></param>
         /// <param name="bcolor"></param>
-        public static void WriteChar(char c, int x, int y, ConsoleColor fcolor, ConsoleColor bcolor)
+        public static void WriteText(char c, int x, int y, ConsoleColor fcolor, ConsoleColor bcolor)
         {
-            Console.ForegroundColor = fcolor;
-            Console.BackgroundColor = bcolor;
             Console.SetCursorPosition(x, y);
-            Console.Write(c);
+            WriteText(c, fcolor, bcolor);
         }
 
         /// <summary>

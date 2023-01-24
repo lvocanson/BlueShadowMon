@@ -404,4 +404,4 @@ FodyWeavers.xsd
 *.lnk
 
 # Do not ignore the map file
-!bin/Debug/net6.0/Map/Map.txt
+!bin/Debug/net6.0/Map/
