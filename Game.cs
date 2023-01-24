@@ -42,6 +42,7 @@ namespace BlueShadowMon
                 {
                     foreach (ConsoleKeyInfo key in ConsoleManager.Inputs)
                     {
+
                         switch (CurrState)
                         {
                             case State.MainMenu:
@@ -70,6 +71,10 @@ namespace BlueShadowMon
                         break;
                     case State.Combat:
                         Combat.DrawCombat();
+                        break;
+                    case State.Settings:
+
+                        Menu.DrawSetting();
                         break;
                     default:
                         break;
