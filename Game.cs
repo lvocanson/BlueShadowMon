@@ -11,7 +11,7 @@ namespace BlueShadowMon
             ConsoleManager.WriteText("Blue Shadow Mon", Console.WindowWidth / 2, Console.WindowHeight / 2 - 3, ConsoleColor.Blue, true);
             //Add Menu 
             Menu menu = new();
-            Console.WriteLine(Gui.HealthBar(10, 2, 20));
+            Console.WriteLine(Gui.HealthBar(10, 5, 40));
             // This is the main game loop
             while (true)
             {
@@ -26,13 +26,13 @@ namespace BlueShadowMon
                     foreach (ConsoleKeyInfo key in keys)
                     {
                         inputs += key.Key.ToString() + " ";
-                        menu.keyActions(inputs);
+                        Gui.Attack(inputs, 1);
                     }
                  
                     ConsoleManager.EraseLine(Console.WindowHeight / 2);
-                    //ConsoleManager.WriteText(inputs, Console.WindowWidth / 2, Console.WindowHeight / 2, true);
-               
-                   
+                    ConsoleManager.WriteText(inputs, Console.WindowWidth / 2, Console.WindowHeight / 2, true);
+
+                    Gui.Attack(inputs,1);
 
                 }
              
