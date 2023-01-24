@@ -58,6 +58,7 @@ namespace BlueShadowMon
                                 }
                                 break;
                             case State.Combat:
+                                Combat.KeyPressed(key.Key);
                                 break;
                             default:
                                 break;
@@ -75,7 +76,7 @@ namespace BlueShadowMon
                         map.Draw(playerPos.X, playerPos.Y);
                         break;
                     case State.Combat:
-                        // Todo: combat scene
+                        Combat.DrawCombat();
                         break;
                     default:
                         break;
