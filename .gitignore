@@ -396,3 +396,12 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+
+## Customs:
+
+# Shortcut files
+*.lnk
+
+# Do not ignore the map file
+!bin/Debug/net6.0/Map/Map.txt
