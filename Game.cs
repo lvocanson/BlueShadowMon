@@ -5,6 +5,7 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal static class Game
     {
+        // Window settings
         public const string GameTitle = "Blue Shadow Mon";
         private static int _frameRate = int.MaxValue;
         public static int FrameRate
@@ -19,56 +20,44 @@ namespace BlueShadowMon
         }
         private static DateTime _lastFrame = DateTime.Now;
 
-        public static Dictionary<string, Scene> Scenes { get; private set; }
-        private static string _currScene = "Menu";
-        public static string CurrScene
+        // Scene Manager
+        private static MenuScene _menuScene = new MenuScene(Data.Menus["Main Menu"]);
+        private static MapScene mapScene = new MapScene("Map/Map.txt", (0, 0));
+        private static CombatScene combatScene = new CombatScene();
+        private static Scene _currScene = _menuScene;
+        public static Scene CurrScene
         {
-            get { return _currScene; }
+            get => _currScene;
             set
             {
-                if (!Scenes.ContainsKey(value))
-                    throw new ArgumentException("Scene does not exist");
-
                 Console.BackgroundColor = Window.DefaultBgColor;
                 Console.Clear();
                 _currScene = value;
             }
         }
+
+        public static void SwitchToMenuScene() => CurrScene = _menuScene;
+        public static void SwitchToMenuScene(string menuName)
+        {
+            if (!Data.Menus.ContainsKey(menuName))
+                throw new ArgumentException("Menu does not exist");
+            _menuScene.Init(Data.Menus[menuName]);
+            CurrScene = _menuScene;
+        }
+        public static void SwitchToMapScene() => CurrScene = mapScene;
+        public static void SwitchToMapScene(string path, (int x, int y) playerPos)
+        {
+            mapScene.Init(path, playerPos);
+            CurrScene = mapScene;
+        }
+        public static void SwitchToCombatScene() => CurrScene = combatScene;
+
+
         static void Main()
         {
             Window.Setup();
 
-            // Create scenes
-            Scenes = new Dictionary<string, Scene>()
-            {
-                {
-                    "Main Menu",
-                    new MenuScene(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor), Data.MainMenu)
-                },
-                {
-                    "Map",
-                    new Map("Map/Map.txt", (0, 0))
-                },
-                {
-                    "Combat",
-                    new CombatScene()
-                },
-                {
-                    "Settings",
-                    new MenuScene(new Window.ColoredString("Settings"), Data.SettingsMenu)
-                },
-                {
-                    "Frame Rate",
-                    new MenuScene(new Window.ColoredString("Frame Rate"), Data.FrameRateMenu)
-                },
-                {
-                    "Window Size",
-                    new MenuScene(new Window.ColoredString("Window Size"), Data.WindowSizeMenu)
-                },
-            };
-
             // This is the main game loop
-            CurrScene = "Main Menu";
             while (true)
             {
                 Window.CatchInputs();
@@ -78,12 +67,12 @@ namespace BlueShadowMon
                 {
                     foreach (ConsoleKeyInfo kInfo in Window.Inputs)
                     {
-                        Scenes[_currScene].KeyPressed(kInfo.Key);
+                        _currScene.KeyPressed(kInfo.Key);
                     }
                 }
 
                 // Draw
-                Scenes[_currScene].Draw();
+                _currScene.Draw();
 
                 // Wait the next frame
                 while (DateTime.Now - _lastFrame < TimeSpan.FromSeconds(1.0 / _frameRate))

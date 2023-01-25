@@ -5,13 +5,15 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal class CombatScene : Scene
     {
-        public Menu Menu { get; } = new Menu(new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Attack"), () => Game.CurrScene = "Ability"),
-                (new Window.ColoredString("Inventory"), () => Game.CurrScene = "Inventory"),
-                (new Window.ColoredString("Pets"), () => Game.CurrScene = "Pets"),
-                (new Window.ColoredString("Run"), () => Game.CurrScene = "Map")
+        public Menu Menu { get; } = new Menu(
+            new Window.ColoredString("What do you want to do?", ConsoleColor.Red, Window.DefaultBgColor),
+            new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("Attack"), () => { }),
+                (new Window.ColoredString("Inventory"), () => { }),
+                (new Window.ColoredString("Pets"), () => { }),
+                (new Window.ColoredString("Run"), () => { })
             });
-
+        
         public CombatScene()
         {
             ;
@@ -39,7 +41,7 @@ namespace BlueShadowMon
                     Menu.Confirm();
                     break;
                 case ConsoleKey.Escape:
-                    Game.CurrScene = "Combat";
+                    Game.SwitchToCombatScene();
                     break;
                 default:
                     break;
