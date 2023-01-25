@@ -32,13 +32,6 @@
                 _effect(t, user);
             }
         }
-
-        // Static abilities
-
-        public static Ability Bite { get; } = new Ability("Bite", EffectType.PhysicalDamage, EffectTarget.Enemy, (Pet target, Pet user) =>
-        {
-            target[PetStat.Health] -= user[PetStat.PhysicalDamage] * (1 - (target[PetStat.PhysicalArmor] / (target[PetStat.PhysicalArmor] + 100)));
-        });
     }
 }
 

@@ -69,29 +69,6 @@ namespace BlueShadowMon
                 (new Window.ColoredString("100%"), () => { Window.Resize(1); CurrScene = "Settings"; })
             });
 
-            // Create Pets
-            Pet Max = new Pet("Max", PetType.Dog, new Dictionary<PetStat, int>() {
-                { PetStat.Health, 100 },
-                { PetStat.PhysicalDamage, 10 },
-                { PetStat.MagicalDamage, 10 },
-                { PetStat.PhysicalArmor, 10 },
-                { PetStat.MagicalArmor, 10 }
-            });
-            Pet Felix = new Pet("Felix", PetType.Cat, new Dictionary<PetStat, int>() {
-                { PetStat.Health, 100 },
-                { PetStat.PhysicalDamage, 10 },
-                { PetStat.MagicalDamage, 10 },
-                { PetStat.PhysicalArmor, 10 },
-                { PetStat.MagicalArmor, 10 }
-            });
-            Pet Python = new Pet("Python", PetType.Snake, new Dictionary<PetStat, int>() {
-                { PetStat.Health, 100 },
-                { PetStat.PhysicalDamage, 10 },
-                { PetStat.MagicalDamage, 10 },
-                { PetStat.PhysicalArmor, 10 },
-                { PetStat.MagicalArmor, 10 }
-            });
-
             // Create scenes
             _scenes = new Dictionary<string, Scene>()
             {

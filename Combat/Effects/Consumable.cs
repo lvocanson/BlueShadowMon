@@ -34,12 +34,5 @@
                 _effect(t);
             }
         }
-
-        // Static consumables
-
-        public static Consumable HealthPotion { get; } = new Consumable("Health Potion", EffectType.Heal, EffectTarget.Self | EffectTarget.Ally, (Pet target) =>
-        {
-            target[PetStat.Health] += 50;
-        });
     }
 }
