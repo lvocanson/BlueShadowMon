@@ -4,9 +4,9 @@ using static BlueShadowMon.Menu;
 namespace BlueShadowMon
 {
     [SupportedOSPlatform("windows")]
-    internal static class Combat
+    internal class Combat : Scene
     {
-        public static ConsoleColor NameColor { get; set; } = ConsoleManager.DefaultFgColor;
+        public static ConsoleColor NameColor { get; set; } = Window.DefaultFgColor;
         public static ConsoleColor HealthColor { get; set; } = ConsoleColor.Green;
 
         private static int SelectedOption { get; set; } = 0;
@@ -21,33 +21,33 @@ namespace BlueShadowMon
         private static Action[] Actions = new Action[]
         {
              new Action{ name = "Attack", fcolor = FSelectedColor, bcolor = BSelectedColor },
-             new Action{ name = "Inventory", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
-             new Action{ name = "Pets", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
-             new Action{ name = "Flee", fcolor = ConsoleManager.DefaultFgColor, bcolor = ConsoleManager.DefaultBgColor },
+             new Action{ name = "Inventory", fcolor = Window.DefaultFgColor, bcolor = Window.DefaultBgColor },
+             new Action{ name = "Pets", fcolor = Window.DefaultFgColor, bcolor = Window.DefaultBgColor },
+             new Action{ name = "Flee", fcolor = Window.DefaultFgColor, bcolor = Window.DefaultBgColor },
         };
 
-        public static ConsoleColor FSelectedColor { get; set; } = ConsoleManager.DefaultBgColor;
-        public static ConsoleColor BSelectedColor { get; set; } = ConsoleManager.DefaultFgColor;
+        public static ConsoleColor FSelectedColor { get; set; } = Window.DefaultBgColor;
+        public static ConsoleColor BSelectedColor { get; set; } = Window.DefaultFgColor;
 
         public static Pet LeftPet { get; set; } = new Pet("Blue Shadow", 1, 50, 50, 10);
         public static Pet RightPet { get; set; } = new Pet("Dark Sasuke", 1, 50, 40, 10);
         
-        public static void DrawCombat()
+        public override void Draw()
         {
             // Draw statistics
-            int leftX = ConsoleManager.MiddleX / 2;
-            int rightX = (int)(ConsoleManager.MiddleX * 1.5);
+            int leftX = Window.MiddleX / 2;
+            int rightX = (int)(Window.MiddleX * 1.5);
             int y;
 
             // Names
             y = 3;
-            ConsoleManager.WriteText(LeftPet.Name, leftX, y, NameColor, ConsoleManager.DefaultBgColor, true);
-            ConsoleManager.WriteText(RightPet.Name, rightX, y, NameColor, ConsoleManager.DefaultBgColor, true);
+            Window.Write(LeftPet.Name, leftX, y, NameColor, Window.DefaultBgColor, true);
+            Window.Write(RightPet.Name, rightX, y, NameColor, Window.DefaultBgColor, true);
 
             // Health bars
             y = 4;
-            ConsoleManager.WriteText(LeftPet.GetHealthBar(20), leftX, y, HealthColor, ConsoleManager.DefaultBgColor, true);
-            ConsoleManager.WriteText(RightPet.GetHealthBar(20), rightX, y, HealthColor, ConsoleManager.DefaultBgColor, true);
+            Window.Write(LeftPet.GetHealthBar(20), leftX, y, HealthColor, Window.DefaultBgColor, true);
+            Window.Write(RightPet.GetHealthBar(20), rightX, y, HealthColor, Window.DefaultBgColor, true);
 
             // Draw the actions
             y = Console.WindowHeight - 3;
@@ -55,7 +55,7 @@ namespace BlueShadowMon
             {
                 int x = (int)(Console.WindowWidth * (i + 0.5) / Actions.Length);
                 Action choice = Actions[i];
-                ConsoleManager.WriteText(choice.name, x, y, choice.fcolor, choice.bcolor, true);
+                Window.Write(choice.name, x, y, choice.fcolor, choice.bcolor, true);
             }            
         }
 
@@ -71,12 +71,12 @@ namespace BlueShadowMon
                 }
                 else
                 {
-                    Actions[i].fcolor = ConsoleManager.DefaultFgColor;
-                    Actions[i].bcolor = ConsoleManager.DefaultBgColor;
+                    Actions[i].fcolor = Window.DefaultFgColor;
+                    Actions[i].bcolor = Window.DefaultBgColor;
                 }
             }
         }
-        public static void KeyPressed(ConsoleKey key)
+        public override void KeyPressed(ConsoleKey key)
         {
             switch (key)
             {

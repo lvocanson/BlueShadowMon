@@ -8,77 +8,63 @@ namespace BlueShadowMon
         public const string GameTitle = "Blue Shadow Mon";
         private static int _frameRate = 60;
         private static DateTime _lastFrame = DateTime.Now;
-        private static State _currState = State.MainMenu;
-        public static State CurrState {
-            get { return _currState; }
+
+        private static Dictionary<string, Scene> _scenes;
+        private static string _currScene;
+        public static string CurrScene
+        {
+            get { return _currScene; }
             set
             {
+                if (!_scenes.ContainsKey(value))
+                    throw new ArgumentException("Scene does not exist");
+
+                Console.BackgroundColor = Window.DefaultBgColor;
                 Console.Clear();
-                _currState = value; 
+                _currScene = value;
             }
-        } 
-        public enum State
-        {
-            MainMenu = 0,
-            Map      = 1,
-            Combat   = 2,
-            Settings = 3,
         }
         static void Main()
         {
-            ConsoleManager.WindowSetup();
+            Window.Setup();
 
-
-            (int x, int y) playerPos = (0, 0);
-            Map map = new Map("Map/Map.txt", playerPos);
+            // Create scenes
+            _scenes = new Dictionary<string, Scene>()
+            {
+                {
+                    "Main Menu",
+                    new MenuScene( GameTitle, new (Window.ColoredString, Action)[] {
+                        (new Window.ColoredString("Play", Window.DefaultFgColor, Window.DefaultBgColor), () => CurrScene = "Map"),
+                        (new Window.ColoredString("Combat Test", Window.DefaultFgColor, Window.DefaultBgColor), () => CurrScene = "Combat"), // REMOVE THIS LATER
+                        (new Window.ColoredString("Exit", Window.DefaultFgColor, Window.DefaultBgColor), () => { CurrScene = "Main Menu";  Environment.Exit(0); })
+                }) },
+                {
+                    "Map",
+                    new Map("Map/Map.txt", (0, 0))
+                },
+                {
+                    "Combat",
+                    new Combat()
+                },
+            };
 
             // This is the main game loop
+            CurrScene = "Main Menu";
             while (true)
             {
-                ConsoleManager.CatchInputs();
+                Window.CatchInputs();
 
                 // Process inputs
-                if (ConsoleManager.Inputs.Count > 0)
+                if (Window.Inputs.Count > 0)
                 {
-                    foreach (ConsoleKeyInfo key in ConsoleManager.Inputs)
+                    foreach (ConsoleKeyInfo kInfo in Window.Inputs)
                     {
-
-                        switch (CurrState)
-                        {
-                            case State.MainMenu:
-                                Menu.KeyPressed(key.Key);
-                                break;
-                            case State.Map:
-                                map.KeyPressed(key.Key);
-                                break;
-                            case State.Combat:
-                                Combat.KeyPressed(key.Key);
-                                break;
-                            default:
-                                break;
-                        }
+                        _scenes[_currScene].KeyPressed(kInfo.Key);
                     }
                 }
 
                 // Draw
-                switch (CurrState)
-                {
-                    case State.MainMenu:
-                        Menu.DrawMenu();
-                        break;
-                    case State.Map:
-                        map.DrawMap();
-                        break;
-                    case State.Combat:
-                        Combat.DrawCombat();
-                        break;
-                    case State.Settings:
-
-                        Menu.DrawSetting();
-                        break;
-                    default:
-                        break;
-                }
+                _scenes[_currScene].Draw();
 
                 // Wait the next frame
                 while (DateTime.Now - _lastFrame < TimeSpan.FromSeconds(1.0 / _frameRate))

@@ -4,31 +4,17 @@ namespace BlueShadowMon
 {
     [SupportedOSPlatform("windows")]
 
-    internal class Map
+    internal class Map : Scene
     {
-        private struct MapChar
-        {
-            public char Char;
-            public ConsoleColor ForegroundColor;
-            public ConsoleColor BackgroundColor;
-        }
+        private static Window.ColoredChar _cGround { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkGray, ConsoleColor.DarkGray);
+        private static Window.ColoredChar _cWall { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkRed, ConsoleColor.DarkRed);
+        private static Window.ColoredChar _cWater { get; } = new Window.ColoredChar('~', ConsoleColor.DarkBlue, ConsoleColor.Blue);
+        private static Window.ColoredChar _cGrassOnGround { get; } = new Window.ColoredChar('*', ConsoleColor.Green, ConsoleColor.DarkGray);
+        private static Window.ColoredChar _cUnknown { get; } = new Window.ColoredChar('?', ConsoleColor.White, ConsoleColor.Black);
 
-        private struct MapString
+        private Window.ColoredChar _cPlayer
         {
-            public string String;
-            public ConsoleColor ForegroundColor;
-            public ConsoleColor BackgroundColor;
-        }
-
-        private static MapChar _cGround { get; } = new MapChar { Char = ' ', ForegroundColor = ConsoleColor.DarkGray, BackgroundColor = ConsoleColor.DarkGray };
-        private static MapChar _cWall { get; } = new MapChar { Char = ' ', ForegroundColor = ConsoleColor.DarkRed, BackgroundColor = ConsoleColor.DarkRed };
-        private static MapChar _cWater { get; } = new MapChar { Char = '~', ForegroundColor = ConsoleColor.DarkBlue, BackgroundColor = ConsoleColor.Blue };
-        private static MapChar _cGrassOnGround { get; } = new MapChar { Char = '*', ForegroundColor = ConsoleColor.Green, BackgroundColor = ConsoleColor.DarkGray };
-        private static MapChar _cUnknown { get; } = new MapChar { Char = '?', ForegroundColor = ConsoleColor.White, BackgroundColor = ConsoleColor.Black };
-
-        private MapChar _cPlayer
-        {
-            get { return new MapChar { Char = PlayerChar, ForegroundColor = PlayerColor, BackgroundColor = Parse(_map[_playerPos.y, _playerPos.x]).BackgroundColor }; }
+            get { return new Window.ColoredChar(PlayerChar, PlayerColor, Parse(_map[_playerPos.y, _playerPos.x]).BackgroundColor); }
         }
 
 
@@ -77,7 +63,7 @@ namespace BlueShadowMon
         /// </summary>
         /// <param name="c"></param>
         /// <returns></returns>
-        private static MapChar Parse(char c)
+        private static Window.ColoredChar Parse(char c)
         {
             switch (c)
             {
@@ -112,7 +98,7 @@ namespace BlueShadowMon
         /// Handle a key press. 
         /// </summary>
         /// <param name="key">The key pressed</param>
-        public void KeyPressed(ConsoleKey key)
+        public override void KeyPressed(ConsoleKey key)
         {
             switch (key)
             {
@@ -129,11 +115,16 @@ namespace BlueShadowMon
                     TryToMoveBy(1, 0);
                     break;
                 case ConsoleKey.Escape:
-                    Game.CurrState = Game.State.MainMenu;
+                    Game.CurrScene = "Main Menu";
                     break;
             }
         }
 
+        /// <summary>
+        /// Try to move the player by the given coordinates.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
         private void TryToMoveBy(int x, int y)
         {
             int newX = _playerPos.x + x;
@@ -148,22 +139,22 @@ namespace BlueShadowMon
         /// Draws the map on the console around the player coordinates.
         /// The player is centered on the console.
         /// </summary>
-        public void DrawMap()
+        public override void Draw()
         {
             (int left, int top, int right, int down) mapView = (
-                _playerPos.x - ConsoleManager.MiddleX,
-                _playerPos.y - ConsoleManager.MiddleY,
-                _playerPos.x + (Console.WindowWidth - ConsoleManager.MiddleX),
-                _playerPos.y + (Console.WindowHeight - ConsoleManager.MiddleY)
+                _playerPos.x - Window.MiddleX,
+                _playerPos.y - Window.MiddleY,
+                _playerPos.x + (Console.WindowWidth - Window.MiddleX),
+                _playerPos.y + (Console.WindowHeight - Window.MiddleY)
             );
 
-            MapChar parsed;
+            Window.ColoredChar parsed;
             if (mapView.top < 0 || mapView.left < 0)
                 parsed = _cWall;
             else
                 parsed = Parse(_map[mapView.top, mapView.left]);
 
-            List<MapString> toDraw = new List<MapString>();
+            List<Window.ColoredString> toDraw = new List<Window.ColoredString>();
             int count = 0;
 
             for (int y = mapView.top; y < mapView.down; y++)
@@ -172,7 +163,7 @@ namespace BlueShadowMon
                 {
                     if (!parsed.Equals(_cWall)) // Last char was not a wall
                     {
-                        toDraw.Add(new MapString { String = new string(parsed.Char, count), ForegroundColor = parsed.ForegroundColor, BackgroundColor = parsed.BackgroundColor });
+                        toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
                         parsed = _cWall;
                         count = 0;
                     }
@@ -184,7 +175,7 @@ namespace BlueShadowMon
                 {
                     if (x == _playerPos.x && y == _playerPos.y)
                     {
-                        toDraw.Add(new MapString { String = new string(parsed.Char, count), ForegroundColor = parsed.ForegroundColor, BackgroundColor = parsed.BackgroundColor });
+                        toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
                         parsed = _cPlayer;
                         count = 1;
                         continue;
@@ -199,7 +190,7 @@ namespace BlueShadowMon
                     }
 
                     // If parsed need to change, we also need to build a new string
-                    toDraw.Add(new MapString { String = new string(parsed.Char, count), ForegroundColor = parsed.ForegroundColor, BackgroundColor = parsed.BackgroundColor });
+                    toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
                     if (x < 0 || Width <= x)
                         parsed = _cWall;
                     else
@@ -209,12 +200,11 @@ namespace BlueShadowMon
             }
 
             // Build the last string
-            toDraw.Add(new MapString { String = new string(parsed.Char, count), ForegroundColor = parsed.ForegroundColor, BackgroundColor = parsed.BackgroundColor });
+            toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
 
             // Draw all srings built
             Console.SetCursorPosition(0, 0);
-            foreach (MapString ms in toDraw)
-                ConsoleManager.WriteText(ms.String, ms.ForegroundColor, ms.BackgroundColor);
+            toDraw.ForEach(s => Window.Write(s));
         }
     }
 }
