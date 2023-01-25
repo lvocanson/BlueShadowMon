@@ -33,10 +33,10 @@ namespace BlueShadowMon
             {
                 {
                     "Main Menu",
-                    new MenuScene( GameTitle, new (Window.ColoredString, Action)[] {
-                        (new Window.ColoredString("Play", Window.DefaultFgColor, Window.DefaultBgColor), () => CurrScene = "Map"),
-                        (new Window.ColoredString("Combat Test", Window.DefaultFgColor, Window.DefaultBgColor), () => CurrScene = "Combat"), // REMOVE THIS LATER
-                        (new Window.ColoredString("Exit", Window.DefaultFgColor, Window.DefaultBgColor), () => { CurrScene = "Main Menu";  Environment.Exit(0); })
+                    new MenuScene( new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor), new (Window.ColoredString, Action)[] {
+                        (new Window.ColoredString("Play"), () => CurrScene = "Map"),
+                        (new Window.ColoredString("Combat Test"), () => CurrScene = "Combat"), // REMOVE THIS LATER
+                        (new Window.ColoredString("Exit"), () => Environment.Exit(0))
                 }) },
                 {
                     "Map",

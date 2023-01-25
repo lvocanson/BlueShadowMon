@@ -126,7 +126,7 @@ namespace BlueShadowMon
         }
 
         /// <summary>
-        /// Write a colred string in the console at the specified position.
+        /// Write a colored string in the console at the specified position.
         /// </summary>
         /// <param name="str">The string</param>
         /// <param name="x">Number of column from the left</param>
@@ -144,7 +144,7 @@ namespace BlueShadowMon
         }
 
         /// <summary>
-        /// Write a colred string in the console at the specified position.
+        /// Write a string in the console at the specified position.
         /// </summary>
         /// <param name="str">The string</param>
         /// <param name="x">Number of column from the left</param>
@@ -163,7 +163,7 @@ namespace BlueShadowMon
         }
 
         /// <summary>
-        /// Write a colred string in the console at the specified position.
+        /// Write a string in the console at the specified position.
         /// </summary>
         /// <param name="str">The string</param>
         /// <param name="x">Number of column from the left</param>

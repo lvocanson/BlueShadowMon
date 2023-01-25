@@ -6,9 +6,9 @@ namespace BlueShadowMon
     internal class MenuScene : Scene
     {
         public Menu Menu { get; }
-        private string _title;
+        private Window.ColoredString _title;
 
-        public MenuScene(string title, (Window.ColoredString, Action)[] items)
+        public MenuScene(Window.ColoredString title, (Window.ColoredString, Action)[] items)
         {
             _title = title;
             Menu = new Menu(items, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
@@ -16,7 +16,7 @@ namespace BlueShadowMon
             
         public override void Draw()
         {
-            Window.Write(_title, Window.MiddleX, Window.MiddleY - Menu.Length - 2, true);
+            Window.Write(_title, Window.MiddleX, Window.MiddleY - Menu.Length - 3, true);
 
             for (int i = 0; i < Menu.Length; i++)
             {
