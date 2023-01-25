@@ -4,7 +4,7 @@ namespace BlueShadowMon
 {
     [SupportedOSPlatform("windows")]
 
-    internal class Map : Scene
+    internal class MapScene : Scene
     {
         private static Window.ColoredChar _cGround { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkGray, ConsoleColor.DarkGray);
         private static Window.ColoredChar _cWall { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkRed, ConsoleColor.DarkRed);
@@ -18,7 +18,7 @@ namespace BlueShadowMon
         }
 
 
-        private char[,] _map { get; set; }
+        private char[,] _map { get; set; } = new char[0, 0];
         private (int x, int y) _playerPos;
 
         public static char PlayerChar { get; set; } = '@';
@@ -32,7 +32,12 @@ namespace BlueShadowMon
         /// </summary>
         /// <param name="path"></param>
         /// <exception cref="Exception"></exception>
-        public Map(string path, (int x, int y) playerPos)
+        public MapScene(string path, (int x, int y) playerPos)
+        {
+            Init(path, playerPos);
+        }
+
+        public void Init(string path, (int x, int y) playerPos)
         {
             // Load file
             string[] lines = File.ReadAllLines(path);
@@ -51,7 +56,6 @@ namespace BlueShadowMon
                     _map[y, x] = lines[y][x];
                 }
             }
-
 
             if (playerPos.x < 0 || Width <= playerPos.x || playerPos.y < 0 || Height <= playerPos.y)
                 throw new Exception("Player position is not valid!");
@@ -115,7 +119,7 @@ namespace BlueShadowMon
                     TryToMoveBy(1, 0);
                     break;
                 case ConsoleKey.Escape:
-                    Game.CurrScene = "Main Menu";
+                    Game.SwitchToMenuScene("Main Menu");
                     break;
             }
         }
