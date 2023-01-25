@@ -3,69 +3,69 @@
   <Class Name="BlueShadowMon.Game">
     <Position X="3.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAQAAIAAAAAgAEFAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAQAAIAAAAAiAEFAAAAAA=</HashCode>
       <FileName>Game.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlueShadowMon.Map">
     <Position X="6.5" Y="2.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AIAgABAABAAgAAggAAAAAEAAAAwAAAggAEgAAgBAAAA=</HashCode>
+      <HashCode>AIAgABAABAAAAgggAAAAAEAAAAwAAAggAEgAAgBAAAA=</HashCode>
       <FileName>Scenes\Map.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.CoMan">
+  <Class Name="BlueShadowMon.Window">
     <Position X="0.5" Y="0.5" Width="2.75" />
     <NestedTypes>
-      <Struct Name="BlueShadowMon.CoMan.ColoredChar" Collapsed="true">
+      <Struct Name="BlueShadowMon.Window.ColoredChar" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>CoMan.cs</NewMemberFileName>
+          <NewMemberFileName>Window.cs</NewMemberFileName>
         </TypeIdentifier>
       </Struct>
-      <Struct Name="BlueShadowMon.CoMan.ColoredString" Collapsed="true">
+      <Struct Name="BlueShadowMon.Window.ColoredString" Collapsed="true">
         <TypeIdentifier>
-          <NewMemberFileName>CoMan.cs</NewMemberFileName>
+          <NewMemberFileName>Window.cs</NewMemberFileName>
         </TypeIdentifier>
       </Struct>
     </NestedTypes>
     <TypeIdentifier>
-      <HashCode>BBgAAEAAAAAEAAAAAAAAAECAGAAABAIACAhAAAAgAAA=</HashCode>
-      <FileName>CoMan.cs</FileName>
+      <HashCode>ABgAAEAACAAEAAAAAAAAAECAGAAABAIACABAAAEgAAA=</HashCode>
+      <FileName>Window.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlueShadowMon.Pet">
     <Position X="3.5" Y="5.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAGQAAAAAACAAAAAIAAAQAAIBAABABQAEAQgAAEAA=</HashCode>
+      <HashCode>AQAAAAgAAAAAAAAACAAAAIQAIAAAAAAAAQAAQEAAAAA=</HashCode>
       <FileName>Combat\Pet.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlueShadowMon.Ability">
     <Position X="0.5" Y="5.75" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAABAA=</HashCode>
-      <FileName>Combat\Pet.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlueShadowMon.Combat">
-    <Position X="9.5" Y="2.5" Width="3" />
-    <NestedTypes>
-      <Struct Name="BlueShadowMon.Combat.Action" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Combat\Combat.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Struct>
-    </NestedTypes>
-    <TypeIdentifier>
-      <HashCode>AAAABAAEIIQgAEQAAAAAAAAAAAAAAAAAgAAAAABAQAA=</HashCode>
-      <FileName>Scenes\Combat.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAwAAAAAAAAA=</HashCode>
+      <FileName>Combat\Ability.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlueShadowMon.Scene">
-    <Position X="9.5" Y="0.5" Width="3" />
+    <Position X="6.5" Y="0.5" Width="2.75" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
       <FileName>Scenes\Scene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.CombatScene">
+    <Position X="9.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Scenes\CombatScene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.MenuScene">
+    <Position X="12.5" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAIAAAgAAAAAAAAAAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Scenes\MenuScene.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Font Name="Segoe UI" Size="9" />

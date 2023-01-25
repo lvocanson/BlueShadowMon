@@ -69,7 +69,6 @@ namespace BlueShadowMon
                 (new Window.ColoredString("100%"), () => { Window.Resize(1); CurrScene = "Settings"; })
             });
 
-
             // Create scenes
             _scenes = new Dictionary<string, Scene>()
             {
@@ -83,7 +82,7 @@ namespace BlueShadowMon
                 },
                 {
                     "Combat",
-                    new Combat()
+                    new MenuScene(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor), mainMenu)
                 },
                 {
                     "Settings",
