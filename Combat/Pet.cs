@@ -168,8 +168,15 @@
         public Ability this[int index] { get { return _abilities[index]; } }
         public int AbilityNumber { get { return _abilities.Length; } }
 
+        /// <summary>
+        /// Learn an ability.
+        /// </summary>
+        /// <param name="ability"></param>
+        /// <param name="index">Slot</param>
         public void LearnAbility(Ability ability, int index)
         {
+            if (_abilities.Contains(ability))
+                throw new Exception("Pet already knew this ability!");
             if (index > Tier)
                 throw new Exception("Pet can't have " + (index + 1).ToString() + " abilities while beeing tier " + Tier.ToString() + "!");
             _abilities[index] = ability;
@@ -180,23 +187,47 @@
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="target">The Pet</param>
-        public void UseAbility(int index, Pet target)
-        {
-            _abilities[index].UseOn(target, this);
-        }
+        public void UseAbility(int index, Pet target) => _abilities[index].UseOn(target, this);
 
         /// <summary>
         /// Use an ability on other Pets.
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="targets">Pets</param>
-        public void UseAbility(int index, Pet[] targets)
-        {
-            _abilities[index].UseOn(targets, this);
-        }
+        public void UseAbility(int index, Pet[] targets) => _abilities[index].UseOn(targets, this);
 
         // Status effects
-        // TODO: Lucas
+        private List<StatusEffect> _statusEffects = new List<StatusEffect>();
+        public StatusEffect[] StatusEffects => _statusEffects.ToArray();
+
+        /// <summary>
+        /// Add a status effect.
+        /// </summary>
+        /// <param name="effect"></param>
+        public void AddStatusEffect(StatusEffect effect) => _statusEffects.Add(effect);
+
+        /// <summary>
+        /// Remove a status effect.
+        /// </summary>
+        /// <param name="effect"></param>
+        public void RemoveStatusEffect(StatusEffect effect) => _statusEffects.Remove(effect);
+
+        /// <summary>
+        /// Clear all status effects.
+        /// </summary>
+        public void ClearStatusEffects() => _statusEffects.Clear();
+
+        /// <summary>
+        /// Update all status effects.
+        /// Called at the start of the pet's turn.
+        /// </summary>
+        public void UpdateStatusEffects()
+        {
+            for (int i = 0; i < _statusEffects.Count; i++)
+            {
+                _statusEffects[i].Update(this);
+            }
+        }
 
 
         /// <summary>

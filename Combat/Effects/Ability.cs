@@ -1,5 +1,8 @@
 ﻿namespace BlueShadowMon
 {
+    /// <summary>
+    /// An ability that can be used by a pet.
+    /// </summary>
     public class Ability : Effect
     {
         protected Action<Pet, Pet> _effect;
