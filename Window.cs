@@ -84,7 +84,7 @@ namespace BlueShadowMon
             Console.CursorVisible = false;
 
             // Set console size to 75% of the largest possible size
-            ChangeSize(0.75);
+            Resize(0.75);
 
             // Set console colors
             Console.ForegroundColor = DefaultFgColor;
@@ -95,7 +95,7 @@ namespace BlueShadowMon
         /// Change the size of the console.
         /// </summary>
         /// <param name="percent">Percentage of the largest possible size</param>
-        public static void ChangeSize(double percent)
+        public static void Resize(double percent)
         {
             int width = (int)(Console.LargestWindowWidth * percent);
             int height = (int)(Console.LargestWindowHeight * percent);

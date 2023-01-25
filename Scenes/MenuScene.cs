@@ -8,12 +8,18 @@ namespace BlueShadowMon
         public Menu Menu { get; }
         private Window.ColoredString _title;
 
+        public MenuScene(Window.ColoredString title, Menu menu)
+        {
+            _title = title;
+            Menu = menu;
+        }
+
         public MenuScene(Window.ColoredString title, (Window.ColoredString, Action)[] items)
         {
             _title = title;
-            Menu = new Menu(items, ConsoleKey.UpArrow, ConsoleKey.DownArrow, ConsoleKey.Enter);
+            Menu = new Menu(items);
         }
-            
+
         public override void Draw()
         {
             Window.Write(_title, Window.MiddleX, Window.MiddleY - Menu.Length - 3, true);
@@ -26,7 +32,18 @@ namespace BlueShadowMon
 
         public override void KeyPressed(ConsoleKey key)
         {
-            Menu.KeyPressed(key);
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    Menu.Before();
+                    break;
+                case ConsoleKey.DownArrow:
+                    Menu.After();
+                    break;
+                case ConsoleKey.Enter:
+                    Menu.Confirm();
+                    break;
+            }
         }
     }
 }

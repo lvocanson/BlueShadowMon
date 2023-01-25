@@ -14,17 +14,11 @@ namespace BlueShadowMon
         protected (Window.ColoredString str, Action callback)[] _items;
         protected int _selectedItemNum = 0;
         protected Window.ColoredString _selectedItemStr;
-        protected ConsoleKey _before;
-        protected ConsoleKey _after;
-        protected ConsoleKey _confirm;
 
-        public Menu((Window.ColoredString, Action)[] items, ConsoleKey before, ConsoleKey after, ConsoleKey confirm)
+        public Menu((Window.ColoredString, Action)[] items)
         {
             _items = items;
             _selectedItemStr = new Window.ColoredString(BeginSelector + _items[_selectedItemNum].str.String + EndSelector);
-            _before = before;
-            _after = after;
-            _confirm = confirm;
         }
 
         public Window.ColoredString this[int num]
@@ -53,17 +47,19 @@ namespace BlueShadowMon
             _selectedItemStr.String = BeginSelector + _items[num].str.String + EndSelector;
         }
 
-        public void KeyPressed(ConsoleKey key)
+        public void Before()
         {
-            if (key == _before)
-                SelectItem(_selectedItemNum - 1);
-            else if (key == _after)
-                SelectItem(_selectedItemNum + 1);
-            else if (key == _confirm)
-            {
-                Console.Clear();
-                _items[_selectedItemNum].callback();
-            }
+            SelectItem(_selectedItemNum - 1);
+        }
+
+        public void After()
+        {
+            SelectItem(_selectedItemNum + 1);
+        }
+
+        public void Confirm()
+        {
+            _items[_selectedItemNum].callback();
         }
     }
 }
