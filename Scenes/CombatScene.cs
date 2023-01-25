@@ -5,11 +5,16 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal class CombatScene : Scene
     {
-        public Menu Menu { get; }
+        public Menu Menu { get; } = new Menu(new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("Attack"), () => Game.CurrScene = "Ability"),
+                (new Window.ColoredString("Inventory"), () => Game.CurrScene = "Inventory"),
+                (new Window.ColoredString("Pets"), () => Game.CurrScene = "Pets"),
+                (new Window.ColoredString("Run"), () => Game.CurrScene = "Map")
+            });
 
-        public CombatScene(Window.ColoredString coloredString, Menu menu)
+        public CombatScene()
         {
-            Menu = menu;
+            ;
         }
         public override void Draw()
         {

@@ -4,18 +4,19 @@ namespace BlueShadowMon
 {
 
     [SupportedOSPlatform("windows")]
-    internal class Menu
+    public class Menu
     {
         public static string BeginSelector { get; set; } = "> ";
         public static string EndSelector { get; set; } = " <";
 
         protected (Window.ColoredString str, Action callback)[] _items;
-        protected int _selectedItemNum = 0;
+        protected int _selectedItemNum;
         protected Window.ColoredString _selectedItemStr;
 
-        public Menu((Window.ColoredString, Action)[] items)
+        public Menu((Window.ColoredString, Action)[] items, int selectedItemNum = 0)
         {
             _items = items;
+            _selectedItemNum = selectedItemNum;
             _selectedItemStr = new Window.ColoredString(BeginSelector + _items[_selectedItemNum].str.String + EndSelector);
         }
 
