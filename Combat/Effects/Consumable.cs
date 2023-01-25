@@ -1,5 +1,8 @@
 ﻿namespace BlueShadowMon
 {
+    /// <summary>
+    /// A consumable that can be used by a player.
+    /// </summary>
     public class Consumable : Effect
     {
         protected Action<Pet> _effect;

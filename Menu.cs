@@ -8,8 +8,6 @@ namespace BlueShadowMon
     {
         public static string BeginSelector { get; set; } = "> ";
         public static string EndSelector { get; set; } = " <";
-        public static ConsoleColor FSelectedColor { get; set; } = Window.DefaultBgColor;
-        public static ConsoleColor BSelectedColor { get; set; } = Window.DefaultFgColor;
 
         protected (Window.ColoredString str, Action callback)[] _items;
         protected int _selectedItemNum = 0;
