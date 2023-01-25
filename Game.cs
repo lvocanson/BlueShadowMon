@@ -69,6 +69,13 @@ namespace BlueShadowMon
                 (new Window.ColoredString("100%"), () => { Window.Resize(1); CurrScene = "Settings"; })
             });
 
+            Menu Combat = new Menu(new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("Attack"), () => CurrScene = "Ability"),
+                (new Window.ColoredString("Inventory"), () => CurrScene = "Inventory"),
+                (new Window.ColoredString("Pets"), () => CurrScene = "Pets"),
+                (new Window.ColoredString("Run"), () => CurrScene = "Map")
+            });
+
             // Create scenes
             _scenes = new Dictionary<string, Scene>()
             {
@@ -82,7 +89,7 @@ namespace BlueShadowMon
                 },
                 {
                     "Combat",
-                    new MenuScene(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor), mainMenu)
+                    new CombatScene(new Window.ColoredString("Combat"), Combat)
                 },
                 {
                     "Settings",

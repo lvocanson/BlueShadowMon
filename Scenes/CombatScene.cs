@@ -7,13 +7,17 @@ namespace BlueShadowMon
     {
         public Menu Menu { get; }
 
-        public CombatScene(Menu menu)
+        public CombatScene(Window.ColoredString coloredString, Menu menu)
         {
             Menu = menu;
         }
         public override void Draw()
         {
-
+            int y = Console.WindowHeight - 3;
+            for (int i = 0; i < Menu.Length; i++)
+            {
+                Window.Write(Menu[i], (int)(Console.WindowWidth * (i + 0.5) / Menu.Length), y, true);
+            }
         }
 
         public override void KeyPressed(ConsoleKey key)
