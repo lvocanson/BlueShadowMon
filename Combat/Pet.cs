@@ -1,62 +1,64 @@
 ﻿namespace BlueShadowMon
 {
-    internal class Pet
+    public enum PetType
     {
-        private const char HealthBarLeftBracket = '[';
-        private const char HealthBarFiller = 'H';
-        private const char HealthBarEmpty = '-';
-        private const char HealthBarRightBracket = ']';
-
-        public Pet(string name, int level, int health, int attack, int defense)
-        {
-            Name = name;
-            Level = level;
-            MaxHealth = health;
-            Health = health;
-            Attack = attack;
-            Defense = defense;
-        }
-
-        public string Name { get; }
-        public int Level { get; private set; }
-        public int MaxHealth { get; private set; }
-        public int Health { get; private set; }
-        public int Attack { get; private set; }
-        public int Defense { get; private set; }
-
-        readonly List<Ability> Abilities = new List<Ability>();
-
-        public void AddAbility(string name, int attack)
-        {
-           Abilities.Add(new Ability(name, attack));
-        }
-
-        public void AttackEnemy(Pet enemy)
-        {
-            enemy.Health -= Math.Min(1, Attack / enemy.Defense);
-        }
-
-        
-        public string GetHealthBar(int width = 10)
-        {
-            int porcent = Health * (width - 2) / MaxHealth;
-            return HealthBarLeftBracket + new string(HealthBarFiller, porcent) + new string(HealthBarEmpty, width - 2 - porcent) + HealthBarRightBracket;
-        }
-
-        public void ResetHealth() => Health = MaxHealth;
-
+        Dog = 0,
+        Cat = 1,
+        Snake = 2,
     }
 
-    internal class Ability
+    public enum PetStat
     {
-        public Ability(string name, int attack)
-        {
-            Name = name;
-            AttackAbility = attack;
-        }
+        Health = 0,
+        PhysicalDamage = 1,
+        MagicalDamage = 2,
+        PhysicalArmor = 3,
+        MagicalArmor = 4,
+    }
+    
+    public class Pet
+    {
 
         public string Name { get; }
-        public int AttackAbility { get; private set; }
+        public PetType Type { get; }
 
+        // Stats
+        private Dictionary<PetStat, float> _baseStats = new Dictionary<PetStat, float>();
+        private Dictionary<PetStat, float> _currentStats = new Dictionary<PetStat, float>();
+        public float this[PetStat stat]
+        {
+            get => _currentStats[stat];
+            set
+            {
+                if (value < 0)
+                {
+                    _currentStats[stat] = 0;
+                }
+                else if (value > _baseStats[stat])
+                {
+                    _currentStats[stat] = _baseStats[stat];
+                }
+                else
+                {
+                    _currentStats[stat] = value;
+                }
+            }
+        }
+        public bool IsAlive => this[PetStat.Health] > 0;
+
+        // Abilities
+        private List<Effect> _abilities = new List<Effect>();
+        public Effect this[int index] => _abilities[index];
+
+        public Pet(string name, PetType type, Dictionary<PetStat, int> stats)
+        {
+            Name = name;
+            Type = type;
+            foreach (PetStat stat in Enum.GetValues(typeof(PetStat)))
+            {
+                _baseStats[stat] = stats[stat];
+                _currentStats[stat] = stats[stat];
+            }
+        }
     }
 }

@@ -5,34 +5,12 @@ namespace BlueShadowMon
     [SupportedOSPlatform("windows")]
     internal class CombatScene : Scene
     {
-        public Pet LeftPet { get; set; }
-        public Pet RightPet { get; set; }
-
         public Menu Menu { get; }
 
-        public CombatScene(Pet leftPet, Pet rightPet)
+        public CombatScene(Menu menu)
         {
-            LeftPet = leftPet;
-            RightPet = rightPet;
-            Menu = new Menu(new (Window.ColoredString, Action)[]
-            {
-                (new Window.ColoredString("Attack", ConsoleColor.Red, Window.DefaultBgColor), () => {
-                }),
-                (new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), () => {
-                }),
-                (new Window.ColoredString("Pets", ConsoleColor.Green, Window.DefaultBgColor), () => {
-                }),
-                (new Window.ColoredString("Run", ConsoleColor.Blue, Window.DefaultBgColor), () => {
-                })
-            });
+            Menu = menu;
         }
-
-        public void ChangePets(Pet leftPet, Pet rightPet)
-        {
-            LeftPet = leftPet;
-            RightPet = rightPet;
-        }
-
         public override void Draw()
         {
 
