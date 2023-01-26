@@ -122,12 +122,11 @@ namespace BlueShadowMon
             {
                 "Window Size", new Menu(new Window.ColoredString("Window Size", ConsoleColor.DarkYellow, Window.DefaultBgColor),
                 new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("50%"), () => { Window.Resize(0.5); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("60%"), () => { Window.Resize(0.6); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("70%"), () => { Window.Resize(0.7); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("80%"), () => { Window.Resize(0.8); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("90%"), () => { Window.Resize(0.9); Game.SwitchToMenuScene("Settings"); }),
-
+                (new Window.ColoredString("50%"), () => { Window.Resize(0.5F); Game.SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("60%"), () => { Window.Resize(0.6F); Game.SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("70%"), () => { Window.Resize(0.7F); Game.SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("80%"), () => { Window.Resize(0.8F); Game.SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("90%"), () => { Window.Resize(0.9F); Game.SwitchToMenuScene("Settings"); }),
                 (new Window.ColoredString("100%"), () => { Window.Resize(1); Game.SwitchToMenuScene("Settings"); })
             }, 2) }
         };

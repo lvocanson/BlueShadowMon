@@ -1,6 +1,6 @@
 ﻿namespace BlueShadowMon
 {
-    internal abstract class Scene
+    public abstract class Scene
     {
         /// <summary>
         /// Draws the scene in the console.

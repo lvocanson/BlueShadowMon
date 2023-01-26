@@ -32,12 +32,15 @@ namespace BlueShadowMon
             switch (key)
             {
                 case ConsoleKey.UpArrow:
+                    Console.Clear();
                     Menu.Before();
                     break;
                 case ConsoleKey.DownArrow:
+                    Console.Clear();
                     Menu.After();
                     break;
                 case ConsoleKey.Enter:
+                    Console.Clear();
                     Menu.Confirm();
                     break;
             }

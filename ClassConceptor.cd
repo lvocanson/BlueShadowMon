@@ -1,72 +1,137 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram MajorVersion="1" MinorVersion="1">
-  <Class Name="BlueShadowMon.Game">
-    <Position X="3.5" Y="0.5" Width="2.75" />
+<ClassDiagram MajorVersion="1" MinorVersion="1" GroupingSetting="Access" MembersFormat="FullSignature">
+  <Class Name="BlueShadowMon.Ability" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAgAAAAAAAAAAAAAAAQAAIAAAAAiAEFAAAAAA=</HashCode>
-      <FileName>Game.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Combat\Effects\Ability.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Map">
-    <Position X="6.5" Y="2.5" Width="2.75" />
+  <Class Name="BlueShadowMon.Consumable" Collapsed="true">
+    <Position X="2.75" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AIAgABAABAAAAgggAAAAAEAAAAwAAAggAEgAAgBAAAA=</HashCode>
-      <FileName>Scenes\Map.cs</FileName>
+      <HashCode>AAAAAgAAAAAAAAAAAAIAAAAAAAAAAAAAAgAAAAAAAAA=</HashCode>
+      <FileName>Combat\Effects\Consumable.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Window">
-    <Position X="0.5" Y="0.5" Width="2.75" />
-    <NestedTypes>
-      <Struct Name="BlueShadowMon.Window.ColoredChar" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Window.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Struct>
-      <Struct Name="BlueShadowMon.Window.ColoredString" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>Window.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Struct>
-    </NestedTypes>
+  <Class Name="BlueShadowMon.StatusEffect" Collapsed="true">
+    <Position X="5" Y="4.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>ABgAAEAACAAEAAAAAAAAAECAGAAABAIACABAAAEgAAA=</HashCode>
-      <FileName>Window.cs</FileName>
+      <HashCode>AAQAAAAAAABAAACAAAAAAAAAAAAAAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Combat\Effects\StatusEffect.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Pet">
-    <Position X="3.5" Y="5.75" Width="2.75" />
+  <Class Name="BlueShadowMon.EffectApplier" Collapsed="true">
+    <Position X="2.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AQAAAAgAAAAAAAAACAAAAIQAIAAAAAAAAQAAQEAAAAA=</HashCode>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAQAAAAAAAAA=</HashCode>
+      <FileName>Combat\EffectApplier.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Pet" Collapsed="true">
+    <Position X="11" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QQBAAAAIAAAEAAIAmAAACYQDIEAAAQABAYAAkAAAQME=</HashCode>
       <FileName>Combat\Pet.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Ability">
-    <Position X="0.5" Y="5.75" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAEAAAAAwAAAAAAAAA=</HashCode>
-      <FileName>Combat\Ability.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlueShadowMon.Scene">
-    <Position X="6.5" Y="0.5" Width="2.75" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
-      <FileName>Scenes\Scene.cs</FileName>
-    </TypeIdentifier>
-  </Class>
-  <Class Name="BlueShadowMon.CombatScene">
-    <Position X="9.5" Y="2.5" Width="2.75" />
+  <Class Name="BlueShadowMon.CombatScene" Collapsed="true">
+    <Position X="5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAAAAABAAAA=</HashCode>
       <FileName>Scenes\CombatScene.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.MenuScene">
-    <Position X="12.5" Y="2.5" Width="2.75" />
+  <Class Name="BlueShadowMon.MapScene" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAIAAAgAAAAAAAAAAAAAIAAAAAAAAAABAAAA=</HashCode>
+      <HashCode>AIAgABAABAAAAgggAAAAAEAAAAwAAAggAEgCAgBAAAA=</HashCode>
+      <FileName>Scenes\MapScene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.MenuScene" Collapsed="true">
+    <Position X="2.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAIAAAAAAACAABAAAA=</HashCode>
       <FileName>Scenes\MenuScene.cs</FileName>
     </TypeIdentifier>
   </Class>
+  <Class Name="BlueShadowMon.Scene" Collapsed="true">
+    <Position X="2.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Scenes\Scene.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.AlterationID" Collapsed="true">
+    <Position X="9.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Alterable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Alterable&lt;T&gt;" Collapsed="true">
+    <Position X="7.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAACAAAAEAAAAIAAAAAAAAAAAgAIAAAAA=</HashCode>
+      <FileName>Alterable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Data" Collapsed="true">
+    <Position X="11" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEQAAAABAQEAAAAAAAAAABAAAiQAAAJEAAAAAAAAA=</HashCode>
+      <FileName>Data.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Game" Collapsed="true">
+    <Position X="7.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgIAAAAAAAAAAEAABQABIAQAAAiAEBAAAQAA=</HashCode>
+      <FileName>Game.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Menu" Collapsed="true">
+    <Position X="9.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAEAACAAQAABAABAAAAAAgAcAAAQAQAA=</HashCode>
+      <FileName>Menu.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BlueShadowMon.Window" Collapsed="true">
+    <Position X="7.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABgAAEAACAAEAAAAAAAAAECAGAAABAIACABAAAEgAQA=</HashCode>
+      <FileName>Window.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Enum Name="BlueShadowMon.EffectType" Collapsed="true">
+    <Position X="9.25" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEACAAAEAAAAgACAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Combat\EffectApplier.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BlueShadowMon.EffectTarget" Collapsed="true">
+    <Position X="7.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAEAABAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Combat\EffectApplier.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BlueShadowMon.PetType" Collapsed="true">
+    <Position X="7.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAAAACAAIAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Combat\Pet.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="BlueShadowMon.PetStat" Collapsed="true">
+    <Position X="11" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACCAAAAAAAAAAAACAAAAEAAAAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>Combat\Pet.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>
