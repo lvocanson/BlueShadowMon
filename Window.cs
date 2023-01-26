@@ -8,7 +8,7 @@ namespace BlueShadowMon
     /// Console Manager.
     /// </summary>
     [SupportedOSPlatform("windows")]
-    internal static class Window
+    public static class Window
     {
         public static ConsoleColor DefaultFgColor { get; set; } = ConsoleColor.White;
         public static ConsoleColor DefaultBgColor { get; set; } = ConsoleColor.Black;
@@ -83,8 +83,8 @@ namespace BlueShadowMon
             Console.TreatControlCAsInput = true;
             Console.CursorVisible = false;
 
-            // Set console size to 75% of the largest possible size
-            Resize(0.75);
+            // Set console size to 70% of the largest possible size
+            Resize(0.7);
 
             // Set console colors
             Console.ForegroundColor = DefaultFgColor;
@@ -273,8 +273,18 @@ namespace BlueShadowMon
             }
         }
 
+        /// <summary>
+        /// Close the console.
+        /// </summary>
+        public static void Quit()
+        {
+            Console.BackgroundColor = Window.DefaultBgColor;
+            Console.Clear();
+            Environment.Exit(0);
+        }
+
         // Imports
-        
+
         [DllImport("user32.dll")]
         private static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
 
