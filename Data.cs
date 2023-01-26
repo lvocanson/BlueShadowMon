@@ -31,6 +31,39 @@ namespace BlueShadowMon
                 target[PetStat.Health] += 150;
             }));
 
+        public static Consumable BattlePotion { get; } =
+            (new Consumable("Battle Potion", EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (Pet target) =>
+            {
+                target[PetStat.PhysicalDamage] += 35;
+                target[PetStat.MagicalDamage] += 35;
+            }));
+
+        public static Consumable DefensePotion { get; } =
+            (new Consumable("Defense Potion", EffectType.Buff, EffectTarget.Ally, (Pet target) =>
+            {
+                target[PetStat.PhysicalArmor] += 35;
+                target[PetStat.MagicalArmor] += 35;
+            }));
+
+        public static Consumable EyeOfTheHerald { get; } =
+            (new Consumable("Eye of the Herald", EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (Pet target) =>
+            {
+                target[PetStat.PhysicalDamage] += target[PetStat.PhysicalDamage] * 2;
+                target[PetStat.MagicalDamage] += target[PetStat.MagicalDamage] * 2;
+            }));
+        public static Consumable RedBull { get; } =
+            (new Consumable("RedBull", EffectType.Buff, EffectTarget.Ally, (Pet target) =>
+            {
+                //One more action for the next 2/3 rounds
+            }));
+
+        public static Consumable PetCage { get; } =
+            (new Consumable("Pet Cage", EffectType.Status, EffectTarget.Enemy, (Pet[] team) =>
+            {
+                //Capture the enemy pet
+            }));
+
+
         public static Consumable MdManaPotion { get; } = new Consumable("Medium Health Potion", EffectType.Heal, EffectTarget.Ally, (Pet target) =>
         {
             target[PetStat.Health] += 50;
@@ -56,13 +89,13 @@ namespace BlueShadowMon
             { PetStat.MagicalArmor, (0, 1, 3, 5) }
         };
 
-        
+
         // Menus
-        
+
         public static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>()
         {
             {
-                "Main Menu", new Menu(new Window.ColoredString(Game.GameTitle, ConsoleColor.Blue, Window.DefaultBgColor), 
+                "Main Menu", new Menu(new Window.ColoredString(Game.GameTitle, ConsoleColor.Blue, Window.DefaultBgColor),
                 new (Window.ColoredString, Action)[] {
                 (new Window.ColoredString("Play"), () => Game.SwitchToMapScene()),
                 (new Window.ColoredString("Combat Test"), () => { Console.Beep(); }), // REMOVE THIS LATER
