@@ -11,14 +11,14 @@ namespace BlueShadowMon
 
         public Window.ColoredString Title { get; private set; }
         protected (Window.ColoredString str, Action callback)[] _items;
-        protected int _selectedItemNum;
+        protected int _selectedItemNum = 0;
         protected Window.ColoredString _selectedItemStr;
 
         public Menu(Window.ColoredString title, (Window.ColoredString, Action)[] items, int selectedItemNum = 0)
         {
             Title = title;
             _items = items;
-            _selectedItemNum = selectedItemNum;
+            SelectItem(selectedItemNum);
             _selectedItemStr = new Window.ColoredString(BeginSelector + _items[_selectedItemNum].str.String + EndSelector);
         }
 
@@ -28,22 +28,20 @@ namespace BlueShadowMon
             {
                 if (num == _selectedItemNum)
                     return _selectedItemStr;
+                if (num < 0 || num >= _items.Length)
+                    throw new IndexOutOfRangeException("Menu index out of range");
                 return _items[num].str; 
             }
         }
 
-        public int Length
-        {
-            get { return _items.Length; }
-        }
+        public int Length => _items.Length;
 
         public void SelectItem(int num)
         {
-            Console.Clear();
-            if (num < 0)
-                num = _items.Length - 1;
-            else if (num >= _items.Length)
-                num = 0;
+            while (num < 0)
+                num += _items.Length;
+            while (num >= _items.Length)
+                num -= _items.Length;
             _selectedItemNum = num;
             _selectedItemStr.String = BeginSelector + _items[num].str.String + EndSelector;
         }

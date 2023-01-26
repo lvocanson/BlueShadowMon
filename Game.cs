@@ -3,7 +3,7 @@
 namespace BlueShadowMon
 {
     [SupportedOSPlatform("windows")]
-    internal static class Game
+    public static class Game
     {
         // Window settings
         public const string GameTitle = "Blue Shadow Mon";
