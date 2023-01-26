@@ -3,7 +3,7 @@
     /// <summary>
     /// An ability that can be used by a pet.
     /// </summary>
-    public class Ability : Effect
+    public class Ability : EffectApplier
     {
         protected Action<Pet, Pet> _effect;
         public Ability(string name, EffectType type, EffectTarget target, Action<Pet, Pet> effect) : base(name, type, target)

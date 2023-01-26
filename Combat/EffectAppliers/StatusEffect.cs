@@ -4,7 +4,7 @@
     /// A status effect that can be applied to a pet.
     /// Updated at the start of the pet's turns.
     /// </summary>
-    public class StatusEffect : Effect
+    public class StatusEffect : EffectApplier
     {
         protected Action<Pet> _effectActive;
         protected Action<Pet> _effectEnd;

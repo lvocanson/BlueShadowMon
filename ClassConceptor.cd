@@ -21,11 +21,11 @@
       <FileName>Combat\Effects\StatusEffect.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="BlueShadowMon.Effect" Collapsed="true">
+  <Class Name="BlueShadowMon.EffectApplier" Collapsed="true">
     <Position X="2.75" Y="3.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>EAAAAAAAAAAAAAAAAAAAACQAAAAAAAAAAQAAAAAAAAA=</HashCode>
-      <FileName>Combat\Effect.cs</FileName>
+      <FileName>Combat\EffectApplier.cs</FileName>
     </TypeIdentifier>
   </Class>
   <Class Name="BlueShadowMon.Pet" Collapsed="true">
@@ -109,14 +109,14 @@
     <Position X="9.25" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AEACAAAEAAAAgACAAAAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>Combat\Effect.cs</FileName>
+      <FileName>Combat\EffectApplier.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BlueShadowMon.EffectTarget" Collapsed="true">
     <Position X="7.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAgAAAAAAAAAAEAABAAAAQAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>Combat\Effect.cs</FileName>
+      <FileName>Combat\EffectApplier.cs</FileName>
     </TypeIdentifier>
   </Enum>
   <Enum Name="BlueShadowMon.PetType" Collapsed="true">

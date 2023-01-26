@@ -18,7 +18,7 @@
         Multiple = 8,
     }
 
-    public abstract class Effect
+    public abstract class EffectApplier
     {
         public string Name { get; }
         public EffectType Type { get; }
@@ -28,7 +28,7 @@
             return (Target & wanted) == wanted;
         }
 
-        public Effect(string name, EffectType type, EffectTarget target)
+        public EffectApplier(string name, EffectType type, EffectTarget target)
         {
             Name = name;
             Type = type;

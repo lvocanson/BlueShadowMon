@@ -3,7 +3,7 @@
     /// <summary>
     /// A consumable that can be used by a player.
     /// </summary>
-    public class Consumable : Effect
+    public class Consumable : EffectApplier
     {
         protected Action<Pet> _effect;
         protected Action<Pet[]> _team;
