@@ -1,4 +1,6 @@
-﻿namespace BlueShadowMon
+﻿using System.Runtime.Versioning;
+
+namespace BlueShadowMon
 {
     public enum PetType
     {
@@ -16,6 +18,7 @@
         MagicalArmor = 4,
     }
 
+    [SupportedOSPlatform("windows")]
     public class Pet
     {
 
@@ -23,25 +26,20 @@
         public PetType Type { get; }
 
         // Stats
-        private Dictionary<PetStat, int> _baseStats;
-        private Dictionary<PetStat, float> _currentStats = new Dictionary<PetStat, float>();
+        private Dictionary<PetStat, Alterable<float>> _stats;
         private Dictionary<PetStat, (int t0, int t1, int t2, int t3)> _statsIncrements;
         public float this[PetStat stat]
         {
-            get => _currentStats[stat];
+            get => _stats[stat].AlteratedValue;
             set
             {
                 if (value < 0)
                 {
-                    _currentStats[stat] = 0;
-                }
-                else if (value > _baseStats[stat])
-                {
-                    _currentStats[stat] = _baseStats[stat];
+                    _stats[stat].Value = 0;
                 }
                 else
                 {
-                    _currentStats[stat] = value;
+                    _stats[stat].Value = value;
                 }
             }
         }
@@ -60,7 +58,7 @@
         {
             foreach (PetStat stat in stats)
             {
-                _currentStats[stat] = _baseStats[stat];
+                _stats[stat].ResetAlterations();
             }
         }
 
@@ -137,13 +135,13 @@
             foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
             {
                 if (_level < TierLevels.t1)
-                    _baseStats[stat] += _statsIncrements[stat].t0;
+                    _stats[stat].Value += _statsIncrements[stat].t0;
                 else if (_level < TierLevels.t2)
-                    _baseStats[stat] += _statsIncrements[stat].t1;
+                    _stats[stat].Value += _statsIncrements[stat].t1;
                 else if (_level < TierLevels.t3)
-                    _baseStats[stat] += _statsIncrements[stat].t2;
+                    _stats[stat].Value += _statsIncrements[stat].t2;
                 else
-                    _baseStats[stat] += _statsIncrements[stat].t3;
+                    _stats[stat].Value += _statsIncrements[stat].t3;
             }
             _level++;
             ResetStats();
@@ -241,8 +239,11 @@
         {
             Name = name;
             Type = type;
-            _baseStats = stats;
-            ResetStats(); //_currentStats
+            _stats = new Dictionary<PetStat, Alterable<float>>();
+            foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
+            {
+                _stats.Add(stat, new Alterable<float>(stats[stat]));
+            }
             _statsIncrements = statsIncrements;
         }
     }
