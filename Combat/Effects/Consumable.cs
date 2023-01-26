@@ -6,13 +6,23 @@
     public class Consumable : Effect
     {
         protected Action<Pet> _effect;
-        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet> effect) : base(name, type, target)
+        protected Action<Pet[]> _team;
+        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet> effect ) : base(name, type, target)
         {
             if (HasTargetable(EffectTarget.Self))
             {
                 throw new ArgumentException("A consumable can't have 'Self' as a target!");
             }
             _effect = effect;
+        }
+
+        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet[]> team) : base(name, type, target)
+        {
+            if (HasTargetable(EffectTarget.Self))
+            {
+                throw new ArgumentException("A consumable can't have 'Self' as a target!");
+            }
+            _team = team;
         }
 
         /// <summary>
