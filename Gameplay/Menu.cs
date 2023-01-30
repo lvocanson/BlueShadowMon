@@ -15,7 +15,6 @@
             Title = title;
             _items = items;
             SelectItem(selectedItemNum);
-            _selectedItemStr = new Window.ColoredString(BeginSelector + _items[_selectedItemNum].str.String + EndSelector);
         }
 
         public Window.ColoredString this[int num]
@@ -40,6 +39,8 @@
                 num -= _items.Length;
             _selectedItemNum = num;
             _selectedItemStr.String = BeginSelector + _items[num].str.String + EndSelector;
+            _selectedItemStr.ForegroundColor = _items[num].str.ForegroundColor;
+            _selectedItemStr.BackgroundColor = _items[num].str.BackgroundColor;
         }
 
         public void Before()

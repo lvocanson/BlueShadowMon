@@ -6,7 +6,7 @@
     public class Ability : EffectApplier
     {
         protected Action<Pet, Pet> _effect;
-        public Ability(string name, EffectType type, EffectTarget target, Action<Pet, Pet> effect) : base(name, type, target)
+        public Ability(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet, Pet> effect) : base(name, type, target)
         {
             _effect = effect;
         }

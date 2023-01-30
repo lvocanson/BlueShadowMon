@@ -6,7 +6,7 @@
     public class Consumable : EffectApplier
     {
         protected Action<Pet> _effect;
-        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet> effect) : base(name, type, target)
+        public Consumable(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet> effect) : base(name, type, target)
         {
             if (HasTargetable(EffectTarget.Self))
             {

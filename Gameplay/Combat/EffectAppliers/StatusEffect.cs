@@ -11,7 +11,7 @@
         protected Pet _holder;
         public int RemainingRounds { get; set; }
 
-        public StatusEffect(string name, EffectType type, Pet holder, Action effectActive, Action effectEnd, int rounds) : base(name, type, EffectTarget.Self)
+        public StatusEffect(Window.ColoredString name, EffectType type, Pet holder, Action effectActive, Action effectEnd, int rounds) : base(name, type, EffectTarget.Self)
         {
             _holder = holder;
             _effectActive = effectActive;

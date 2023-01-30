@@ -20,7 +20,7 @@
 
     public abstract class EffectApplier
     {
-        public string Name { get; }
+        public Window.ColoredString Name { get; }
         public EffectType Type { get; }
         public EffectTarget Target { get; }
         public bool HasTargetable(EffectTarget wanted)
@@ -28,7 +28,7 @@
             return (Target & wanted) == wanted;
         }
 
-        public EffectApplier(string name, EffectType type, EffectTarget target)
+        public EffectApplier(Window.ColoredString name, EffectType type, EffectTarget target)
         {
             Name = name;
             Type = type;

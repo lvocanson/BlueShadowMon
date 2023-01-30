@@ -6,26 +6,29 @@ namespace BlueShadowMon.Gameplay.Combat
     {
         // Abilities
 
-        public static Ability NullAbility { get; } = new Ability("Null BAility", EffectType.Heal, EffectTarget.Self, (target, user) => { });
+        public static Ability NullAbility { get; } = new Ability(new Window.ColoredString("Null Ability"), EffectType.Heal, EffectTarget.Self, (target, user) => 
+        {
+            ;
+        });
 
 
         // Physicial damage Abilities with or without buff or debuff or healing
 
-        public static Ability Bite { get; } = new Ability("Bite", EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
+        public static Ability Bite { get; } = new Ability(new Window.ColoredString("Bite"), EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
                 return health - 10;
             });
         });
 
-        public static Ability NutShot { get; } = new Ability("Nut Shot", EffectType.PhysicalDamage | EffectType.Heal, EffectTarget.Enemy, (target, user) =>
+        public static Ability NutShot { get; } = new Ability(new Window.ColoredString("Nut Shot"), EffectType.PhysicalDamage | EffectType.Heal, EffectTarget.Enemy, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
                 return health - 30;
             });
-            target.AddStatusEffect(new StatusEffect("Nut Shot", EffectType.PhysicalDamage | EffectType.Heal, target, () =>
+            target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Nut Shot"), EffectType.PhysicalDamage | EffectType.Heal, target, () =>
             {
             }, () =>
             {
@@ -40,7 +43,7 @@ namespace BlueShadowMon.Gameplay.Combat
 
         // Magical damage Abilities with or without buff or debuff or healing
 
-        public static Ability ShyningStar { get; } = new Ability("Shyning Star", EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
+        public static Ability ShyningStar { get; } = new Ability(new Window.ColoredString("Shyning Star"), EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -51,7 +54,7 @@ namespace BlueShadowMon.Gameplay.Combat
 
         // Healing abilities
 
-        public static Ability BiscuitRain { get; } = new Ability("Biscuit Rain", EffectType.Heal, EffectTarget.Self, (target, user) =>
+        public static Ability BiscuitRain { get; } = new Ability(new Window.ColoredString("Biscuit Rain"), EffectType.Heal, EffectTarget.Self, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -62,13 +65,13 @@ namespace BlueShadowMon.Gameplay.Combat
 
         // Buffs Abilities
 
-        public static Ability AttackBuff { get; } = new Ability("Attack Buff", EffectType.Buff, EffectTarget.Self, (target, user) =>
+        public static Ability AttackBuff { get; } = new Ability(new Window.ColoredString("Attack Buff"), EffectType.Buff, EffectTarget.Self, (target, user) =>
         {
             AlterationID aid = target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
             {
                 return pDamage + 10;
             });
-            target.AddStatusEffect(new StatusEffect("Attack Buff", EffectType.Buff, target, () => { }, () =>
+            target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Attack Buff"), EffectType.Buff, target, () => { }, () =>
             {
                 target.RemoveStatAlteration(PetStat.PhysicalDamage, aid);
             }, 3));
@@ -77,13 +80,13 @@ namespace BlueShadowMon.Gameplay.Combat
 
         // Debuffs Abilities
 
-        public static Ability AttackDebuff { get; } = new Ability("Attack Debuff", EffectType.Buff, EffectTarget.Self, (target, user) =>
+        public static Ability AttackDebuff { get; } = new Ability(new Window.ColoredString("Attack Debuff"), EffectType.Buff, EffectTarget.Self, (target, user) =>
         {
             AlterationID aid = target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
             {
                 return pDamage - 10;
             });
-            target.AddStatusEffect(new StatusEffect("Attack Debuff", EffectType.Buff, target, () => { }, () =>
+            target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Attack Debuff"), EffectType.Buff, target, () => { }, () =>
             {
                 target.RemoveStatAlteration(PetStat.PhysicalDamage, aid);
             }, 3));
@@ -93,23 +96,23 @@ namespace BlueShadowMon.Gameplay.Combat
         /// Consumables | Reminder: Consumables's target can't be "Self"
 
         // Healing Consumables
-
+         
         public static (Consumable I, Consumable II, Consumable III) HealthPotion { get; } =
-            (new Consumable("Health Potion I", EffectType.Heal, EffectTarget.Ally, (target) =>
+            (new Consumable(new Window.ColoredString("Health Potion I"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
                     return health + 20;
                 });
             }),
-            new Consumable("Health Potion II", EffectType.Heal, EffectTarget.Ally, (target) =>
+            new Consumable(new Window.ColoredString("Health Potion II"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
                     return health + 50;
                 });
             }),
-            new Consumable("Health Potion III", EffectType.Heal, EffectTarget.Ally, (target) =>
+            new Consumable(new Window.ColoredString("Health Potion III"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
@@ -120,7 +123,7 @@ namespace BlueShadowMon.Gameplay.Combat
         // Buffs Consumables
 
         public static Consumable BattlePotion { get; } =
-            new Consumable("Battle Potion", EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (target) =>
+            new Consumable(new Window.ColoredString("Battle Potion"), EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
                 {
@@ -133,7 +136,7 @@ namespace BlueShadowMon.Gameplay.Combat
             });
 
         public static Consumable DefensePotion { get; } =
-        new Consumable("Defense Potion", EffectType.Buff, EffectTarget.Ally, (target) =>
+        new Consumable(new Window.ColoredString("Defense Potion"), EffectType.Buff, EffectTarget.Ally, (target) =>
         {
             target.AlterStat(PetStat.PhysicalArmor, AlterationType.Additive, (pDefense) =>
             {
