@@ -7,7 +7,8 @@
 
         public Window.ColoredString Title { get; private set; }
         protected (Window.ColoredString str, Action callback)[] _items;
-        protected int _selectedItemNum = 0;
+        
+        public int SelectedItem { get; private set; } = 0;
         protected Window.ColoredString _selectedItemStr;
 
         public Menu(Window.ColoredString title, (Window.ColoredString, Action)[] items, int selectedItemNum = 0)
@@ -15,14 +16,20 @@
             Title = title;
             _items = items;
             SelectItem(selectedItemNum);
-            _selectedItemStr = new Window.ColoredString(BeginSelector + _items[_selectedItemNum].str.String + EndSelector);
+        }
+
+        public void Init(Window.ColoredString title, (Window.ColoredString, Action)[] items, int? selectedItemNum = null)
+        {
+            Title = title;
+            _items = items;
+            SelectItem(selectedItemNum ?? 0);
         }
 
         public Window.ColoredString this[int num]
         {
             get
             {
-                if (num == _selectedItemNum)
+                if (num == SelectedItem)
                     return _selectedItemStr;
                 if (num < 0 || num >= _items.Length)
                     throw new IndexOutOfRangeException("Menu index out of range");
@@ -38,23 +45,27 @@
                 num += _items.Length;
             while (num >= _items.Length)
                 num -= _items.Length;
-            _selectedItemNum = num;
+            SelectedItem = num;
             _selectedItemStr.String = BeginSelector + _items[num].str.String + EndSelector;
+            _selectedItemStr.ForegroundColor = _items[num].str.ForegroundColor;
+            _selectedItemStr.BackgroundColor = _items[num].str.BackgroundColor;
         }
 
         public void Before()
         {
-            SelectItem(_selectedItemNum - 1);
+            SelectItem(SelectedItem - 1);
         }
 
         public void After()
         {
-            SelectItem(_selectedItemNum + 1);
+            SelectItem(SelectedItem + 1);
         }
 
         public void Confirm()
         {
-            _items[_selectedItemNum].callback();
+            _items[SelectedItem].callback();
         }
+
+        
     }
 }

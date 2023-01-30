@@ -1,6 +1,4 @@
-﻿using BlueShadowMon.Gameplay.Combat.EffectAppliers;
-
-namespace BlueShadowMon.Gameplay.Combat
+﻿namespace BlueShadowMon
 {
     public enum PetType
     {
@@ -160,9 +158,9 @@ namespace BlueShadowMon.Gameplay.Combat
         }
 
         // Abilities
-        private Ability[] _abilities = new Ability[4] { Data.Bite, Data.NullAbility, Data.NullAbility, Data.NullAbility };
-        public Ability this[int index] { get { return _abilities[index]; } }
-        public int AbilityNumber { get { return _abilities.Length; } }
+        public Ability[] Abilities { get; } = new[] { Data.Bite };
+        public Ability this[int index] { get { return Abilities[index]; } }
+        public int AbilityNumber { get { return Abilities.Length; } }
 
         /// <summary>
         /// Learn an ability.
@@ -171,11 +169,11 @@ namespace BlueShadowMon.Gameplay.Combat
         /// <param name="index">Slot</param>
         public void LearnAbility(Ability ability, int index)
         {
-            if (_abilities.Contains(ability))
+            if (Abilities.Contains(ability))
                 throw new Exception("Pet already knew this ability!");
             if (index > Tier)
                 throw new Exception("Pet can't have " + (index + 1).ToString() + " abilities while beeing tier " + Tier.ToString() + "!");
-            _abilities[index] = ability;
+            Abilities[index] = ability;
         }
 
         /// <summary>
@@ -183,14 +181,14 @@ namespace BlueShadowMon.Gameplay.Combat
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="target">The Pet</param>
-        public void UseAbility(int index, Pet target) => _abilities[index].UseOn(target, this);
+        public void UseAbility(int index, Pet target) => Abilities[index].UseOn(target, this);
 
         /// <summary>
         /// Use an ability on other Pets.
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="targets">Pets</param>
-        public void UseAbility(int index, Pet[] targets) => _abilities[index].UseOn(targets, this);
+        public void UseAbility(int index, Pet[] targets) => Abilities[index].UseOn(targets, this);
 
         // Status effects
         private List<StatusEffect> _statusEffects = new List<StatusEffect>();

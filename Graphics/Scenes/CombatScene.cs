@@ -1,11 +1,8 @@
-﻿using BlueShadowMon.Gameplay.Combat;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
     internal class CombatScene : Scene
     {
         public Combat Combat { get; private set; }
-
 
         public CombatScene(Combat combat)
         {
@@ -20,6 +17,7 @@ namespace BlueShadowMon
         public override void Draw()
         {
             int y = Console.WindowHeight - 3;
+            Window.Write(Combat.CurrentMenu.Title, Window.MiddleX, y - 2, true); 
             for (int i = 0; i < Combat.CurrentMenu.Length; i++)
             {
                 Window.Write(Combat.CurrentMenu[i], (int)(Console.WindowWidth * (i + 0.5) / Combat.CurrentMenu.Length), y, true);
