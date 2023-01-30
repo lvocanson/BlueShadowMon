@@ -6,12 +6,14 @@
     /// </summary>
     public class StatusEffect : EffectApplier
     {
-        protected Action<Pet> _effectActive;
-        protected Action<Pet> _effectEnd;
+        protected Action _effectActive;
+        protected Action _effectEnd;
+        protected Pet _holder;
         public int RemainingRounds { get; set; }
 
-        public StatusEffect(string name, EffectType type, Action<Pet> effectActive, Action<Pet> effectEnd, int rounds) : base(name, type, EffectTarget.Self)
+        public StatusEffect(string name, EffectType type, Pet holder, Action effectActive, Action effectEnd, int rounds) : base(name, type, EffectTarget.Self)
         {
+            _holder = holder;
             _effectActive = effectActive;
             _effectEnd = effectEnd;
             if (rounds <= 0)
@@ -22,18 +24,17 @@
         /// <summary>
         /// Update the status effect on the target.
         /// </summary>
-        /// <param name="target"></param>
-        public void Update(Pet target)
+        public void Update()
         {
             RemainingRounds--;
             if (RemainingRounds <= 0)
             {
-                _effectEnd(target);
-                target.RemoveStatusEffect(this);
+                _effectEnd();
+                _holder.RemoveStatusEffect(this);
             }
             else
             {
-                _effectActive(target);
+                _effectActive();
             }
         }
     }
