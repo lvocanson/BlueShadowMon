@@ -1,7 +1,11 @@
 ﻿namespace UnitTests
 {
-    [SupportedOSPlatform("windows")]
     public class EffectTests
     {
+        [Test]
+        public void TestEffectApplication()
+        {
+            
+        }
     }
 }
