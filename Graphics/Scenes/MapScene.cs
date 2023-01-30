@@ -21,7 +21,7 @@
         public static ConsoleColor PlayerColor { get; set; } = ConsoleColor.White;
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
-
+        public float ChanceTriggerCombat = 0.05F;
 
         /// <summary>
         /// 
@@ -132,7 +132,11 @@
             if (newX < 0 || Width <= newX || newY < 0 || Height <= newY)
                 return; // Can't move out of bounds
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
+            {
                 _playerPos = (newX, newY);
+                if (_map[_playerPos.y, _playerPos.x] == '*')
+                    WalkInBush();
+            }
         }
 
         /// <summary>
@@ -205,6 +209,14 @@
             // Draw all srings built
             Console.SetCursorPosition(0, 0);
             toDraw.ForEach(s => Window.Write(s));
+        }
+
+        public void WalkInBush()
+        {
+            float rand = (float)new Random().NextDouble();
+            if (rand <= ChanceTriggerCombat)
+                Game.SwitchToMenuScene("Main Menu");
+            
         }
     }
 }
