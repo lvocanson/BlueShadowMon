@@ -4,7 +4,7 @@
     {
         // Abilities
 
-        public static Ability NullAbility { get; } = new Ability(new Window.ColoredString("Null Ability"), EffectType.Heal, EffectTarget.Self, (target, user) => 
+        public static Ability NullAbility { get; } = new Ability(new Window.ColoredString("Null Ability"), EffectType.Heal, EffectTarget.Self, (target, user) =>
         {
             ;
         });
@@ -293,22 +293,44 @@
             });
 
         public static Consumable DefensePotion { get; } =
-        new Consumable(new Window.ColoredString("Defense Potion"), EffectType.Buff, EffectTarget.Ally, (target) =>
-        {
-            target.AlterStat(PetStat.PhysicalArmor, AlterationType.Additive, (pDefense) =>
+            new Consumable(new Window.ColoredString("Defense Potion"), EffectType.Buff, EffectTarget.Ally, (target) =>
             {
-                return pDefense + 10;
+                target.AlterStat(PetStat.PhysicalArmor, AlterationType.Additive, (pDefense) =>
+                {
+                    return pDefense + 10;
+                });
+                target.AlterStat(PetStat.MagicalArmor, AlterationType.Additive, (mDefense) =>
+                {
+                    return mDefense + 10;
+                });
             });
-            target.AlterStat(PetStat.MagicalArmor, AlterationType.Additive, (mDefense) =>
+
+        // Revive Consumables
+        public static Consumable RevivePotion { get; } =
+            new Consumable(new Window.ColoredString("Revive Potion"), EffectType.Buff, EffectTarget.Ally, (target) =>
             {
-                return mDefense + 10;
+                if (target.IsAlive == false)
+                {
+                    target.AlterStat(PetStat.Health, 0, (health) =>
+                    {
+                        return health + 100;
+                    });
+                }
             });
-        });
+
+        // Capture Consumables
+        public static Consumable PetCage { get; } =
+            new Consumable(new Window.ColoredString("Pet Cage"), EffectType.Buff, EffectTarget.Ally, (target) =>
+            {
+                // TODO
+            });
+
+
 
 
         // Pets stats
 
-        public static Dictionary<PetStat, int> StarterStats { get; } = new ()
+        public static Dictionary<PetStat, int> StarterStats { get; } = new()
         {
             { PetStat.Health, 100 },
             { PetStat.PhysicalDamage, 10 },
@@ -316,7 +338,7 @@
             { PetStat.PhysicalArmor, 5 },
             { PetStat.MagicalArmor, 5 }
         };
-        public static Dictionary<PetStat, (int, int, int, int)> StarterIncrements { get; } = new ()
+        public static Dictionary<PetStat, (int, int, int, int)> StarterIncrements { get; } = new()
         {
             { PetStat.Health, (10, 15, 20, 30) },
             { PetStat.PhysicalDamage, (7, 10, 15, 20) },
