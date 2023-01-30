@@ -1,4 +1,6 @@
-﻿namespace BlueShadowMon
+﻿using BlueShadowMon.Gameplay.Combat.EffectAppliers;
+
+namespace BlueShadowMon.Gameplay.Combat
 {
     public enum PetType
     {
@@ -15,7 +17,7 @@
         PhysicalArmor = 3,
         MagicalArmor = 4,
     }
-    
+
     public class Pet
     {
 
@@ -29,12 +31,12 @@
         {
             get => _stats[stat].AlteratedValue;
         }
-        
+
         public AlterationID AlterStat(PetStat stat, AlterationType type, Func<float, float> alteration)
         {
             return _stats[stat].Alterate(type, alteration);
         }
-        
+
         public void RemoveStatAlteration(PetStat stat, AlterationID id)
         {
             _stats[stat].RemoveAlteration(id);

@@ -1,4 +1,6 @@
-﻿namespace BlueShadowMon
+﻿using BlueShadowMon.Gameplay.Combat;
+
+namespace BlueShadowMon
 {
     internal class CombatScene : Scene
     {

@@ -1,14 +1,17 @@
-﻿namespace BlueShadowMon
+﻿using BlueShadowMon.Gameplay.Combat.EffectAppliers;
+
+namespace BlueShadowMon.Gameplay.Combat
 {
     public static class Data
     {
         // Abilities
 
-        public static Ability NullAbility { get; } = new Ability("Null BAility", EffectType.Heal, EffectTarget.Self, (Pet target, Pet user) => { });
+        public static Ability NullAbility { get; } = new Ability("Null BAility", EffectType.Heal, EffectTarget.Self, (target, user) => { });
 
 
         // Physicial damage Abilities with or without buff or debuff or healing
-        public static Ability Bite { get; } = new Ability("Bite", EffectType.PhysicalDamage, EffectTarget.Enemy, (Pet target, Pet user) =>
+
+        public static Ability Bite { get; } = new Ability("Bite", EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -16,7 +19,7 @@
             });
         });
 
-        public static Ability NutShot { get; } = new Ability("Nut Shot", EffectType.PhysicalDamage | EffectType.Heal, EffectTarget.Enemy, (Pet target, Pet user) =>
+        public static Ability NutShot { get; } = new Ability("Nut Shot", EffectType.PhysicalDamage | EffectType.Heal, EffectTarget.Enemy, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -32,13 +35,12 @@
                 });
                 // TODO : Apply stun effect
             }, 1));
-            
+
         });
 
-        
-
         // Magical damage Abilities with or without buff or debuff or healing
-        public static Ability ShyningStar { get; } = new Ability("Shyning Star", EffectType.MagicalDamage, EffectTarget.Enemy, (Pet target, Pet user) =>
+
+        public static Ability ShyningStar { get; } = new Ability("Shyning Star", EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -48,7 +50,8 @@
 
 
         // Healing abilities
-        public static Ability BiscuitRain { get; } = new Ability("Biscuit Rain", EffectType.Heal, EffectTarget.Self, (Pet target, Pet user) =>
+
+        public static Ability BiscuitRain { get; } = new Ability("Biscuit Rain", EffectType.Heal, EffectTarget.Self, (target, user) =>
         {
             target.AlterStat(PetStat.Health, 0, (health) =>
             {
@@ -58,7 +61,8 @@
 
 
         // Buffs Abilities
-        public static Ability AttackBuff { get; } = new Ability("Attack Buff", EffectType.Buff, EffectTarget.Self, (Pet target, Pet user) =>
+
+        public static Ability AttackBuff { get; } = new Ability("Attack Buff", EffectType.Buff, EffectTarget.Self, (target, user) =>
         {
             AlterationID aid = target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
             {
@@ -72,7 +76,8 @@
 
 
         // Debuffs Abilities
-        public static Ability AttackDebuff { get; } = new Ability("Attack Debuff", EffectType.Buff, EffectTarget.Self, (Pet target, Pet user) =>
+
+        public static Ability AttackDebuff { get; } = new Ability("Attack Debuff", EffectType.Buff, EffectTarget.Self, (target, user) =>
         {
             AlterationID aid = target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
             {
@@ -84,25 +89,27 @@
             }, 3));
         });
 
-        // Consumables | Reminder: Consumables's target can't be "Self"
+
+        /// Consumables | Reminder: Consumables's target can't be "Self"
 
         // Healing Consumables
+
         public static (Consumable I, Consumable II, Consumable III) HealthPotion { get; } =
-            (new Consumable("Health Potion I", EffectType.Heal, EffectTarget.Ally, (Pet target) =>
+            (new Consumable("Health Potion I", EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
                     return health + 20;
                 });
             }),
-            new Consumable("Health Potion II", EffectType.Heal, EffectTarget.Ally, (Pet target) =>
+            new Consumable("Health Potion II", EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
                     return health + 50;
                 });
             }),
-            new Consumable("Health Potion III", EffectType.Heal, EffectTarget.Ally, (Pet target) =>
+            new Consumable("Health Potion III", EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, 0, (health) =>
                 {
@@ -111,8 +118,9 @@
             }));
 
         // Buffs Consumables
+
         public static Consumable BattlePotion { get; } =
-            new Consumable("Battle Potion", EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (Pet target) =>
+            new Consumable("Battle Potion", EffectType.PhysicalDamage & EffectType.MagicalDamage, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.PhysicalDamage, AlterationType.Additive, (pDamage) =>
                 {
@@ -125,7 +133,7 @@
             });
 
         public static Consumable DefensePotion { get; } =
-        new Consumable("Defense Potion", EffectType.Buff, EffectTarget.Ally, (Pet target) =>
+        new Consumable("Defense Potion", EffectType.Buff, EffectTarget.Ally, (target) =>
         {
             target.AlterStat(PetStat.PhysicalArmor, AlterationType.Additive, (pDefense) =>
             {
@@ -136,9 +144,10 @@
                 return mDefense + 10;
             });
         });
-        
-        
+
+
         // Pets stats
+
         public static Dictionary<PetStat, int> StarterStats { get; } = new Dictionary<PetStat, int>()
         {
             { PetStat.Health, 100 },

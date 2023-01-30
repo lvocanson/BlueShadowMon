@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon
+﻿namespace BlueShadowMon.Gameplay.Combat.EffectAppliers
 {
     /// <summary>
     /// A consumable that can be used by a player.
@@ -6,7 +6,7 @@
     public class Consumable : EffectApplier
     {
         protected Action<Pet> _effect;
-        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet> effect ) : base(name, type, target)
+        public Consumable(string name, EffectType type, EffectTarget target, Action<Pet> effect) : base(name, type, target)
         {
             if (HasTargetable(EffectTarget.Self))
             {

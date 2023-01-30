@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon
+﻿namespace BlueShadowMon.Gameplay.Combat.EffectAppliers
 {
     /// <summary>
     /// A status effect that can be applied to a pet.

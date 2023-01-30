@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon
+﻿namespace BlueShadowMon.Gameplay.Combat
 {
     public enum EffectType
     {

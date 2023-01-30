@@ -1,4 +1,6 @@
-﻿namespace BlueShadowMon
+﻿using BlueShadowMon.Gameplay.Combat;
+
+namespace BlueShadowMon
 {
     public static class Game
     {
@@ -44,16 +46,21 @@
         public static void SwitchToMapScene() => CurrScene = _mapScene;
         public static void SwitchToMapScene(string path, (int x, int y) playerPos)
         {
-            _mapScene.Init(path, playerPos);
+            _mapScene.Init(new Map(path, playerPos));
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
+        public static void SwitchToCombatScene(Pet[] allies, Pet[] ennemies)
+        {
+            _combatScene.Init(new Combat(allies, ennemies));
+            CurrScene = _combatScene;
+        }
 
         static Game()
         {
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene("Map/Map.txt", (0, 0));
+            _mapScene = new MapScene(new Map("Map/Map.txt", (0, 0)));
             _combatScene = new CombatScene(new Combat(
                 new Pet[] { new Pet("A", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
                 new Pet[] { new Pet("B", PetType.Dog, Data.StarterStats, Data.StarterIncrements) }

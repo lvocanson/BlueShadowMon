@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon
+﻿namespace BlueShadowMon.Gameplay.Combat.EffectAppliers
 {
     /// <summary>
     /// An ability that can be used by a pet.
