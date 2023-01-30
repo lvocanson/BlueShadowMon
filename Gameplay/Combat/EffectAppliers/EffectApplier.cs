@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon.Gameplay.Combat
+﻿namespace BlueShadowMon
 {
     public enum EffectType
     {
@@ -23,7 +23,7 @@
         public Window.ColoredString Name { get; }
         public EffectType Type { get; }
         public EffectTarget Target { get; }
-        public bool HasTargetable(EffectTarget wanted)
+        public bool CanTarget(EffectTarget wanted)
         {
             return (Target & wanted) == wanted;
         }

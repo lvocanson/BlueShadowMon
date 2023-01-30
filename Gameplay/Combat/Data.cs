@@ -1,6 +1,4 @@
-﻿using BlueShadowMon.Gameplay.Combat.EffectAppliers;
-
-namespace BlueShadowMon.Gameplay.Combat
+﻿namespace BlueShadowMon
 {
     public static class Data
     {
@@ -151,7 +149,7 @@ namespace BlueShadowMon.Gameplay.Combat
 
         // Pets stats
 
-        public static Dictionary<PetStat, int> StarterStats { get; } = new Dictionary<PetStat, int>()
+        public static Dictionary<PetStat, int> StarterStats { get; } = new ()
         {
             { PetStat.Health, 100 },
             { PetStat.PhysicalDamage, 10 },
@@ -159,7 +157,7 @@ namespace BlueShadowMon.Gameplay.Combat
             { PetStat.PhysicalArmor, 5 },
             { PetStat.MagicalArmor, 5 }
         };
-        public static Dictionary<PetStat, (int, int, int, int)> StarterIncrements { get; } = new Dictionary<PetStat, (int, int, int, int)>()
+        public static Dictionary<PetStat, (int, int, int, int)> StarterIncrements { get; } = new ()
         {
             { PetStat.Health, (10, 15, 20, 30) },
             { PetStat.PhysicalDamage, (7, 10, 15, 20) },

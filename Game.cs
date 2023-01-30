@@ -1,6 +1,4 @@
-﻿using BlueShadowMon.Gameplay.Combat;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
     public static class Game
     {
@@ -62,9 +60,13 @@ namespace BlueShadowMon
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map("Map/Map.txt", (0, 0)));
             _combatScene = new CombatScene(new Combat(
-                new Pet[] { new Pet("A", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
-                new Pet[] { new Pet("B", PetType.Dog, Data.StarterStats, Data.StarterIncrements) }
-                ));
+                new [] { new Pet("MyPet", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
+                new [] {
+                    new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
+                    new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
+                    new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
+                }
+            ));
         }
 
         static void Main()
@@ -95,8 +97,6 @@ namespace BlueShadowMon
                 }
             }
         }
-
-
 
         // Menus
         private static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>()

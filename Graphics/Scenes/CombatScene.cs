@@ -1,11 +1,8 @@
-﻿using BlueShadowMon.Gameplay.Combat;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
     internal class CombatScene : Scene
     {
         public Combat Combat { get; private set; }
-
 
         public CombatScene(Combat combat)
         {

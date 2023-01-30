@@ -1,4 +1,4 @@
-﻿namespace BlueShadowMon.Gameplay.Combat.EffectAppliers
+﻿namespace BlueShadowMon
 {
     /// <summary>
     /// An ability that can be used by a pet.
@@ -28,7 +28,7 @@
         /// <param name="user"></param>
         public void UseOn(Pet[] targets, Pet user)
         {
-            if (!HasTargetable(EffectTarget.Multiple))
+            if (!CanTarget(EffectTarget.Multiple) && targets.Length > 1)
                 throw new Exception("This ability cannot be used on multiple targets.");
             foreach (Pet t in targets)
             {
