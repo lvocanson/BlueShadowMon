@@ -1,12 +1,17 @@
 ﻿namespace BlueShadowMon
 {
+    public enum AlterationType
+    {
+        Additive = 1,
+        Multiplicative = 2,
+    }
     public class AlterationID { }
     public class Alterable<T>
     {
         public T Value { get; set; }
         public T AlteratedValue { get; private set; }
 
-        private List<(AlterationID id, Func<T, T> alteration, int order)> _alterations = new List<(AlterationID id, Func<T, T> alteration, int order)>();
+        private List<(AlterationID id, Func<T, T> alteration, AlterationType type)> _alterations = new List<(AlterationID id, Func<T, T> alteration, AlterationType type)>();
 
         public Alterable(T baseValue)
         {
@@ -14,18 +19,32 @@
             AlteratedValue = baseValue;
         }
 
-        public AlterationID Alterate(int order, Func<T, T> alteration)
+        public AlterationID Alterate(AlterationType type, Func<T, T> alteration)
         {
+            // Add alteration to the list
             AlterationID id = new AlterationID();
             for (int i = 0; i < _alterations.Count; i++)
             {
-                if (_alterations[i].order == order)
+                if (_alterations[i].type == type)
                 {
-                    _alterations.Insert(i, (id, alteration, order));
+                    _alterations.Insert(i, (id, alteration, type));
                     return id;
                 }
             }
-            _alterations.Add((id, alteration, order));
+            _alterations.Add((id, alteration, type));
+
+            // Update the alterated value
+            AlteratedValue = Value;
+            foreach (AlterationType t in Enum.GetValues(typeof(AlterationType)))
+            {
+                for (int i = 0; i < _alterations.Count; i++)
+                {
+                    if (_alterations[i].type == t)
+                    {
+                        AlteratedValue = _alterations[i].alteration(AlteratedValue);
+                    }
+                }
+            }
             return id;
         }
 

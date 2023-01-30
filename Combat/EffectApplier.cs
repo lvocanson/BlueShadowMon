@@ -7,7 +7,7 @@
         Heal = 4,
         Buff = 8,
         Debuff = 16,
-        Status = 32,
+        StatusEffect = 32,
     }
 
     public enum EffectTarget

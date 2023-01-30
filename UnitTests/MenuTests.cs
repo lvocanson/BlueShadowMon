@@ -1,6 +1,5 @@
 namespace UnitTests
 {
-    [SupportedOSPlatform("windows")]
     public class MenuTests
     {
         [Test]
