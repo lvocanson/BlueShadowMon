@@ -2,25 +2,27 @@
 {
     internal class CombatScene : Scene
     {
-        public Menu Menu { get; } = new Menu(
+        public Menu CurrentMenu { get; private set; }
+        private Menu CombatMenu => new Menu(
             new Window.ColoredString("What do you want to do?", ConsoleColor.Red, Window.DefaultBgColor),
             new (Window.ColoredString, Action)[] {
                 (new Window.ColoredString("Attack"), () => { }),
                 (new Window.ColoredString("Inventory"), () => { }),
                 (new Window.ColoredString("Pets"), () => { }),
-                (new Window.ColoredString("Run"), () => { })
+                (new Window.ColoredString("Run"), () => { Game.SwitchToMapScene(); })
             });
         
         public CombatScene()
         {
-            ;
+            CurrentMenu = CombatMenu;
         }
+        
         public override void Draw()
         {
             int y = Console.WindowHeight - 3;
-            for (int i = 0; i < Menu.Length; i++)
+            for (int i = 0; i < CurrentMenu.Length; i++)
             {
-                Window.Write(Menu[i], (int)(Console.WindowWidth * (i + 0.5) / Menu.Length), y, true);
+                Window.Write(CurrentMenu[i], (int)(Console.WindowWidth * (i + 0.5) / CurrentMenu.Length), y, true);
             }
         }
 
@@ -30,18 +32,19 @@
             {
                 case ConsoleKey.LeftArrow:
                     Console.Clear();
-                    Menu.Before();
+                    CurrentMenu.Before();
                     break;
                 case ConsoleKey.RightArrow:
                     Console.Clear();
-                    Menu.After();
+                    CurrentMenu.After();
                     break;
                 case ConsoleKey.Enter:
                     Console.Clear();
-                    Menu.Confirm();
+                    CurrentMenu.Confirm();
                     break;
                 case ConsoleKey.Escape:
-                    Game.SwitchToCombatScene();
+                    CurrentMenu.SelectItem(0);
+                    CurrentMenu = CombatMenu;
                     break;
                 default:
                     break;

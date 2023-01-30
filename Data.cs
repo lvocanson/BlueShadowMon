@@ -61,12 +61,6 @@
             }));
 
 
-        public static Consumable MdManaPotion { get; } = new Consumable("Medium Health Potion", EffectType.Heal, EffectTarget.Ally, (Pet target) =>
-        {
-            target[PetStat.Health] += 50;
-        });
-
-
         // Pets stats
 
         public static Dictionary<PetStat, int> StarterStats { get; } = new Dictionary<PetStat, int>()
@@ -84,48 +78,6 @@
             { PetStat.MagicalDamage, (7, 10, 15, 20) },
             { PetStat.PhysicalArmor, (0, 1, 3, 5) },
             { PetStat.MagicalArmor, (0, 1, 3, 5) }
-        };
-
-
-        // Menus
-
-        public static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>()
-        {
-            {
-                "Main Menu", new Menu(new Window.ColoredString(Game.GameTitle, ConsoleColor.Blue, Window.DefaultBgColor),
-                new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Play"), () => Game.SwitchToMapScene()),
-                (new Window.ColoredString("Combat Test"), () => { Console.Beep(); }), // REMOVE THIS LATER
-                (new Window.ColoredString("Settings"), () => Game.SwitchToMenuScene("Settings")),
-                (new Window.ColoredString("Exit Game"), () => Window.Quit())
-            }) },
-            {
-                "Settings", new Menu(new Window.ColoredString("Settings", ConsoleColor.DarkYellow, Window.DefaultBgColor),
-                new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Change Frame Rate"), () => Game.SwitchToMenuScene("Frame Rate")),
-                (new Window.ColoredString("Change Window Size"), () => Game.SwitchToMenuScene("Window Size")),
-                (new Window.ColoredString("Back"), () => Game.SwitchToMenuScene("Main Menu")),
-            }) },
-            {
-                "Frame Rate", new Menu(new Window.ColoredString("Frame Rate", ConsoleColor.DarkYellow, Window.DefaultBgColor),
-                new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("30"), () => { Game.FrameRate = 30; Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("60"), () => { Game.FrameRate = 60; Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("120"), () => { Game.FrameRate = 120; Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("144"), () => { Game.FrameRate = 240; Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("240"), () => { Game.FrameRate = 240; Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("Unlimited"), () => { Game.FrameRate = int.MaxValue; Game.SwitchToMenuScene("Settings"); })
-            }, 5) },
-            {
-                "Window Size", new Menu(new Window.ColoredString("Window Size", ConsoleColor.DarkYellow, Window.DefaultBgColor),
-                new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("50%"), () => { Window.Resize(0.5F); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("60%"), () => { Window.Resize(0.6F); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("70%"), () => { Window.Resize(0.7F); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("80%"), () => { Window.Resize(0.8F); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("90%"), () => { Window.Resize(0.9F); Game.SwitchToMenuScene("Settings"); }),
-                (new Window.ColoredString("100%"), () => { Window.Resize(1); Game.SwitchToMenuScene("Settings"); })
-            }, 2) }
         };
     }
 }

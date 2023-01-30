@@ -82,8 +82,6 @@ namespace BlueShadowMon
 
             // Set console size to 70% of the largest possible size
             Resize(0.7F);
-            // Do it again to fix a console bug
-            Resize(0.7F);
 
             // Set console colors
             Console.ForegroundColor = DefaultFgColor;
@@ -98,6 +96,8 @@ namespace BlueShadowMon
         {
             int width = (int)(Console.LargestWindowWidth * percent);
             int height = (int)(Console.LargestWindowHeight * percent);
+            Resize(width, height);
+            // Do it again to fix a console bug
             Resize(width, height);
         }
 

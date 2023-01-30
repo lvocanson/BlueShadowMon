@@ -18,14 +18,14 @@
         private static DateTime _lastFrame = DateTime.Now;
 
         // Scene Manager
-        private static MenuScene _menuScene = new MenuScene(Data.Menus["Main Menu"]);
-        private static MapScene mapScene = new MapScene("Map/Map.txt", (0, 0));
-        private static CombatScene combatScene = new CombatScene();
-        private static Scene _currScene = _menuScene;
+        private static MenuScene _menuScene;
+        private static MapScene _mapScene;
+        private static CombatScene _combatScene;
+        private static Scene _currScene;
         public static Scene CurrScene
         {
             get => _currScene;
-            set
+            private set
             {
                 Console.BackgroundColor = Window.DefaultBgColor;
                 Console.Clear();
@@ -36,19 +36,26 @@
         public static void SwitchToMenuScene() => CurrScene = _menuScene;
         public static void SwitchToMenuScene(string menuName)
         {
-            if (!Data.Menus.ContainsKey(menuName))
+            if (!Menus.ContainsKey(menuName))
                 throw new ArgumentException("Menu does not exist");
-            _menuScene.Init(Data.Menus[menuName]);
+            _menuScene.Init(Menus[menuName]);
             CurrScene = _menuScene;
         }
-        public static void SwitchToMapScene() => CurrScene = mapScene;
+        public static void SwitchToMapScene() => CurrScene = _mapScene;
         public static void SwitchToMapScene(string path, (int x, int y) playerPos)
         {
-            mapScene.Init(path, playerPos);
-            CurrScene = mapScene;
+            _mapScene.Init(path, playerPos);
+            CurrScene = _mapScene;
         }
-        public static void SwitchToCombatScene() => CurrScene = combatScene;
+        public static void SwitchToCombatScene() => CurrScene = _combatScene;
 
+        static Game()
+        {
+            _menuScene = new MenuScene(Menus["Main Menu"]);
+            _currScene = _menuScene;
+            _mapScene = new MapScene("Map/Map.txt", (0, 0));
+            _combatScene = new CombatScene();
+        }
 
         static void Main()
         {
@@ -78,5 +85,47 @@
                 }
             }
         }
+
+
+
+        // Menus
+        private static Dictionary<string, Menu> Menus { get; } = new Dictionary<string, Menu>()
+        {
+            {
+                "Main Menu", new Menu(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor),
+                new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("Play"), () => SwitchToMapScene()),
+                (new Window.ColoredString("Combat Test"), () => { Console.Beep(); }), // REMOVE THIS LATER
+                (new Window.ColoredString("Settings"), () => SwitchToMenuScene("Settings")),
+                (new Window.ColoredString("Exit Game"), () => Window.Quit())
+            }) },
+            {
+                "Settings", new Menu(new Window.ColoredString("Settings", ConsoleColor.DarkYellow, Window.DefaultBgColor),
+                new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("Change Frame Rate"), () => SwitchToMenuScene("Frame Rate")),
+                (new Window.ColoredString("Change Window Size"), () => SwitchToMenuScene("Window Size")),
+                (new Window.ColoredString("Back"), () => SwitchToMenuScene("Main Menu")),
+            }) },
+            {
+                "Frame Rate", new Menu(new Window.ColoredString("Frame Rate", ConsoleColor.DarkYellow, Window.DefaultBgColor),
+                new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("30"), () => { FrameRate = 30; SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("60"), () => { FrameRate = 60; SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("120"), () => { FrameRate = 120; SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("144"), () => { FrameRate = 240; SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("240"), () => { FrameRate = 240; SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("Unlimited"), () => { FrameRate = int.MaxValue; SwitchToMenuScene("Settings"); })
+            }, 5) },
+            {
+                "Window Size", new Menu(new Window.ColoredString("Window Size", ConsoleColor.DarkYellow, Window.DefaultBgColor),
+                new (Window.ColoredString, Action)[] {
+                (new Window.ColoredString("50%"), () => { Window.Resize(0.5F); SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("60%"), () => { Window.Resize(0.6F); SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("70%"), () => { Window.Resize(0.7F); SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("80%"), () => { Window.Resize(0.8F); SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("90%"), () => { Window.Resize(0.9F); SwitchToMenuScene("Settings"); }),
+                (new Window.ColoredString("100%"), () => { Window.Resize(1); SwitchToMenuScene("Settings"); })
+            }, 2) }
+        };
     }
 }
