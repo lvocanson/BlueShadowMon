@@ -1,8 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-    [SupportedOSPlatform("windows")]
     internal class CombatScene : Scene
     {
         public Menu Menu { get; } = new Menu(

@@ -1,6 +1,4 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
     public enum PetType
     {
@@ -17,8 +15,7 @@ namespace BlueShadowMon
         PhysicalArmor = 3,
         MagicalArmor = 4,
     }
-
-    [SupportedOSPlatform("windows")]
+    
     public class Pet
     {
 

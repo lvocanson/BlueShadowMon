@@ -1,9 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-    [SupportedOSPlatform("windows")]
-
     internal class MapScene : Scene
     {
         private static Window.ColoredChar _cGround { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkGray, ConsoleColor.DarkGray);

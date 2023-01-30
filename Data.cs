@@ -1,8 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-    [SupportedOSPlatform("windows")]
     public static class Data
     {
         // Abilities
@@ -58,7 +55,7 @@ namespace BlueShadowMon
             }));
 
         public static Consumable PetCage { get; } =
-            (new Consumable("Pet Cage", EffectType.Status, EffectTarget.Enemy, (Pet[] team) =>
+            (new Consumable("Pet Cage", EffectType.Status, EffectTarget.Enemy, (Pet target) =>
             {
                 //Capture the enemy pet
             }));

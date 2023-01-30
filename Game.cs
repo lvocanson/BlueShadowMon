@@ -1,8 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-    [SupportedOSPlatform("windows")]
     public static class Game
     {
         // Window settings

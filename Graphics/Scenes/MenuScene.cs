@@ -1,8 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-    [SupportedOSPlatform("windows")]
     internal class MenuScene : Scene
     {
         public Menu Menu { get; private set; }

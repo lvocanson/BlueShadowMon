@@ -1,9 +1,5 @@
-﻿using System.Runtime.Versioning;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
-
-    [SupportedOSPlatform("windows")]
     public class Menu
     {
         public static string BeginSelector { get; set; } = "> ";

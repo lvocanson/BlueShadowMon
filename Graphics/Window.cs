@@ -1,12 +1,10 @@
 ﻿using System.Runtime.InteropServices;
-using System.Runtime.Versioning;
 
 namespace BlueShadowMon
 {
     /// <summary>
     /// Console Manager.
     /// </summary>
-    [SupportedOSPlatform("windows")]
     public static class Window
     {
         public static ConsoleColor DefaultFgColor { get; set; } = ConsoleColor.White;
@@ -100,7 +98,7 @@ namespace BlueShadowMon
         {
             int width = (int)(Console.LargestWindowWidth * percent);
             int height = (int)(Console.LargestWindowHeight * percent);
-            ChangeSize(width, height);
+            Resize(width, height);
         }
 
 
@@ -109,10 +107,15 @@ namespace BlueShadowMon
         /// </summary>
         /// <param name="width">Number of columns</param>
         /// <param name="height">Number of lines</param>
-        public static void ChangeSize(int width, int height)
+        public static void Resize(int width, int height)
         {
-            Console.SetWindowSize(width, height);
-            Console.SetBufferSize(width, height);
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                // Set console size
+                Console.SetWindowSize(width, height);
+                Console.SetBufferSize(width, height);
+            }
+            // TODO: Change console size on other OS
         }
 
         /// <summary>
