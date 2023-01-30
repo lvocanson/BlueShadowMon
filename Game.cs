@@ -54,7 +54,10 @@
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene("Map/Map.txt", (0, 0));
-            _combatScene = new CombatScene();
+            _combatScene = new CombatScene(new Combat(
+                new Pet[] { new Pet("A", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
+                new Pet[] { new Pet("B", PetType.Dog, Data.StarterStats, Data.StarterIncrements) }
+                ));
         }
 
         static void Main()
@@ -95,7 +98,7 @@
                 "Main Menu", new Menu(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor),
                 new (Window.ColoredString, Action)[] {
                 (new Window.ColoredString("Play"), () => SwitchToMapScene()),
-                (new Window.ColoredString("Combat Test"), () => { Console.Beep(); }), // REMOVE THIS LATER
+                (new Window.ColoredString("Combat Test"), () => { SwitchToCombatScene(); }), // REMOVE THIS LATER
                 (new Window.ColoredString("Settings"), () => SwitchToMenuScene("Settings")),
                 (new Window.ColoredString("Exit Game"), () => Window.Quit())
             }) },
