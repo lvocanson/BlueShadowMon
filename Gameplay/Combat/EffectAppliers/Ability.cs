@@ -35,7 +35,7 @@
                 _effect(t, user);
             }
             // Targets
-            string msg = Name.String + " used on ";
+            string msg = user.Name + " used " + Name.String + " on ";
             for (int i = 0; i < targets.Length; i++)
             {
                 msg += targets[i].Name;
@@ -45,6 +45,7 @@
                     msg += " and ";
             }
             msg += ".";
+            Window.Message(msg);
         }
     }
 }

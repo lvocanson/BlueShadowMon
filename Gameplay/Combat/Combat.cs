@@ -53,20 +53,20 @@
             _selectedTargets.Clear();
 
             // Check for dead pets
-            foreach (Pet pet in Allies)
+            for (int i = Allies.Count - 1; i >= 0; i--)
             {
-                if (!pet.IsAlive)
+                if (!Allies[i].IsAlive)
                 {
-                    Allies.Remove(pet);
-                    Window.Message("Your " + pet.Name + " died!");
+                    Window.Message("Your " + Allies[i].Name + " died!");
+                    Allies.RemoveAt(i);
                 }
             }
-            foreach (Pet pet in Enemies)
+            for (int i = Enemies.Count - 1; i >= 0; i--)
             {
-                if (!pet.IsAlive)
+                if (!Enemies[i].IsAlive)
                 {
-                    Enemies.Remove(pet);
-                    Window.Message("The enemy " + pet.Name + " died!");
+                    Window.Message("The " + Enemies[i].Name + " died!");
+                    Enemies.RemoveAt(i);
                 }
             }
 
