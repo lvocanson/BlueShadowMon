@@ -14,11 +14,15 @@ namespace BlueShadowMon
         
         public override void Draw()
         {
-            int y = Console.WindowHeight - 3;
-            Window.Write(_inventoryMenu.Title, Window.MiddleX, y - 2, true);
-            for (int i = 0; i < _inventoryMenu.Length; i++)
+            int topY = Math.Max(Window.MiddleY - _inventoryMenu.Length - 2, 1);
+            Window.Write(_inventoryMenu.Title, Window.MiddleX, topY, true);
+
+            // Max height of the menu to display
+            int height = Math.Min(_inventoryMenu.Length, Console.WindowHeight / 2 - 2);
+            
+            for (int i = 0; i < height; i++)
             {
-                Window.Write(_inventoryMenu[i], (int)(Console.WindowWidth * (i + 0.5) / _inventoryMenu.Length), y, true);
+                Window.Write(_inventoryMenu[i], Window.MiddleX, Window.MiddleY - _inventoryMenu.Length + i * 2, true);
             }
         }
 
@@ -39,7 +43,6 @@ namespace BlueShadowMon
                     _inventoryMenu.Confirm();
                     break;
                     case ConsoleKey.Escape:
-                    Console.Clear();
                     _inventoryMenu.SelectItem(0);
                     Game.ToggleInventory();
                     break;

@@ -96,7 +96,7 @@
                     TryToMoveBy(1, 0);
                     break;
                 case ConsoleKey.I:
-                    //To do : switchToInventoryScene;
+                    Game.ToggleInventory();
                     break;
                 case ConsoleKey.Escape:
                     Game.SwitchToMenuScene("Main Menu");

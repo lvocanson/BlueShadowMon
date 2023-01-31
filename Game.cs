@@ -62,9 +62,10 @@
         }
         public static void ToggleInventory()
         {
-            Scene temp = _currScene;
-            CurrScene = _inventoryScene;
-            _previousScene = temp;
+            if (_currScene == _inventoryScene)
+                CurrScene = _previousScene;
+            else
+                CurrScene = _inventoryScene;
         }
 
         static Game()
