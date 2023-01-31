@@ -87,6 +87,7 @@
                 }
             ));
             _inventoryScene = new InventoryScene(_player);
+            _previousScene = _menuScene;
         }
 
         static void Main()

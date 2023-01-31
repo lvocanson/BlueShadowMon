@@ -71,7 +71,7 @@ namespace BlueShadowMon
             int WS_THICKFRAME = 0x00040000;
             int GWL_STYLE = -16;
             int style = GetWindowLongA(window, GWL_STYLE);
-            SetWindowLongA(window,GWL_STYLE,style & ~(WS_MAXIMIZEBOX | WS_THICKFRAME));
+            SetWindowLongA(window, GWL_STYLE, style & ~(WS_MAXIMIZEBOX | WS_THICKFRAME));
 
             // Set console properties
             Console.Title = Game.GameTitle;
@@ -283,24 +283,33 @@ namespace BlueShadowMon
         /// <summary>
         /// Show a string in a box, centered on the screen.
         /// </summary>
-        /// <param name="s"></param>
-        public static void Message(string s)
+        /// <param name="input"></param>
+        public static void Message(string input)
         {
-            int width = (int)(Console.WindowWidth * 0.75);
-
-            // lines
-            string[] words = s.Split(' ');
+            int width = (int)(Console.WindowWidth * 0.66); // Message width
+            string[] words = input.Split(' ');
             List<string> lines = new List<string>();
             string line = "";
             while (words.Length > 0)
             {
-                while (words.Length > 0 && line.Length + words[0].Length < width)
+                if (line.Length + words[0].Length > width)
+                {
+                    lines.Add(line);
+                    line = "";
+                }
+                if (words[0].Length >= width)
+                {
+                    lines.Add(words[0].Substring(0, width));
+                    words[0] = words[0].Substring(width);
+                }
+                else
                 {
                     line += words[0] + " ";
-                    words = words.Skip(1).ToArray();
+                    words = words.Skip(1).ToArray();   
                 }
-                lines.Add(line);
             }
+            if (line.Length > 0)
+                lines.Add(line);
 
             int height = lines.Count + 2;
             int topY = MiddleY - (height / 2);
@@ -311,7 +320,7 @@ namespace BlueShadowMon
             {
                 Write(boxSides.LeftRight + new string(' ', width) + boxSides.LeftRight, MiddleX, topY + i, true);
             }
-            Write("Press any key to continue...", MiddleX, topY + height -1, ConsoleColor.DarkGray, DefaultBgColor, true);
+            Write("Press any key to continue...", MiddleX, topY + height - 1, ConsoleColor.DarkGray, DefaultBgColor, true);
             Write(boxCorners.bottomLeft + new string(boxSides.topBottom, width) + boxCorners.BottomRight, MiddleX, topY + height, true);
 
             // Message
