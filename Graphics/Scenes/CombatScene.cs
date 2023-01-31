@@ -17,6 +17,7 @@
         public override void Draw()
         {
             int y = Console.WindowHeight - 3;
+            Window.Write(Combat.ActivePet.Name + "'s turn.", Window.MiddleX, y - 3, true);
             Window.Write(Combat.CurrentMenu.Title, Window.MiddleX, y - 2, true); 
             for (int i = 0; i < Combat.CurrentMenu.Length; i++)
             {

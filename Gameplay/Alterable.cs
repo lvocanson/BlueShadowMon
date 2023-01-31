@@ -28,7 +28,7 @@
                 if (_alterations[i].type == type)
                 {
                     _alterations.Insert(i, (id, alteration, type));
-                    return id;
+                    break;
                 }
             }
             _alterations.Add((id, alteration, type));

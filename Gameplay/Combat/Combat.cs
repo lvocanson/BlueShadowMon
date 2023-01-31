@@ -2,26 +2,26 @@
 {
     public class Combat
     {
-        public Pet[] Allies { get; private set; }
-        public Pet[] Enemies { get; private set; }
+        public List<Pet> Allies { get; private set; }
+        public List<Pet> Enemies { get; private set; }
         public Menu CurrentMenu { get; private set; }
         private int _currentTurn = -1;
-        private Pet _currentPet;
+        public Pet? ActivePet { get; private set; }
         private Menu _selectActionMenu;
 
         // Action : Attack Menus
-        private Menu _selectAbilityMenu;
+        private Menu? _selectAbilityMenu;
         private Ability _selectedAbility = Data.NullAbility;
         List<Pet> targetables = new();
-        private Menu _selectTargetMenu;
+        private Menu? _selectTargetMenu;
         private List<Pet> _selectedTargets = new();
 
-        public Combat(Pet[] allies, Pet[] enemies)
+        public Combat(List<Pet> allies, List<Pet> enemies)
         {
             Allies = allies;
             Enemies = enemies;
 
-            GoToNextTurn(); // Here we define _selectAbilityMenu
+            GoToNextTurn();
 
             _selectActionMenu = new Menu(
             new Window.ColoredString("What do you want to do?"),
@@ -44,25 +44,75 @@
             targetables.Clear();
             _selectedTargets.Clear();
 
+            // Check for dead pets
+            foreach (Pet pet in Allies)
+            {
+                if (!pet.IsAlive)
+                {
+                    Allies.Remove(pet);
+                    Window.Message("Your " + pet.Name + " died!");
+                }
+            }
+            foreach (Pet pet in Enemies)
+            {
+                if (!pet.IsAlive)
+                {
+                    Enemies.Remove(pet);
+                    Window.Message("The enemy " + pet.Name + " died!");
+                }
+            }
+
+            // Check if the battle is over
+            bool isPlayerWin = Enemies.All(pet => pet[PetStat.Health] <= 0);
+            if (Allies.All(pet => pet[PetStat.Health] <= 0) || isPlayerWin)
+            {
+                // Get the experience to give to the player
+                int xp = 0;
+                foreach (Pet enemy in Enemies)
+                {
+                    xp += enemy.Level;
+                }
+                if (!isPlayerWin)
+                    xp /= 10;
+
+                // Give the experience to the player's team
+                xp /= Allies.Count;
+                foreach (Pet ally in Allies)
+                {
+                    ally.GainXp(xp);
+                }
+
+                // Pop up a message
+                if (isPlayerWin)
+                    Window.Message("You won the battle!");
+                else
+                    Window.Message("You lost the battle!");
+
+                // Return to the map scene
+                Game.SwitchToMapScene();
+                return;
+            }
+
             // Get the next active pet
             _currentTurn++;
-            if (_currentTurn < Allies.Length)
+            if (_currentTurn < Allies.Count)
             {
-                _currentPet = Allies[_currentTurn];
+                ActivePet = Allies[_currentTurn];
             }
-            else if (_currentTurn < Allies.Length + Enemies.Length)
+            else if (_currentTurn < Allies.Count + Enemies.Count)
             {
-                _currentPet = Enemies[_currentTurn - Allies.Length];
+                ActivePet = Enemies[_currentTurn - Allies.Count];
             }
             else
             {
                 _currentTurn = 0;
-                _currentPet = Allies[0];
+                ActivePet = Allies[0];
             }
 
             // If it's an ally, show the menu to select an ability
-            if (Allies.Contains(_currentPet))
+            if (Allies.Contains(ActivePet))
             {
+                _selectAbilityMenu?.SelectItem(0);
                 UpdateSelectAbilityMenu();
             }
             // Else it's an enemy, use the IA to make their move
@@ -80,7 +130,7 @@
         {
             // Create the menu actions
             List<(Window.ColoredString, Action)> attackActions = new();
-            foreach (Ability ability in _currentPet.Abilities)
+            foreach (Ability ability in ActivePet!.Abilities)
             {
                 void Confirm()
                 {
@@ -94,7 +144,7 @@
                 _selectAbilityMenu = new(
                 new Window.ColoredString("Select an Ability to use:", ConsoleColor.Red, Window.DefaultBgColor),
                 attackActions.ToArray()
-                );
+            );
             else
                 _selectAbilityMenu.Init(
                 new Window.ColoredString("Select an Ability to use:", ConsoleColor.Red, Window.DefaultBgColor),
@@ -114,7 +164,7 @@
 
             // Add each Pet that can be targeted with the ability
             if (ability.CanTarget(EffectTarget.Self))
-                targetables.Add(_currentPet);
+                targetables.Add(ActivePet!);
             if (ability.CanTarget(EffectTarget.Ally))
             {
                 foreach (Pet ally in Allies)
@@ -132,6 +182,7 @@
 
             // Select target Menu
             UpdateSelectTargetMenu();
+            _selectTargetMenu.SelectItem(0);
             CurrentMenu = _selectTargetMenu;
         }
 
@@ -143,7 +194,7 @@
         {
             if (_selectedTargets.Contains(target))
                 _selectedTargets.Remove(target);
-            else
+            else if (_selectedTargets.Count == 0 || _selectedAbility.CanTarget(EffectTarget.Multiple))
                 _selectedTargets.Add(target);
 
             // Update the menu
@@ -159,7 +210,10 @@
         {
             // Create the title
             Window.ColoredString title;
-            if (_selectedTargets.Count >= targetables.Count)
+            int maxTarget = 1;
+            if (_selectedAbility.CanTarget(EffectTarget.Multiple))
+                maxTarget = targetables.Count;
+            if (_selectedTargets.Count >= maxTarget)
                 title = new("Maximum number of target reached.", ConsoleColor.Red, Window.DefaultBgColor);
             else
                 title = new("Select targets:");
@@ -198,10 +252,12 @@
 
         /// <summary>
         /// Confirm the target(s) and use the ability on them.
+        /// 
         /// </summary>
         private void ConfirmTarget()
         {
-            _selectedAbility.UseOn(_selectedTargets.ToArray(), _currentPet);
+            _selectedAbility.UseOn(_selectedTargets.ToArray(), ActivePet!);
+            GoToNextTurn();
             CurrentMenu = _selectActionMenu;
         }
 
@@ -211,10 +267,10 @@
         /// <exception cref="Exception"></exception>
         private void IA()
         {
-            if (_currentPet == null)
+            if (ActivePet == null)
                 throw new Exception("Current Pet is null!");
             Pet target = Allies[0];
-            _currentPet.UseAbility(0, target);
+            ActivePet.UseAbility(0, target);
         }
 
         public void KeyPressed(ConsoleKey key)
