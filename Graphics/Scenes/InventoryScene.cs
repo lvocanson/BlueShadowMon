@@ -14,15 +14,25 @@ namespace BlueShadowMon
         
         public override void Draw()
         {
-            int topY = Math.Max(Window.MiddleY - _inventoryMenu.Length - 2, 1);
-            Window.Write(_inventoryMenu.Title, Window.MiddleX, topY, true);
 
             // Max height of the menu to display
             int height = Math.Min(_inventoryMenu.Length, Console.WindowHeight / 2 - 2);
-            
+            Window.Write(_inventoryMenu.Title, Window.MiddleX, Window.MiddleY - height - 2, true);
+
+            // For scroll
+            int offset = 0;
+            if (_inventoryMenu.SelectedItem > height / 2 && _inventoryMenu.Length - _inventoryMenu.SelectedItem > height / 2)
+            {
+                offset = _inventoryMenu.SelectedItem - height / 2;
+            }
+            else if (_inventoryMenu.Length - _inventoryMenu.SelectedItem <= height / 2)
+            {
+                offset = _inventoryMenu.Length - height;
+            }
+
             for (int i = 0; i < height; i++)
             {
-                Window.Write(_inventoryMenu[i], Window.MiddleX, Window.MiddleY - _inventoryMenu.Length + i * 2, true);
+                Window.Write(_inventoryMenu[i + offset], Window.MiddleX, Window.MiddleY - height + i * 2, true);
             }
         }
 

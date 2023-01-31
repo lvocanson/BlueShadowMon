@@ -2,7 +2,7 @@
 {
     public class Player
     {
-        const int MAX_PETS = 3;
+        public const int MAX_PETS = 3;
         public Dictionary<Consumable, int> Inventory { get; private set; } = new();
         public Pet?[] Pets { get; }
         

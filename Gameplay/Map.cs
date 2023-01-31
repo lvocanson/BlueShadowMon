@@ -8,7 +8,7 @@
         public Player Player { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
-        public float ChanceTriggerCombat = 0.05F;
+        public static float ChanceTriggerCombat = 0.05F;
         
         public Map(string path, Player player)
         {
