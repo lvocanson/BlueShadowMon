@@ -17,6 +17,9 @@
         }
         private static DateTime _lastFrame = DateTime.Now;
 
+        // Player
+        private static Player _player;
+
         // Scene Manager
         private static MenuScene _menuScene;
         private static MapScene _mapScene;
@@ -44,7 +47,8 @@
         public static void SwitchToMapScene() => CurrScene = _mapScene;
         public static void SwitchToMapScene(string path, (int x, int y) playerPos)
         {
-            _mapScene.Init(new Map(path, playerPos));
+            _player.Move(playerPos);
+            _mapScene.Init(new Map(path, _player));
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
@@ -56,9 +60,10 @@
 
         static Game()
         {
+            _player = new Player((0, 0));
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene(new Map("Map/Map.txt", (0, 0)));
+            _mapScene = new MapScene(new Map("Map/Map.txt", _player));
             _combatScene = new CombatScene(new Combat(
                 new [] { new Pet("MyPet", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
                 new [] {

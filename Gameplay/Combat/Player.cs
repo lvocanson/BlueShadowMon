@@ -1,29 +1,40 @@
 ﻿
 namespace BlueShadowMon
 {
-    class Player
+    public class Player
     {
         public Dictionary<Consumable, int> Inventory { get; private set; } = new();
         public List<Pet> Pets { get; } = new();
         
+        public (int x, int y ) MapPosition { get; private set; }
+        public int x { get => MapPosition.x; }
+        public int y { get => MapPosition.y; }
 
-        public Player(Dictionary<Consumable, int> inventory, List<Pet> pets)
+
+        public Player((int x, int y) mapPosition)
         {
-
-            
+            MapPosition = mapPosition;
         }
 
-        private void AddPet(Pet newPet)
+        public void Move(int x, int y)
+        {
+            MapPosition = (x, y);
+        }
+        public void Move((int x, int y) playerPos)
+        {
+            MapPosition = playerPos;
+        }
+        public void AddPet(Pet newPet)
         {
             Pets.Add(newPet);
         }
 
-        private void AddConsumable(Consumable consumable, int amount)
+        public void AddConsumable(Consumable consumable, int amount)
         {
             Inventory.Add(consumable, amount);
         }
 
-        private void RemovePet(Pet pet)
+        public void RemovePet(Pet pet)
         {
             if (Pets.Contains(pet))
             {
@@ -31,7 +42,7 @@ namespace BlueShadowMon
             }
         }
 
-        private void RemoveConsumable(Consumable consumable)
+        public void RemoveConsumable(Consumable consumable)
         {
             if (Inventory[consumable].Equals(0))
             {

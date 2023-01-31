@@ -5,12 +5,12 @@
         private char[,] _map { get; set; } = new char[0, 0];
         public char this[int y, int x] { get { return _map[y, x]; } }
 
-        public (int x, int y) PlayerPos { get; private set; } = (0, 0);
+        public Player Player { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
         public float ChanceTriggerCombat = 0.05F;
-
-        public Map(string path, (int x, int y) playerPos)
+        
+        public Map(string path, Player player)
         {
             // Load file
             string[] lines = File.ReadAllLines(path);
@@ -30,9 +30,9 @@
                 }
             }
 
-            if (playerPos.x < 0 || Width <= playerPos.x || playerPos.y < 0 || Height <= playerPos.y)
+            if (player.x < 0 || Width <= player.x || player.y < 0 || Height <= player.y)
                 throw new Exception("Player position is not valid!");
-            PlayerPos = playerPos;
+            Player = player;
         }
 
             private static bool IsCharWalkable(char c)
@@ -56,14 +56,14 @@
         /// <param name="y"></param>
         public void TryToMoveBy(int x, int y)
         {
-            int newX = PlayerPos.x + x;
-            int newY = PlayerPos.y + y;
+            int newX = Player.x + x;
+            int newY = Player.y + y;
             if (newX < 0 || Width <= newX || newY < 0 || Height <= newY)
                 return; // Can't move out of bounds
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
-                PlayerPos = (newX, newY);
-                if (_map[PlayerPos.y, PlayerPos.x] == '*')
+                Player.Move(newX, newY);
+                if (_map[Player.y, Player.x] == '*')
                     WalkInBush();
             }
         }
@@ -91,6 +91,9 @@
                     break;
                 case ConsoleKey.RightArrow:
                     TryToMoveBy(1, 0);
+                    break;
+                case ConsoleKey.I:
+                    //To do : switchToInventoryScene;
                     break;
                 case ConsoleKey.Escape:
                     Game.SwitchToMenuScene("Main Menu");

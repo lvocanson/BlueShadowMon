@@ -11,7 +11,7 @@
 
         private Window.ColoredChar _cPlayer
         {
-            get { return new Window.ColoredChar(PlayerChar, PlayerColor, Parse(Map[Map.PlayerPos.y, Map.PlayerPos.x]).BackgroundColor); }
+            get { return new Window.ColoredChar(PlayerChar, PlayerColor, Parse(Map[Map.Player.y, Map.Player.x]).BackgroundColor); }
         }
         
         public static char PlayerChar { get; set; } = '@';
@@ -56,10 +56,10 @@
         public override void Draw()
         {
             (int left, int top, int right, int down) mapView = (
-                Map.PlayerPos.x - Window.MiddleX,
-                Map.PlayerPos.y - Window.MiddleY,
-                Map.PlayerPos.x + (Console.WindowWidth - Window.MiddleX),
-                Map.PlayerPos.y + (Console.WindowHeight - Window.MiddleY)
+                Map.Player.x - Window.MiddleX,
+                Map.Player.y - Window.MiddleY,
+                Map.Player.x + (Console.WindowWidth - Window.MiddleX),
+                Map.Player.y + (Console.WindowHeight - Window.MiddleY)
             );
 
             Window.ColoredChar parsed;
@@ -87,7 +87,7 @@
 
                 for (int x = mapView.left; x < mapView.right; x++)
                 {
-                    if (x == Map.PlayerPos.x && y == Map.PlayerPos.y)
+                    if (x == Map.Player.x && y == Map.Player.y)
                     {
                         toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
                         parsed = _cPlayer;

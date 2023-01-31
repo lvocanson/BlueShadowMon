@@ -6,7 +6,7 @@ namespace BlueShadowMon
     {
         
         private Menu _inventoryMenu;
-        public Menu CurrentMenu { get; private set; };
+        public Menu CurrentMenu { get; private set; }
         
         private List<Consumable> _consumables = new();
         
