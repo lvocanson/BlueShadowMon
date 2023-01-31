@@ -58,7 +58,7 @@
         {
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene(new Map("Map/Map.txt", (0, 0)));
+            _mapScene = new MapScene(new Map("Map/Map.txt", (285, 53)));
             _combatScene = new CombatScene(new Combat(
                 new [] { new Pet("MyPet", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
                 new [] {

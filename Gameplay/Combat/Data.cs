@@ -318,7 +318,7 @@
                 }
             });
 
-        // Capture Consumables
+        // Capture Consumables : Implement later
         public static Consumable PetCage { get; } =
             new Consumable(new Window.ColoredString("Pet Cage"), EffectType.Buff, EffectTarget.Ally, (target) =>
             {
