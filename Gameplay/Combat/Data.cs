@@ -16,21 +16,21 @@
         {
             target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 10;
+                return health - user[PetStat.PhysicalDamage];
             });
         });
 
         public static Ability NutShot { get; } = new Ability(new Window.ColoredString("Nut Shot"), EffectType.PhysicalDamage | EffectType.Heal, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 30;
+                return health - (user[PetStat.PhysicalDamage] + 30 - target[PetStat.PhysicalArmor] / 3);
             });
             target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Nut Shot"), EffectType.PhysicalDamage | EffectType.Heal, target, () =>
             {
             }, () =>
             {
-                target.AlterStat(PetStat.Health, 0, (health) =>
+                target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
                     return health + 25;
                 });
@@ -41,25 +41,25 @@
 
         public static Ability Charge { get; } = new Ability(new Window.ColoredString("Charge"), EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 20;
+                return health - (user[PetStat.PhysicalDamage] + 20 - target[PetStat.PhysicalArmor]);
             });
         });
 
         public static Ability Kick { get; } = new Ability(new Window.ColoredString("Kick"), EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 15;
+                return health - (user[PetStat.PhysicalDamage] + 15 - target[PetStat.PhysicalArmor]);
             });
         });
 
         public static Ability Headbutt { get; } = new Ability(new Window.ColoredString("Headbutt"), EffectType.PhysicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 25;
+                return health - (user[PetStat.PhysicalDamage] + 25 - target[PetStat.PhysicalArmor]);
             });
             target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Headbutt"), EffectType.PhysicalDamage, target, () =>
             {
@@ -73,19 +73,19 @@
 
         public static Ability ShyningStar { get; } = new Ability(new Window.ColoredString("Shyning Star"), EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 10;
+                return health - (user[PetStat.MagicalDamage] + 20 - target[PetStat.MagicalArmor]);
             });
         });
 
         public static Ability Vampirism { get; } = new Ability(new Window.ColoredString("Vampirism"), EffectType.MagicalDamage | EffectType.Heal, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 20;
+                return health - (user[PetStat.MagicalDamage] + 30 - target[PetStat.MagicalArmor]);
             });
-            user.AlterStat(PetStat.Health, 0, (health) =>
+            user.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
                 return health + 10;
             });
@@ -93,25 +93,25 @@
 
         public static Ability IceShard { get; } = new Ability(new Window.ColoredString("Ice Shard"), EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 15;
+                return health - (user[PetStat.MagicalDamage] + 15 - target[PetStat.MagicalArmor]);
             });
         });
 
         public static Ability FireBall { get; } = new Ability(new Window.ColoredString("Fire Ball"), EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 20;
+                return health - (user[PetStat.MagicalDamage] + 25 - target[PetStat.MagicalArmor]);
             });
         });
 
         public static Ability MagicalCage { get; } = new Ability(new Window.ColoredString("Magical Cage"), EffectType.MagicalDamage, EffectTarget.Enemy, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
-                return health - 25;
+                return health - (user[PetStat.MagicalDamage] + 30 - target[PetStat.MagicalArmor]);
             });
             target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Magical Cage"), EffectType.MagicalDamage, target, () =>
             {
@@ -126,7 +126,7 @@
 
         public static Ability BiscuitRain { get; } = new Ability(new Window.ColoredString("Biscuit Rain"), EffectType.Heal, EffectTarget.Self, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
                 return health + 10;
             });
@@ -134,7 +134,7 @@
 
         public static Ability Meditation { get; } = new Ability(new Window.ColoredString("Meditation"), EffectType.Heal, EffectTarget.Self, (target, user) =>
         {
-            target.AlterStat(PetStat.Health, 0, (health) =>
+            target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
             {
                 return health + 30;
             });
@@ -257,21 +257,21 @@
         public static (Consumable I, Consumable II, Consumable III) HealthPotion { get; } =
             (new Consumable(new Window.ColoredString("Health Potion I"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
-                target.AlterStat(PetStat.Health, 0, (health) =>
+                target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
                     return health + 20;
                 });
             }),
             new Consumable(new Window.ColoredString("Health Potion II"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
-                target.AlterStat(PetStat.Health, 0, (health) =>
+                target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
                     return health + 50;
                 });
             }),
             new Consumable(new Window.ColoredString("Health Potion III"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
-                target.AlterStat(PetStat.Health, 0, (health) =>
+                target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
                     return health + 150;
                 });
@@ -311,7 +311,7 @@
             {
                 if (target.IsAlive == false)
                 {
-                    target.AlterStat(PetStat.Health, 0, (health) =>
+                    target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                     {
                         return health + 100;
                     });

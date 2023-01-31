@@ -278,7 +278,24 @@
             if (ActivePet == null)
                 throw new Exception("Current Pet is null!");
             Pet target = Allies[0];
-            ActivePet.UseAbility(0, target);
+            Pet user = Enemies[0];
+
+            if (target[PetStat.Health] > 75)
+            {
+                ActivePet.UseAbility(3, target);
+            }
+            else if (target[PetStat.Health] > 50)
+            {
+                ActivePet.UseAbility(2, target);
+            }
+            else if (user[PetStat.Health] < 50)
+            {
+                ActivePet.UseAbility(2, target);
+            }
+            else
+            { 
+                ActivePet.UseAbility(0, target);
+            }
         }
 
         public void KeyPressed(ConsoleKey key)
