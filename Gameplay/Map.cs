@@ -65,8 +65,8 @@
                 return; // Can't move out of bounds
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
-                PlayerPos = (newX, newY);
-                if (_map[PlayerPos.y, PlayerPos.x] == '*' || _map[PlayerPos.y, PlayerPos.x] == '&')
+                Player.Move(newX,newY);
+                if (_map[Player.y, Player.x] == '*' || _map[Player.y, Player.x] == '&')
                     WalkInBush();
             }
         }

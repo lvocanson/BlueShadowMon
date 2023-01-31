@@ -60,7 +60,7 @@
 
         static Game()
         {
-            _player = new Player((0, 0));
+            _player = new Player((285, 53));
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map("Map/Map.txt", _player));
