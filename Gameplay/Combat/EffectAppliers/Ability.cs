@@ -18,7 +18,7 @@
         /// <param name="user"></param>
         public void UseOn(Pet target, Pet user)
         {
-            _effect(target, user);
+            UseOn(new Pet[] { target }, user);
         }
 
         /// <summary>
@@ -34,6 +34,17 @@
             {
                 _effect(t, user);
             }
+            // Targets
+            string msg = Name.String + " used on ";
+            for (int i = 0; i < targets.Length; i++)
+            {
+                msg += targets[i].Name;
+                if (i < targets.Length - 2)
+                    msg += ", ";
+                else if (i < targets.Length - 1)
+                    msg += " and ";
+            }
+            msg += ".";
         }
     }
 }

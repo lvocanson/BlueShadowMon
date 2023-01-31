@@ -5,8 +5,11 @@
         public Map Map { get; private set; }
         private static Window.ColoredChar _cGround { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkGray, ConsoleColor.DarkGray);
         private static Window.ColoredChar _cWall { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkRed, ConsoleColor.DarkRed);
+        private static Window.ColoredChar _cSand { get; } = new Window.ColoredChar(' ', ConsoleColor.Yellow, ConsoleColor.Yellow);
         private static Window.ColoredChar _cWater { get; } = new Window.ColoredChar('~', ConsoleColor.DarkBlue, ConsoleColor.Blue);
         private static Window.ColoredChar _cGrassOnGround { get; } = new Window.ColoredChar('*', ConsoleColor.Green, ConsoleColor.DarkGray);
+        private static Window.ColoredChar _cGrassOnSand { get; } = new Window.ColoredChar('*', ConsoleColor.DarkYellow, ConsoleColor.Yellow);
+        private static Window.ColoredChar _cBridge { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkYellow, ConsoleColor.DarkYellow);
         private static Window.ColoredChar _cUnknown { get; } = new Window.ColoredChar('?', ConsoleColor.White, ConsoleColor.Black);
 
         private Window.ColoredChar _cPlayer
@@ -38,12 +41,18 @@
             {
                 case ' ':
                     return _cGround;
+                case ':':
+                    return _cSand;
                 case '#':
                     return _cWall;
                 case 'o':
                     return _cWater;
                 case '*':
                     return _cGrassOnGround;
+                case '&':
+                    return _cGrassOnSand;
+                case 'p':
+                    return _cBridge;
                 default:
                     return _cUnknown;
             }
@@ -91,6 +100,8 @@
                     {
                         toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
                         parsed = _cPlayer;
+                        if (Map[y, x] == ':' || Map[y, x] == '&')
+                            parsed.ForegroundColor = ConsoleColor.Black;
                         count = 1;
                         continue;
                     }

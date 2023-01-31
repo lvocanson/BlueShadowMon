@@ -52,7 +52,7 @@
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
-        public static void SwitchToCombatScene(Pet[] allies, Pet[] ennemies)
+        public static void SwitchToCombatScene(List<Pet> allies, List<Pet> ennemies)
         {
             _combatScene.Init(new Combat(allies, ennemies));
             CurrScene = _combatScene;
@@ -65,8 +65,12 @@
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map("Map/Map.txt", _player));
             _combatScene = new CombatScene(new Combat(
-                new [] { new Pet("MyPet", PetType.Cat, Data.StarterStats, Data.StarterIncrements) },
-                new [] {
+                new(){
+                    new Pet("MyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
+                    new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
+                    new Pet("MySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
+                },
+                new(){
                     new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
                     new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
                     new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)

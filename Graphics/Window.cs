@@ -9,8 +9,8 @@ namespace BlueShadowMon
     {
         public static ConsoleColor DefaultFgColor { get; set; } = ConsoleColor.White;
         public static ConsoleColor DefaultBgColor { get; set; } = ConsoleColor.Black;
-        public static int MiddleX { get { return Console.WindowWidth / 2; }}
-        public static int MiddleY { get { return Console.WindowHeight / 2; }}
+        public static int MiddleX { get { return Console.WindowWidth / 2; } }
+        public static int MiddleY { get { return Console.WindowHeight / 2; } }
         public static List<ConsoleKeyInfo> Inputs { get; private set; } = new List<ConsoleKeyInfo>();
 
         public struct ColoredChar
@@ -55,8 +55,8 @@ namespace BlueShadowMon
             public ConsoleColor BackgroundColor;
         }
 
-        private static ColoredChar _charAntiGarbageCollector = new ColoredChar();
-        private static ColoredString _stringAntiGarbageCollector = new ColoredString();
+        private static ColoredChar _charAntiGarbageCollector = new ColoredChar(' ');
+        private static ColoredString _stringAntiGarbageCollector = new ColoredString("");
 
         /// <summary>
         /// Disable resizing, minimize and maximize buttons.
@@ -66,14 +66,12 @@ namespace BlueShadowMon
         {
             // Disable resizing and minimize/maximize buttons
             IntPtr window = GetConsoleWindow();
-            IntPtr sysMenu = GetSystemMenu(window, false);
-            int MF_BYCOMMAND = 0x00000000;
-            int SC_MINIMIZE = 0xF020;
-            int SC_MAXIMIZE = 0xF030;
-            int SC_SIZE = 0xF000;
-            DeleteMenu(sysMenu, SC_MINIMIZE, MF_BYCOMMAND);
-            DeleteMenu(sysMenu, SC_MAXIMIZE, MF_BYCOMMAND);
-            DeleteMenu(sysMenu, SC_SIZE, MF_BYCOMMAND);
+
+            int WS_MAXIMIZEBOX = 0x00010000;
+            int WS_THICKFRAME = 0x00040000;
+            int GWL_STYLE = -16;
+            int style = GetWindowLongA(window, GWL_STYLE);
+            SetWindowLongA(window,GWL_STYLE,style & ~(WS_MAXIMIZEBOX | WS_THICKFRAME));
 
             // Set console properties
             Console.Title = Game.GameTitle;
@@ -187,6 +185,8 @@ namespace BlueShadowMon
             _stringAntiGarbageCollector.ForegroundColor = fgcolor;
             _stringAntiGarbageCollector.BackgroundColor = bgcolor;
             Write(_stringAntiGarbageCollector);
+            _stringAntiGarbageCollector.ForegroundColor = DefaultFgColor;
+            _stringAntiGarbageCollector.BackgroundColor = DefaultBgColor;
         }
 
         /// <summary>
@@ -199,7 +199,7 @@ namespace BlueShadowMon
             Console.BackgroundColor = c.BackgroundColor;
             Console.Write(c.Char);
         }
-        
+
         /// <summary>
         /// Write a colored character in the console at the specified position.
         /// </summary>
@@ -259,7 +259,7 @@ namespace BlueShadowMon
         public static void EraseLine(int y, ConsoleColor bcolor)
         {
             Console.BackgroundColor = bcolor;
-            
+
             Console.SetCursorPosition(0, y);
             Console.Write(new string(' ', Console.WindowWidth));
         }
@@ -277,6 +277,54 @@ namespace BlueShadowMon
             }
         }
 
+        private static (string topLeft, string topRight, string bottomLeft, string BottomRight) boxCorners = new("┌", "┐", "└", "┘");
+        private static (char topBottom, string LeftRight) boxSides = new('─', "│");
+
+        /// <summary>
+        /// Show a string in a box, centered on the screen.
+        /// </summary>
+        /// <param name="s"></param>
+        public static void Message(string s)
+        {
+            int width = (int)(Console.WindowWidth * 0.75);
+
+            // lines
+            string[] words = s.Split(' ');
+            List<string> lines = new List<string>();
+            string line = "";
+            while (words.Length > 0)
+            {
+                while (words.Length > 0 && line.Length + words[0].Length < width)
+                {
+                    line += words[0] + " ";
+                    words = words.Skip(1).ToArray();
+                }
+                lines.Add(line);
+            }
+
+            int height = lines.Count + 2;
+            int topY = MiddleY - (height / 2);
+
+            // Box
+            Write(boxCorners.topLeft + new string(boxSides.topBottom, width) + boxCorners.topRight, MiddleX, topY - 1, true);
+            for (int i = 0; i < height; i++)
+            {
+                Write(boxSides.LeftRight + new string(' ', width) + boxSides.LeftRight, MiddleX, topY + i, true);
+            }
+            Write("Press any key to continue...", MiddleX, topY + height -1, ConsoleColor.DarkGray, DefaultBgColor, true);
+            Write(boxCorners.bottomLeft + new string(boxSides.topBottom, width) + boxCorners.BottomRight, MiddleX, topY + height, true);
+
+            // Message
+            for (int i = 0; i < lines.Count; i++)
+            {
+                Write(lines[i], MiddleX, topY + i, true);
+            }
+
+            // Wait for a key press
+            Console.ReadKey(true);
+            Console.Clear();
+        }
+
         /// <summary>
         /// Close the console.
         /// </summary>
@@ -289,13 +337,13 @@ namespace BlueShadowMon
 
         // Imports
 
-        [DllImport("user32.dll")]
-        private static extern int DeleteMenu(IntPtr hMenu, int nPosition, int wFlags);
-
-        [DllImport("user32.dll")]
-        private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
-
         [DllImport("kernel32.dll", ExactSpelling = true)]
         private static extern IntPtr GetConsoleWindow();
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        private static extern int GetWindowLongA(IntPtr hwnd, int nIndex);
+
+        [DllImport("user32.dll", ExactSpelling = true)]
+        private static extern int SetWindowLongA(IntPtr hwnd, int nIndex, int value);
     }
 }

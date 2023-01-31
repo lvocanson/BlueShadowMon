@@ -14,6 +14,8 @@
         public Menu(Window.ColoredString title, (Window.ColoredString, Action)[] items, int selectedItemNum = 0)
         {
             Title = title;
+            if (items.Length == 0)
+                throw new ArgumentException("Menu must have at least one item");
             _items = items;
             SelectItem(selectedItemNum);
         }
@@ -21,6 +23,8 @@
         public void Init(Window.ColoredString title, (Window.ColoredString, Action)[] items, int? selectedItemNum = null)
         {
             Title = title;
+            if (items.Length == 0)
+                throw new ArgumentException("Menu must have at least one item");
             _items = items;
             SelectItem(selectedItemNum ?? 0);
         }
