@@ -24,7 +24,9 @@
         private static MenuScene _menuScene;
         private static MapScene _mapScene;
         private static CombatScene _combatScene;
+        private static InventoryScene _inventoryScene;
         private static Scene _currScene;
+        private static Scene _previousScene;
         public static Scene CurrScene
         {
             get => _currScene;
@@ -32,6 +34,7 @@
             {
                 Console.BackgroundColor = Window.DefaultBgColor;
                 Console.Clear();
+                _previousScene = _currScene;
                 _currScene = value;
             }
         }
@@ -57,6 +60,12 @@
             _combatScene.Init(new Combat(allies, ennemies));
             CurrScene = _combatScene;
         }
+        public static void ToggleInventory()
+        {
+            Scene temp = _currScene;
+            CurrScene = _inventoryScene;
+            _previousScene = temp;
+        }
 
         static Game()
         {
@@ -76,6 +85,7 @@
                     new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
                 }
             ));
+            _inventoryScene = new InventoryScene(_player);
         }
 
         static void Main()

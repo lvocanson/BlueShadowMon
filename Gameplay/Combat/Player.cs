@@ -20,26 +20,28 @@ namespace BlueShadowMon
         {
             MapPosition = (x, y);
         }
+        
         public void Move((int x, int y) playerPos)
         {
             MapPosition = playerPos;
         }
+        
         public void AddPet(Pet newPet)
         {
             Pets.Add(newPet);
         }
-
-        public void AddConsumable(Consumable consumable, int amount)
-        {
-            Inventory.Add(consumable, amount);
-        }
-
+        
         public void RemovePet(Pet pet)
         {
             if (Pets.Contains(pet))
             {
                 Pets.Remove(pet);
             }
+        }
+
+        public void AddConsumable(Consumable consumable, int amount)
+        {
+            Inventory.Add(consumable, amount);
         }
 
         public void RemoveConsumable(Consumable consumable)
@@ -50,5 +52,25 @@ namespace BlueShadowMon
             }
         }
 
+        public Menu CreateInventoryMenu()
+        {
+            List<(Window.ColoredString, Action)> actions = new();
+            
+            foreach (Consumable c in Inventory.Keys)
+            {
+                Window.ColoredString name = c.Name;
+                name.String = $"{Inventory[c]} - {name.String}";
+                actions.Add((name, () => {
+                    // TODO: Use the consumable
+                }));
+            }
+
+            if (actions.Count == 0)
+            {
+                actions.Add((new Window.ColoredString("- Empty -"), () => { }));
+            }
+            
+            return new Menu(new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), actions.ToArray());
+        }
     }
 }

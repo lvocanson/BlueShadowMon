@@ -3,31 +3,47 @@ namespace BlueShadowMon
 {
      class InventoryScene : Scene
     {
-        public Inventory Inventory { get; private set; }
+        public Player Player { get; private set; }
+        private Menu _inventoryMenu;
 
-        public InventoryScene(Inventory inventory)
+        public InventoryScene(Player _player)
         {
-            Inventory = inventory;
+            Player = _player;
+            _inventoryMenu = Player.CreateInventoryMenu();
         }
-
-        public void Init(Inventory inventory)
-        {
-            Inventory = inventory;
-        }
-
+        
         public override void Draw()
         {
             int y = Console.WindowHeight - 3;
-            Window.Write(Inventory.CurrentMenu.Title, Window.MiddleX, y - 2, true);
-            for (int i = 0; i < Inventory.CurrentMenu.Length; i++)
+            Window.Write(_inventoryMenu.Title, Window.MiddleX, y - 2, true);
+            for (int i = 0; i < _inventoryMenu.Length; i++)
             {
-                Window.Write(Inventory.CurrentMenu[i], (int)(Console.WindowWidth * (i + 0.5) / Inventory.CurrentMenu.Length), y, true);
+                Window.Write(_inventoryMenu[i], (int)(Console.WindowWidth * (i + 0.5) / _inventoryMenu.Length), y, true);
             }
         }
 
         public override void KeyPressed(ConsoleKey key)
         {
-            Inventory.KeyPressed(key);
+            switch (key)
+            {
+                case ConsoleKey.UpArrow:
+                    Console.Clear();
+                    _inventoryMenu.Before();
+                    break;
+                case ConsoleKey.DownArrow:
+                    Console.Clear();
+                    _inventoryMenu.After();
+                    break;
+                case ConsoleKey.Enter:
+                    Console.Clear();
+                    _inventoryMenu.Confirm();
+                    break;
+                    case ConsoleKey.Escape:
+                    Console.Clear();
+                    _inventoryMenu.SelectItem(0);
+                    Game.ToggleInventory();
+                    break;
+            }
         }
 
     }
