@@ -5,7 +5,7 @@
         private char[,] _map { get; set; } = new char[0, 0];
         public char this[int y, int x] { get { return _map[y, x]; } }
 
-        public (int x, int y) PlayerPos { get; private set; } = (0, 0);
+        public (int x, int y) PlayerPos { get; private set; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
         public float ChanceTriggerCombat = 0.05F;
@@ -40,7 +40,10 @@
             switch (c)
             {
                 case ' ': // Ground
+                case ':': // Sand
                 case '*': // Grass on ground
+                case '&': // Grass on sand
+                case 'p': // Bridge
                     return true;
                 case '#': // Wall
                 case 'o': // Water
@@ -63,7 +66,7 @@
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
                 PlayerPos = (newX, newY);
-                if (_map[PlayerPos.y, PlayerPos.x] == '*')
+                if (_map[PlayerPos.y, PlayerPos.x] == '*' || _map[PlayerPos.y, PlayerPos.x] == '&')
                     WalkInBush();
             }
         }
