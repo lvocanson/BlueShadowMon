@@ -8,14 +8,14 @@
     public class AlterationID { }
     public class Alterable<T>
     {
-        public T Value { get; set; }
+        public T BaseValue { get; set; }
         public T AlteratedValue { get; private set; }
 
         private List<(AlterationID id, Func<T, T> alteration, AlterationType type)> _alterations = new List<(AlterationID id, Func<T, T> alteration, AlterationType type)>();
 
         public Alterable(T baseValue)
         {
-            Value = baseValue;
+            BaseValue = baseValue;
             AlteratedValue = baseValue;
         }
 
@@ -34,7 +34,7 @@
             _alterations.Add((id, alteration, type));
 
             // Update the alterated value
-            AlteratedValue = Value;
+            AlteratedValue = BaseValue;
             foreach (AlterationType t in Enum.GetValues(typeof(AlterationType)))
             {
                 for (int i = 0; i < _alterations.Count; i++)
