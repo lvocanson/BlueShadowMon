@@ -342,7 +342,7 @@
 
             // Attack with Armor Condition
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.mostArmor[PetStat.Armor])
+            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostArmor[PetStat.Armor])
             {
                 scores["Attack"] += 10;
             }
@@ -357,7 +357,7 @@
                 scores["Attack"] += 5;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.leastArmor[PetStat.Armor])
+            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.leastArmor[PetStat.Armor])
             {
                 scores["Attack"] += 20;
             }
@@ -365,18 +365,18 @@
 
             // Heal with Missing Health Condition
 
-            if (enemyTeam.mostPower == enemyTeam.leastHealth && enemyTeam.mostPower.GetBonusStat(PetStat.Health) < 0)
+            if (enemyTeam.mostPower == enemyTeam.leastHealth && enemyTeam.mostPower.GetBonusStat(PetStat.Health, true) < -0.35f)
             {
                 if (enemyTeam.mostPower == enemyTeam.leastArmor)
                 {
-                    scores["Heal"] += 20;
+                    scores["Heal"] += 30;
                 }
             }
-            if (enemyTeam.mostArmor == enemyTeam.leastHealth && enemyTeam.mostArmor.GetBonusStat(PetStat.Health) < 0)
+            if (enemyTeam.mostArmor == enemyTeam.leastHealth && enemyTeam.mostArmor.GetBonusStat(PetStat.Health, true) < -0.35f)
             {
                 if (enemyTeam.mostArmor == enemyTeam.leastPower)
                 {
-                    scores["Heal"] += 5;
+                    scores["Heal"] += 15;
                 }
             }
 
@@ -388,12 +388,12 @@
                 scores["PowerDebuff"] += 20;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.mostPower[PetStat.Power])
+            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostPower[PetStat.Power])
             {
                 scores["PowerDebuff"] += 10;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.leastPower[PetStat.Power])
+            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.leastPower[PetStat.Power])
             {
                 scores["PowerDebuff"] += 5;
             }
@@ -406,7 +406,7 @@
 
             // PowerBuff with Armor Condition
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.mostArmor[PetStat.Power])
+            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostArmor[PetStat.Power])
             {
                 scores["PowerBuff"] += 10;
             }
@@ -421,7 +421,7 @@
                 scores["PowerBuff"] += 20;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] >= enemyTeam.leastArmor[PetStat.Armor])
+            if (enemyTeam.mostPower[PetStat.Power] > enemyTeam.leastArmor[PetStat.Armor])
             {
                 scores["PowerBuff"] += 5;
             }
@@ -475,10 +475,6 @@
             else if (!ability.CanTarget(EffectTarget.Multiple))
             {
                 targets = new[] { targets.First() };
-            }
-            else
-            {
-                throw new Exception("Ability cannot target anything!");
             }
 
             ability.UseOn(targets, ActivePet);

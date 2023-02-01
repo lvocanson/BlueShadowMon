@@ -225,7 +225,12 @@
         /// Get the difference between the current and base value of a stat.
         /// </summary>
         /// <returns></returns>
-        public float GetBonusStat(PetStat stat) => _stats[stat].AlteratedValue - _stats[stat].BaseValue;
+        public float GetBonusStat(PetStat stat, bool porcent = false)
+        {
+            if (porcent)
+                return _stats[stat].AlteratedValue / _stats[stat].BaseValue - 1;
+            return _stats[stat].AlteratedValue - _stats[stat].BaseValue; 
+        }
 
 
         /// <summary>
