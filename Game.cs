@@ -23,6 +23,12 @@
         public const int DEFAULT_Y_POS_ON_MAP = 53;
         public const string DEFAULT_MAP_PATH = "Map/Map.txt";
 
+        // PNJ
+        private static Pnj _pnj { get; set; }
+        public const int DEFAULT_X_POS_ON_MAP_PNJ = 371;
+        public const int DEFAULT_Y_POS_ON_MAP_PNJ = 39;
+
+
         // Scene Manager
         private static MenuScene _menuScene;
         private static MapScene _mapScene;
@@ -54,7 +60,7 @@
         public static void SwitchToMapScene(string path, (int x, int y) playerPos)
         {
             _player.Move(playerPos);
-            _mapScene.Init(new Map(path, _player));
+            _mapScene.Init(new Map(path, _player, _pnj));
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
@@ -74,9 +80,10 @@
         static Game()
         {
             _player = new Player((DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP));
+            _pnj = new Pnj((DEFAULT_X_POS_ON_MAP_PNJ, DEFAULT_Y_POS_ON_MAP_PNJ));
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player));
+            _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _pnj));
             _combatScene = new CombatScene(new Combat(_player,
                 new(){
                     new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),

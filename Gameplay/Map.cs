@@ -6,11 +6,12 @@
         public char this[int y, int x] { get { return _map[y, x]; } }
 
         public Player Player { get; }
+        public Pnj Pnj { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
         public static float ChanceTriggerCombat = 0.05F;
-        
-        public Map(string path, Player player)
+
+        public Map(string path, Player player, Pnj pnj)
         {
             // Load file
             string[] lines = File.ReadAllLines(path);
@@ -33,9 +34,13 @@
             if (player.x < 0 || Width <= player.x || player.y < 0 || Height <= player.y)
                 throw new Exception("Player position is not valid!");
             Player = player;
+
+            if (pnj.x < 0 || Width <= pnj.x || pnj.y < 0 || Height <= pnj.y)
+                throw new Exception("Pnj position is not valid!");
+            Pnj = pnj;
         }
 
-            private static bool IsCharWalkable(char c)
+        private static bool IsCharWalkable(char c)
         {
             switch (c)
             {
@@ -63,9 +68,16 @@
             int newY = Player.y + y;
             if (newX < 0 || Width <= newX || newY < 0 || Height <= newY)
                 return; // Can't move out of bounds
+
+            if (newX == Pnj.x && newY == Pnj.y)
+            {
+                RunDialogue();
+            }
+            
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
                 Player.Move(newX,newY);
+                
                 if (_map[Player.y, Player.x] == '*' || _map[Player.y, Player.x] == '&')
                     WalkInBush();
             }
@@ -79,6 +91,11 @@
 
         }
 
+        public void RunDialogue()
+        {
+            Console.WriteLine("Hello, I'm a Pnj!");
+        }
+        
         internal void KeyPressed(ConsoleKey key)
         {
             switch (key)

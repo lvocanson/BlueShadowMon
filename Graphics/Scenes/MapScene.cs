@@ -16,9 +16,16 @@
         {
             get { return new Window.ColoredChar(PlayerChar, PlayerColor, Parse(Map[Map.Player.y, Map.Player.x]).BackgroundColor); }
         }
-        
+
+        private Window.ColoredChar _cPnj
+        {
+            get { return new Window.ColoredChar(PnjChar, PnjColor, Parse(Map[Map.Pnj.y, Map.Pnj.x]).BackgroundColor); }
+        }
+
         public static char PlayerChar { get; set; } = '@';
         public static ConsoleColor PlayerColor { get; set; } = ConsoleColor.White;
+        public static char PnjChar { get; set; } = 'P';
+        public static ConsoleColor PnjColor { get; set; } = ConsoleColor.Black;
 
         public MapScene(Map map)
         {
@@ -102,6 +109,14 @@
                         parsed = _cPlayer;
                         if (Map[y, x] == ':' || Map[y, x] == '&')
                             parsed.ForegroundColor = ConsoleColor.Black;
+                        count = 1;
+                        continue;
+                    }
+
+                    if (x == Map.Pnj.x && y == Map.Pnj.y)
+                    {
+                        toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
+                        parsed = _cPnj;
                         count = 1;
                         continue;
                     }
