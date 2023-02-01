@@ -18,7 +18,10 @@
         private static DateTime _lastFrame = DateTime.Now;
 
         // Player
-        private static Player _player;
+        private static Player _player { get; set; }
+        public const int DEFAULT_X_POS_ON_MAP = 285;
+        public const int DEFAULT_Y_POS_ON_MAP = 53;
+        public const string DEFAULT_MAP_PATH = "Map/Map.txt";
 
         // Scene Manager
         private static MenuScene _menuScene;
@@ -55,9 +58,9 @@
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
-        public static void SwitchToCombatScene(List<Pet> allies, List<Pet> ennemies)
+        public static void SwitchToCombatScene(List<Pet> ennemies)
         {
-            _combatScene.Init(new Combat(allies, ennemies));
+            _combatScene.Init(new Combat(_player, ennemies));
             CurrScene = _combatScene;
         }
         public static void ToggleInventory()
@@ -70,16 +73,11 @@
 
         static Game()
         {
-            _player = new Player((285, 53));
+            _player = new Player((DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP));
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene(new Map("Map/Map.txt", _player));
-            _combatScene = new CombatScene(new Combat(
-                new(){
-                    new Pet("MyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
-                    new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
-                    new Pet("MySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
-                },
+            _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player));
+            _combatScene = new CombatScene(new Combat(_player,
                 new(){
                     new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
                     new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
@@ -126,9 +124,10 @@
                 "Main Menu", new Menu(new Window.ColoredString(GameTitle, ConsoleColor.Blue, Window.DefaultBgColor),
                 new (Window.ColoredString, Action)[] {
                 (new Window.ColoredString("Play"), () => SwitchToMapScene()),
-                (new Window.ColoredString("Combat Test"), () => { SwitchToCombatScene(); }), // REMOVE THIS LATER
+                (new Window.ColoredString("Load Save"), () => { _player = GameSaver.LoadGame() ?? _player!; }),
+                (new Window.ColoredString("Save Game"), () => GameSaver.SaveGame(_player!)),
                 (new Window.ColoredString("Settings"), () => SwitchToMenuScene("Settings")),
-                (new Window.ColoredString("Exit Game"), () => Window.Quit())
+                (new Window.ColoredString("Save and Exit Game"), () => { GameSaver.SaveGame(_player!); Window.Quit(); })
             }) },
             {
                 "Settings", new Menu(new Window.ColoredString("Settings", ConsoleColor.DarkYellow, Window.DefaultBgColor),

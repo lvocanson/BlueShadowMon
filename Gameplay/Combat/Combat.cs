@@ -11,14 +11,19 @@
 
         // Action : Attack Menus
         private Menu? _selectAbilityMenu;
-        private Ability _selectedAbility = Data.NullAbility;
+        private Ability _selectedAbility = Data.GetAbilityById[0];
         List<Pet> targetables = new();
         private Menu? _selectTargetMenu;
         private List<Pet> _selectedTargets = new();
 
-        public Combat(List<Pet> allies, List<Pet> enemies)
+        public Combat(Player player, List<Pet> enemies)
         {
-            Allies = allies;
+            Allies = new();
+            foreach (Pet? pet in player.Pets)
+            {
+                if (pet != null)
+                    Allies.Add(pet);
+            }
             Enemies = enemies;
 
             GoToNextTurn();
@@ -40,7 +45,7 @@
         public void GoToNextTurn()
         {
             // Reset the selected ability and targets from the previous turn
-            _selectedAbility = Data.NullAbility;
+            _selectedAbility = Data.GetAbilityById[0];
             targetables.Clear();
             _selectedTargets.Clear();
 
@@ -130,8 +135,9 @@
         {
             // Create the menu actions
             List<(Window.ColoredString, Action)> attackActions = new();
-            foreach (Ability ability in ActivePet!.Abilities)
+            foreach (int abilityId in ActivePet!.Abilities)
             {
+                Ability ability = Data.GetAbilityById[abilityId];
                 void Confirm()
                 {
                     ConfirmAbility(ability);
@@ -424,19 +430,19 @@
             switch (bestAction)
             {
                 case "Attack":
-                    ability = ActivePet.Abilities.Where(a => a.Type == EffectType.Damage).First();
+                    ability = Data.GetAbilityById[ActivePet.Abilities.Where(a => Data.GetAbilityById[a].Type == EffectType.Damage).First()];
                     break;
                 case "Heal":
-                    ability = ActivePet.Abilities.Where(a => a.Type == EffectType.Heal).First();
+                    ability = Data.GetAbilityById[ActivePet.Abilities.Where(a => Data.GetAbilityById[a].Type == EffectType.Heal).First()];
                     break;
                 case "PowerBuff":
-                    ability = ActivePet.Abilities.Where(a => a.Type == EffectType.Buff).First();
+                    ability = Data.GetAbilityById[ActivePet.Abilities.Where(a => Data.GetAbilityById[a].Type == EffectType.Buff).First()];
                     break;
                 case "PowerDebuff":
-                    ability = ActivePet.Abilities.Where(a => a.Type == EffectType.Debuff).First();
+                    ability = Data.GetAbilityById[ActivePet.Abilities.Where(a => Data.GetAbilityById[a].Type == EffectType.Debuff).First()];
                     break;
                 default:
-                    ability = ActivePet.Abilities.First();
+                    ability = Data.GetAbilityById[ActivePet.Abilities.First()];
                     break;
             }
             

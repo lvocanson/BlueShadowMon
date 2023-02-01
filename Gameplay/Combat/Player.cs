@@ -1,40 +1,48 @@
-﻿namespace BlueShadowMon
+﻿using System.Text.Json.Serialization;
+
+namespace BlueShadowMon
 {
     public class Player
     {
         public const int MAX_PETS = 3;
-        public Dictionary<Consumable, int> Inventory { get; private set; } = new();
+        public Dictionary<int, int> Inventory { get; private set; } = new();
         public Pet?[] Pets { get; }
-        
-        public (int x, int y ) MapPosition { get; private set; }
-        public int x { get => MapPosition.x; }
-        public int y { get => MapPosition.y; }
+        public int x { get; private set; }
+        public int y { get; private set; }
+
+        [JsonConstructor]
+        private Player(Dictionary<int, int> inventory, Pet[] Pets, int x, int y)
+        {
+            Inventory = inventory;
+            this.Pets = Pets;
+            this.x = x;
+            this.y = y;
+        }
 
         public Player((int x, int y) mapPosition)
         {
-            Pets = new Pet?[MAX_PETS] { null, null, null };
-            MapPosition = mapPosition;
+            Pets = new Pet?[MAX_PETS]
+            {
+                new Pet("MyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
+                new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
+                new Pet("MySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
+            };
+            (x, y) = mapPosition;
         }
 
         /// <summary>
         /// Move the player to the specified x and y.
         /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        public void Move(int x, int y)
-        {
-            MapPosition = (x, y);
-        }
-        
+        /// <param name="newX"></param>
+        /// <param name="newY"></param>
+        public void Move(int newX, int newY) => (x, y) = (newX, newY);
+
         /// <summary>
         /// Move the player to the specified position.
         /// </summary>
         /// <param name="playerPos"></param>
-        public void Move((int x, int y) playerPos)
-        {
-            MapPosition = playerPos;
-        }
-        
+        public void Move((int x, int y) playerPos) => (x, y) = playerPos;
+
         /// <summary>
         /// Add a Pet to the player's team.
         /// </summary>
@@ -80,37 +88,37 @@
         /// <summary>
         /// Add a consumable to the inventory.
         /// </summary>
-        /// <param name="consumable"></param>
+        /// <param name="consumableId"></param>
         /// <param name="amount"></param>
         /// <exception cref="ArgumentException"></exception>
-        public void AddConsumable(Consumable consumable, int amount)
+        public void AddConsumable(int consumableId, int amount)
         {
             if (amount <= 0)
                 throw new ArgumentException("The amount must be greater than 0.");
-            if (Inventory.ContainsKey(consumable))
-                Inventory[consumable] += amount;
+            if (Inventory.ContainsKey(consumableId))
+                Inventory[consumableId] += amount;
             else
-                Inventory.Add(consumable, amount);
+                Inventory.Add(consumableId, amount);
         }
 
         /// <summary>
         /// Remove an consumable from the inventory.
         /// </summary>
-        /// <param name="consumable"></param>
+        /// <param name="consumableId"></param>
         /// <param name="amount"></param>
         /// <exception cref="Exception"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public void RemoveConsumable(Consumable consumable, int amount = 1)
+        public void RemoveConsumable(int consumableId, int amount = 1)
         {
-            if (!Inventory.ContainsKey(consumable))
+            if (!Inventory.ContainsKey(consumableId))
                 throw new Exception("The player do not have this Consumable in his inventory.");
             if (amount <= 0)
                 throw new ArgumentException("The amount must be greater than 0.");
-            Inventory[consumable] -= amount;
-            if (Inventory[consumable] < 0)
+            Inventory[consumableId] -= amount;
+            if (Inventory[consumableId] < 0)
                 throw new Exception("The player have less items than the amount.");
-            if (Inventory[consumable] == 0)
-                Inventory.Remove(consumable);
+            if (Inventory[consumableId] == 0)
+                Inventory.Remove(consumableId);
         }
 
         /// <summary>
@@ -120,21 +128,24 @@
         public Menu CreateInventoryMenu()
         {
             List<(Window.ColoredString, Action)> actions = new();
-            
-            foreach (Consumable c in Inventory.Keys)
+
+            foreach (int id in Inventory.Keys)
             {
+                Consumable c = Data.GetConsumableById[id];
                 Window.ColoredString name = c.Name;
-                name.String = $"{Inventory[c]} - {name.String}";
-                actions.Add((name, () => {
+                name.String = $"{Inventory[id]} - {name.String}";
+                actions.Add((name, () =>
+                {
                     // TODO: Use the consumable
-                }));
+                }
+                ));
             }
 
             if (actions.Count == 0)
             {
                 actions.Add((new Window.ColoredString("- Empty -"), () => { }));
             }
-            
+
             return new Menu(new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), actions.ToArray());
         }
     }
