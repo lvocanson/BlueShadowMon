@@ -2,12 +2,11 @@
 {
     public enum EffectType
     {
-        PhysicalDamage = 1,
-        MagicalDamage = 2,
-        Heal = 4,
-        Buff = 8,
-        Debuff = 16,
-        StatusEffect = 32,
+        Damage = 1,
+        Heal = 2,
+        Buff = 4,
+        Debuff = 8,
+        StatusEffect = 16,
     }
 
     public enum EffectTarget
@@ -23,10 +22,8 @@
         public Window.ColoredString Name { get; }
         public EffectType Type { get; }
         public EffectTarget Target { get; }
-        public bool CanTarget(EffectTarget wanted)
-        {
-            return (Target & wanted) == wanted;
-        }
+        public bool isEffectType(EffectType type) => (Type & type) == type;
+        public bool CanTarget(EffectTarget wanted) => (Target & wanted) == wanted;
 
         public EffectApplier(Window.ColoredString name, EffectType type, EffectTarget target)
         {

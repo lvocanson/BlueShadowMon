@@ -10,10 +10,8 @@
     public enum PetStat
     {
         Health = 0,
-        PhysicalDamage = 1,
-        MagicalDamage = 2,
-        PhysicalArmor = 3,
-        MagicalArmor = 4,
+        Power = 1,
+        Armor = 2,
     }
 
     public class Pet
@@ -131,13 +129,13 @@
             foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
             {
                 if (_level < TierLevels.t1)
-                    _stats[stat].Value += _statsIncrements[stat].t0;
+                    _stats[stat].BaseValue += _statsIncrements[stat].t0;
                 else if (_level < TierLevels.t2)
-                    _stats[stat].Value += _statsIncrements[stat].t1;
+                    _stats[stat].BaseValue += _statsIncrements[stat].t1;
                 else if (_level < TierLevels.t3)
-                    _stats[stat].Value += _statsIncrements[stat].t2;
+                    _stats[stat].BaseValue += _statsIncrements[stat].t2;
                 else
-                    _stats[stat].Value += _statsIncrements[stat].t3;
+                    _stats[stat].BaseValue += _statsIncrements[stat].t3;
             }
             _level++;
             ResetStats();
@@ -158,7 +156,7 @@
         }
 
         // Abilities
-        public Ability[] Abilities { get; } = new[] { Data.Bite, Data.Kick, Data.Vampirism, Data.FireBall };
+        public Ability[] Abilities { get; } = new[] { Data.Attack, Data.Heal, Data.PowerBuff, Data.PowerDebuff };
         public Ability this[int index] { get { return Abilities[index]; } }
         public int AbilityNumber { get { return Abilities.Length; } }
 
@@ -222,6 +220,12 @@
                 _statusEffects[i].Update();
             }
         }
+
+        /// <summary>
+        /// Get the difference between the current and base value of a stat.
+        /// </summary>
+        /// <returns></returns>
+        public float GetBonusStat(PetStat stat) => _stats[stat].AlteratedValue - _stats[stat].BaseValue;
 
 
         /// <summary>
