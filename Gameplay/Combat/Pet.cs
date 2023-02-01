@@ -1,4 +1,7 @@
-﻿namespace BlueShadowMon
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace BlueShadowMon
 {
     public enum PetType
     {
@@ -16,11 +19,20 @@
 
     public class Pet
     {
-
         public string Name { get; }
         public PetType Type { get; }
 
         // Stats
+        public Dictionary<PetStat, float> BaseStats { get
+            {
+                Dictionary<PetStat, float> stats = new Dictionary<PetStat, float>();
+                foreach (PetStat stat in Enum.GetValues(typeof(PetStat)))
+                {
+                    stats.Add(stat, _stats[stat].BaseValue);
+                }
+                return stats;
+            }
+        }
         private Dictionary<PetStat, Alterable<float>> _stats;
         private Dictionary<PetStat, (int t0, int t1, int t2, int t3)> _statsIncrements;
         public float this[PetStat stat]
@@ -156,9 +168,8 @@
         }
 
         // Abilities
-        public int[] Abilities { get; } = new[] { 1, 2, 3, 4 };
+        public int[] Abilities { get; private set; } = new[] { 1, 2, 3, 4 };
         public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
-        public int AbilityNumber { get { return Abilities.Length; } }
 
         /// <summary>
         /// Learn an ability.
@@ -240,14 +251,14 @@
         /// <param name="type">Type</param>
         /// <param name="stats">Statistics</param>
         /// <param name="statsIncrements">Stats multipliers on level up</param>
-        public Pet(string name, PetType type, Dictionary<PetStat, int> stats, Dictionary<PetStat, (int, int, int, int)> statsIncrements)
+        public Pet(string name, PetType type, Dictionary<PetStat, float> baseStats, Dictionary<PetStat, (int, int, int, int)> statsIncrements)
         {
             Name = name;
             Type = type;
             _stats = new Dictionary<PetStat, Alterable<float>>();
             foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
             {
-                _stats.Add(stat, new Alterable<float>(stats[stat]));
+                _stats.Add(stat, new Alterable<float>(baseStats[stat]));
             }
             _statsIncrements = statsIncrements;
         }

@@ -114,10 +114,9 @@
         };
 
 
-
         // Pets stats
 
-        public static Dictionary<PetStat, int> StarterStats { get; } = new()
+        public static Dictionary<PetStat, float> StarterStats { get; } = new()
         {
             { PetStat.Health, 100 },
             { PetStat.Power, 10 },

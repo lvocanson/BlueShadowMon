@@ -5,22 +5,14 @@ namespace BlueShadowMon
     public class Player
     {
         public const int MAX_PETS = 3;
-        public Dictionary<int, int> Inventory { get; private set; } = new();
+        public Dictionary<int, int> Inventory { get; private set; }
         public Pet?[] Pets { get; }
         public int x { get; private set; }
         public int y { get; private set; }
-
-        [JsonConstructor]
-        private Player(Dictionary<int, int> inventory, Pet[] Pets, int x, int y)
-        {
-            Inventory = inventory;
-            this.Pets = Pets;
-            this.x = x;
-            this.y = y;
-        }
-
+        
         public Player((int x, int y) mapPosition)
         {
+            Inventory = new Dictionary<int, int>();
             Pets = new Pet?[MAX_PETS]
             {
                 new Pet("MyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),

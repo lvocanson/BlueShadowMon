@@ -297,7 +297,20 @@ namespace BlueShadowMon
                     lines.Add(line);
                     line = "";
                 }
-                if (words[0].Length >= width)
+                if (words[0].Contains(Environment.NewLine))
+                {
+                    string[] split = words[0].Split(Environment.NewLine);
+                    if (line.Length + split[0].Length > width)
+                    {
+                        lines.Add(line);
+                        line = "";
+                    }
+                    line += split[0];
+                    lines.Add(line);
+                    line = "";
+                    words[0] = string.Join(" ", split.Skip(1));
+                }
+                else if (words[0].Length >= width)
                 {
                     lines.Add(words[0].Substring(0, width));
                     words[0] = words[0].Substring(width);

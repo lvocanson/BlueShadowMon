@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using System.Text.Json;
+﻿using Newtonsoft.Json;
 
 namespace BlueShadowMon
 {
@@ -8,18 +7,18 @@ namespace BlueShadowMon
         public const string SAVE_FILE_NAME = "save.json";
         public const string SAVE_FILE_PATH = "BlueShadowMon/";
 
-        private static readonly JsonSerializerOptions _options =
-            new() {
-                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull,
-                WriteIndented = true, 
-                PropertyNameCaseInsensitive = true
+        private static readonly JsonSerializerSettings _options =
+            new()
+            {
+                TypeNameHandling = TypeNameHandling.All,
+                Formatting = Formatting.Indented,
             };
 
 
         public static void SaveGame(Player player)
         {
             // Create json data
-            string json = JsonSerializer.Serialize(player, _options);
+            string json = JsonConvert.SerializeObject(player, _options);
 
             // Save json data
             if (!Directory.Exists(SAVE_FILE_PATH))
@@ -38,21 +37,23 @@ namespace BlueShadowMon
                 Window.Message("Save file not found.");
                 return null;
             }
-            
+
             // Load json data
             string json = File.ReadAllText(SAVE_FILE_PATH + SAVE_FILE_NAME);
 
             // Create player from json data
-            Player? player = JsonSerializer.Deserialize<Player>(json, _options);
+            Player player;
+            try
+            {
+                player = JsonConvert.DeserializeObject<Player>(json, _options);
+            }
+            catch (Exception e)
+            {
+                Window.Message("Something went wrong while loading the save file.\n" + e);
+                return null;
+            }
 
-            if (player == null)
-            {
-                Window.Message("Save file is corrupted.");
-            }
-            else
-            {
-                Window.Message("Game loaded.");
-            }
+            Window.Message("Game loaded.");
             return player;
         }
     }
