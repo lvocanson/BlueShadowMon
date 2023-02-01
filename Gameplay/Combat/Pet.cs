@@ -158,7 +158,7 @@
         }
 
         // Abilities
-        public Ability[] Abilities { get; } = new[] { Data.Bite };
+        public Ability[] Abilities { get; } = new[] { Data.Bite, Data.Kick, Data.Vampirism, Data.FireBall };
         public Ability this[int index] { get { return Abilities[index]; } }
         public int AbilityNumber { get { return Abilities.Length; } }
 
