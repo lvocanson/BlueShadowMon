@@ -38,7 +38,7 @@
         {
             AlterationID aid = target.AlterStat(PetStat.Power, AlterationType.Multiplicative, (power) =>
             {
-                return power * 0.25F;
+                return power * 1.25F;
             });
             target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Power Buff"), EffectType.Buff, target, () => { }, () =>
             {
@@ -47,13 +47,13 @@
         });
 
         /// <summary>
-        /// Buff the user's armor by 25% for 3 turns.
+        /// Debuff the user's armor by 25% for 3 turns.
         /// </summary>
-        public static Ability PowerDebuff { get; } = new Ability(new Window.ColoredString("Power Debuff"), EffectType.Buff, EffectTarget.Self, (target, user) =>
+        public static Ability PowerDebuff { get; } = new Ability(new Window.ColoredString("Power Debuff"), EffectType.Debuff, EffectTarget.Self, (target, user) =>
         {
             AlterationID aid = target.AlterStat(PetStat.Power, AlterationType.Multiplicative, (power) =>
             {
-                return power * 0.25F;
+                return power * 0.75F;
             });
             target.AddStatusEffect(new StatusEffect(new Window.ColoredString("Power Debuff"), EffectType.Buff, target, () => { }, () =>
             {
