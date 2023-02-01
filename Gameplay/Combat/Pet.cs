@@ -156,22 +156,22 @@
         }
 
         // Abilities
-        public Ability[] Abilities { get; } = new[] { Data.Attack, Data.Heal, Data.PowerBuff, Data.PowerDebuff };
-        public Ability this[int index] { get { return Abilities[index]; } }
+        public int[] Abilities { get; } = new[] { 1, 2, 3, 4 };
+        public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
         public int AbilityNumber { get { return Abilities.Length; } }
 
         /// <summary>
         /// Learn an ability.
         /// </summary>
-        /// <param name="ability"></param>
+        /// <param name="abilityId"></param>
         /// <param name="index">Slot</param>
-        public void LearnAbility(Ability ability, int index)
+        public void LearnAbility(int abilityId, int index)
         {
-            if (Abilities.Contains(ability))
+            if (Abilities.Contains(abilityId))
                 throw new Exception("Pet already knew this ability!");
             if (index > Tier)
                 throw new Exception("Pet can't have " + (index + 1).ToString() + " abilities while beeing tier " + Tier.ToString() + "!");
-            Abilities[index] = ability;
+            Abilities[index] = abilityId;
         }
 
         /// <summary>
@@ -179,14 +179,14 @@
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="target">The Pet</param>
-        public void UseAbility(int index, Pet target) => Abilities[index].UseOn(target, this);
+        public void UseAbility(int index, Pet target) => this[index].UseOn(target, this);
 
         /// <summary>
         /// Use an ability on other Pets.
         /// </summary>
         /// <param name="index">Index of the ability</param>
         /// <param name="targets">Pets</param>
-        public void UseAbility(int index, Pet[] targets) => Abilities[index].UseOn(targets, this);
+        public void UseAbility(int index, Pet[] targets) => this[index].UseOn(targets, this);
 
         // Status effects
         private List<StatusEffect> _statusEffects = new List<StatusEffect>();
