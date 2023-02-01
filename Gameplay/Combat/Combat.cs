@@ -16,9 +16,6 @@
         private Menu? _selectTargetMenu;
         private List<Pet> _selectedTargets = new();
 
-        // Action: Inventory
-        private Scene _inventoryScene;
-
         public Combat(List<Pet> allies, List<Pet> enemies)
         {
             Allies = allies;
@@ -35,11 +32,6 @@
                 (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () => { Game.SwitchToMapScene(); })
             });
             CurrentMenu = _selectActionMenu;
-
-            _inventoryScene = new MenuScene(new Menu(new Window.ColoredString("Inventory"),
-                new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Back", ConsoleColor.DarkCyan, Window.DefaultBgColor), () => Game.SwitchToCombatScene())
-            }));
         }
 
         /// <summary>
@@ -190,7 +182,7 @@
 
             // Select target Menu
             UpdateSelectTargetMenu();
-            _selectTargetMenu.SelectItem(0);
+            _selectTargetMenu!.SelectItem(0);
             CurrentMenu = _selectTargetMenu;
         }
 
