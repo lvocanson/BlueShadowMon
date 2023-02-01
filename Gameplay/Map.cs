@@ -52,6 +52,7 @@
                     return true;
                 case '#': // Wall
                 case 'o': // Water
+                case 'P': // PNJ
                 default:  // Unknown
                     return false;
             }
@@ -72,6 +73,7 @@
             if (newX == Pnj.x && newY == Pnj.y)
             {
                 RunDialogue();
+                return;
             }
             
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
@@ -93,7 +95,9 @@
 
         public void RunDialogue()
         {
-            Console.WriteLine("Hello, I'm a Pnj!");
+            Window.Message("Hello, Young Pet Trainer !!");
+            Window.Message("I'm Bob, I'm here to help you.");
+            Window.Message("I can teach you how to play.");
         }
         
         internal void KeyPressed(ConsoleKey key)
