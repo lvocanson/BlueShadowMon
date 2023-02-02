@@ -11,8 +11,6 @@
         public int Height { get { return _map.GetLength(0); } }
 
         public static float ChanceTriggerCombat = 0.05F;
-        
-        private PetType type;
 
         public Map(string path, Player player, NPC[] npcs)
         {
@@ -134,7 +132,7 @@
                     PetType t = (PetType)(new Random().Next(0, 3));
                     string Name = GetName(t);
                     Pet p = new Pet(Name, t, Data.StarterStats, Data.StarterIncrements);
-                    p.LevelUp(new Random().Next(-2, 1) + avgLevel); enemies.Add(p);
+                    p.LevelUp(Math.Max(new Random().Next(-2, 1) + avgLevel, 0)); enemies.Add(p);
                 }
 
                 Game.SwitchToCombatScene(enemies);

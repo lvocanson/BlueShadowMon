@@ -113,10 +113,7 @@
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _npcs));
-            _combatScene = new CombatScene(new Combat(_player, new List<Pet>()
-            {
-                new("Default", PetType.Dog, Data.StarterStats, Data.StarterIncrements)
-            }));
+            _combatScene = new CombatScene(new Combat(_player, new List<Pet>(){new Pet()}));
             _inventoryScene = new InventoryScene(_player);
             _previousScene = _menuScene;
         }

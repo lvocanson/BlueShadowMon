@@ -3,24 +3,21 @@
     public class Player
     {
         public const int MAX_PETS = 3;
-        public Dictionary<int, int> Inventory { get; private set; }
-        public List<Pet> Pets { get; }
-        public int x { get; private set; }
-        public int y { get; private set; }
-        
+        public Dictionary<int, int> Inventory { get; private set; } = new();
+        public List<Pet> Pets { get; } = new();
+        public int x { get; private set; } = 0;
+        public int y { get; private set; } = 0;
+
         /// <summary>
         /// Create a new player.
         /// </summary>
         /// <param name="mapPosition">Position on the map</param>
         public Player(int x, int y)
         {
-            Inventory = new Dictionary<int, int>();
-            Pets = new()
-            {
-                new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements)
-            };
+            Pets.Add(new Pet("Miaou", PetType.Cat, Data.StarterStats, Data.StarterIncrements));
             (this.x, this.y) = (x, y);
         }
+        public Player() { }
 
         /// <summary>
         /// Move the player to the specified x and y.

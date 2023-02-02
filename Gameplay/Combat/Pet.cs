@@ -19,10 +19,12 @@ namespace BlueShadowMon
 
     public class Pet
     {
-        public string Name { get; }
-        public PetType Type { get; }
-        
-        public Dictionary<PetStat, float> BaseStats { get
+        public string Name { get; private set; } = "";
+        public PetType Type { get; private set; }
+
+        public Dictionary<PetStat, float> BaseStats
+        {
+            get
             {
                 Dictionary<PetStat, float> stats = new Dictionary<PetStat, float>();
                 foreach (PetStat stat in Enum.GetValues(typeof(PetStat)))
@@ -32,8 +34,9 @@ namespace BlueShadowMon
                 return stats;
             }
         }
-        private Dictionary<PetStat, Alterable<float>> _stats;
-        private Dictionary<PetStat, (int t0, int t1, int t2, int t3)> _statsIncrements;
+        
+        private Dictionary<PetStat, Alterable<float>> _stats = new();
+        private Dictionary<PetStat, (int t0, int t1, int t2, int t3)> _statsIncrements = new();
         public float this[PetStat stat]
         {
             get => _stats[stat].AlteratedValue;
@@ -84,7 +87,7 @@ namespace BlueShadowMon
                 GainXp(value - _xp);
             }
         }
-        public List<int> Abilities { get; private set; } = new() { 1, 2, 3, 4 };
+        public List<int> Abilities { get; private set; } = new();
         public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
 
         private List<StatusEffect> StatusEffects = new List<StatusEffect>(); 
@@ -100,12 +103,23 @@ namespace BlueShadowMon
         {
             Name = name;
             Type = type;
-            _stats = new Dictionary<PetStat, Alterable<float>>();
+            Abilities.Add(1);
+            Abilities.Add(2);
+            Abilities.Add(3);
+            Abilities.Add(4);
             foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
             {
                 _stats.Add(stat, new Alterable<float>(baseStats[stat]));
             }
             _statsIncrements = statsIncrements;
+        }
+        public Pet()
+        {
+            foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
+            {
+                _stats.Add(stat, new Alterable<float>(Data.StarterStats[stat]));
+            }
+            _statsIncrements = Data.StarterIncrements;
         }
 
         /// <summary>
