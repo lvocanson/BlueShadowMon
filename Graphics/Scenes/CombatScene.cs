@@ -22,6 +22,7 @@
             int leftX = screenOffset + width / 2;
             int rightX = Console.WindowWidth - screenOffset - width / 2;
             Window.ColoredString cString = new("Colored String");
+            Window.ColoredChar cChar = new('│', ConsoleColor.White, ConsoleColor.DarkGray);
 
             int y = 3;
             Window.Write("Your team", leftX, y - 2, true);
@@ -29,20 +30,64 @@
             {
                 Pet pet = Combat.Allies[i];
                 Window.Write(pet.Name, leftX, y, true);
+                
                 // Health bar
                 y++;
-                Window.Write('[', screenOffset + 1, y);
-                cString.BackgroundColor = ConsoleColor.Green;
+                Window.Write(cChar, screenOffset, y);
                 cString.String = new string(' ', (int)((pet[PetStat.Health] * (width - 2) + 1) / pet.BaseStats[PetStat.Health]));
-                Window.Write(cString, leftX, y, true);
-                Window.Write('[', screenOffset + 1, y);
+                if (cString.String.Length <= width * 0.2)
+                    cString.BackgroundColor = ConsoleColor.DarkRed;
+                else if (cString.String.Length <= width * 0.5)
+                    cString.BackgroundColor = ConsoleColor.DarkYellow;
+                else
+                    cString.BackgroundColor = ConsoleColor.Green;
+                Window.Write(cString, screenOffset + 1, y);
+                Window.Write(cChar, screenOffset + width - 1, y);
+
+                // Power and armor
+                y++;
+                cString.BackgroundColor = ConsoleColor.Black;
+                cString.String = $"Power: {Math.Round(pet[PetStat.Power], 2)}";
+                Window.Write(cString, screenOffset, y);
+                cString.String = $"Armor: {Math.Round(pet[PetStat.Armor], 2)}";
+                Window.Write(cString, screenOffset + width - cString.String.Length, y);
+                
+
                 y += 2;
             }
 
 
             y = 3;
             Window.Write("Enemy team", rightX, y - 2, true);
-            
+            for (int i = 0; i < Combat.Enemies.Count; i++)
+            {
+                Pet pet = Combat.Enemies[i];
+                Window.Write(pet.Name, rightX, y, true);
+
+                // Health bar
+                y++;
+                Window.Write(cChar, Console.WindowWidth - screenOffset - width, y);
+                cString.String = new string(' ', (int)((pet[PetStat.Health] * (width - 2) + 1) / pet.BaseStats[PetStat.Health]));
+                if (cString.String.Length <= width * 0.2)
+                    cString.BackgroundColor = ConsoleColor.DarkRed;
+                else if (cString.String.Length <= width * 0.5)
+                    cString.BackgroundColor = ConsoleColor.DarkYellow;
+                else
+                    cString.BackgroundColor = ConsoleColor.Green;
+                Window.Write(cString, Console.WindowWidth - screenOffset - width + 1, y);
+                Window.Write(cChar, Console.WindowWidth - screenOffset - 1, y);
+
+                // Power and armor
+                y++;
+                cString.BackgroundColor = ConsoleColor.Black;
+                cString.String = $"Power: {Math.Round(pet[PetStat.Power], 2)}";
+                Window.Write(cString, Console.WindowWidth - screenOffset - width, y);
+                cString.String = $"Armor: {Math.Round(pet[PetStat.Armor], 2)}";
+                Window.Write(cString, Console.WindowWidth - screenOffset - cString.String.Length, y);
+
+                y += 3;
+            }
+
 
             // Menu on the bottom
             y = Console.WindowHeight - 3;

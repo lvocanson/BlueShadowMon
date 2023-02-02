@@ -207,7 +207,7 @@
             {
                 targets = new[] { activePet };
             }
-            else if (!ability.CanTarget(EffectTarget.Multiple))
+            else if (!ability.CanTarget(EffectTarget.Multiple) || bestAction == "Heal")
             {
                 targets = new[] { targets.First() };
             }
