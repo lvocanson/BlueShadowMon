@@ -85,6 +85,7 @@
         public void ResetAlterations()
         {
             _alterations.Clear();
+            AlteratedValue = BaseValue;
         }
     }
 }

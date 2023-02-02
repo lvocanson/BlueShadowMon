@@ -45,8 +45,8 @@ namespace BlueShadowMon
                 {
                     foreach (Pet p in Allies)
                     {
-                        p.ResetStats();
                         p.ClearStatusEffects();
+                        p.ResetStats();
                     }
                     Game.SwitchToMapScene();
                 })
@@ -96,8 +96,8 @@ namespace BlueShadowMon
                 // Reset stats and status effects
                 foreach (Pet ally in Allies)
                 {
-                    ally.ResetStats();
                     ally.ClearStatusEffects();
+                    ally.ResetStats();
                 }
 
                 // Get the experience to give to the player
