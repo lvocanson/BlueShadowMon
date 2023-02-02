@@ -24,7 +24,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![BlueShadowMon][game-screenshot]](https://github.com/lvocanson/BlueShadowMon/tree/README/bin/GameScreenshot.png)
+![BlueShadowMon](https://github.com/lvocanson/BlueShadowMon/tree/README/bin/GameScreenshot.png)
 
 Pokemon-Like C# game in Console. We have developed this game for academic purposes.
  
