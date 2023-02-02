@@ -37,7 +37,7 @@ In game battle:
 <u>Warning:</u> The prject may not work as intended if you are not on Windows 10.
 
 <li> Step 1 : Download/Fork the project </li>
-<li> Step 2 : Open the project in [Visual Studio](https://visualstudio.microsoft.com/fr/) </li>
+<li> Step 2 : Open the project in Visual Studio </li>
 
 
 <!-- CONTRIBUTING -->
