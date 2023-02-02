@@ -29,7 +29,6 @@
 Pokemon-Like C# game in Console. We have developed this game for academic purposes.
  
 
-
 ### Built With
 
 The project is developed with C# 
@@ -42,6 +41,8 @@ The project is developed with C#
 Step 1 : Download/Fork the project 
 
 Step 2 : Open the project solution with Visual Studio 
+
+
 
 <!-- CONTRIBUTING -->
 ## Contributing
@@ -57,7 +58,6 @@ Contributions are what make the open source community such an amazing place to l
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 <!-- CONTACT -->
@@ -65,9 +65,9 @@ Don't forget to give the project a star! Thanks again!
 
 VOCANSON Lucas: [LinkedIn](https://www.linkedin.com/in/lucas-vocanson-developpement-jv/)
 
-VOGT Nathanaël: [LinkedIn]([https://github.com/Gotvna](https://fr.linkedin.com/in/nathana%C3%ABl-vogt-54622620b))
+VOGT Nathanaël: [LinkedIn](https://fr.linkedin.com/in/nathana%C3%ABl-vogt-54622620b)
 
-ZHI  Jun      : [LinkedIn](https://github.com/Juuunnne)
+ZHI  Jun      : [LinkedIn](https://www.linkedin.com/in/jun-zhi-2411b8195/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
