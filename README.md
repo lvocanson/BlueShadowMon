@@ -64,7 +64,9 @@ Don't forget to give the project a star! Thanks again!
 ## Contact
 
 VOCANSON Lucas: [LinkedIn](https://www.linkedin.com/in/lucas-vocanson-developpement-jv/)
+
 VOGT Nathanaël: [LinkedIn]([https://github.com/Gotvna](https://fr.linkedin.com/in/nathana%C3%ABl-vogt-54622620b))
+
 ZHI  Jun      : [LinkedIn](https://github.com/Juuunnne)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
