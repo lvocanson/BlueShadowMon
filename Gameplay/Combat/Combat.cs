@@ -1,4 +1,6 @@
-﻿namespace BlueShadowMon
+﻿using System.Xml.Linq;
+
+namespace BlueShadowMon
 {
     public class Combat
     {
@@ -31,10 +33,9 @@
             _selectActionMenu = new Menu(
             new Window.ColoredString("What do you want to do?"),
             new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Attack", ConsoleColor.Red, Window.DefaultBgColor), () => { CurrentMenu = _selectAbilityMenu!; }),
+                (new Window.ColoredString("Attack", ConsoleColor.Red, Window.DefaultBgColor), () => { CurrentMenu = _selectAbilityMenu!; Console.Clear(); } ),
                 (new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), () => Game.ToggleInventory() ),
-                (new Window.ColoredString("Pets", ConsoleColor.Green, Window.DefaultBgColor), () => { }),
-                (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () => { Game.SwitchToMapScene(); })
+                (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () => Game.SwitchToMapScene() )
             });
             CurrentMenu = _selectActionMenu;
         }
@@ -114,17 +115,23 @@
                 ActivePet = Allies[0];
             }
 
-            // If it's an ally, show the menu to select an ability
+            // If it's an ally, show the menu to select an action
             if (Allies.Contains(ActivePet))
             {
+                CurrentMenu = _selectActionMenu;
                 _selectAbilityMenu?.SelectItem(0);
                 UpdateSelectAbilityMenu();
             }
             // Else it's an enemy, use the AI to make their move
             else
             {
-                AI.Play(ActivePet, Allies, Enemies);
-                GoToNextTurn();
+                CurrentMenu = new(new Window.ColoredString("AI has prepared a move...", ConsoleColor.Green, Window.DefaultBgColor), new (Window.ColoredString, Action)[] {
+                    new(new Window.ColoredString("Press Enter to continue.", ConsoleColor.DarkGray, Window.DefaultBgColor), () =>
+                    {
+                        AI.Play(ActivePet, Allies, Enemies);
+                        GoToNextTurn();
+                    }
+                )});
             }
         }
 
@@ -133,6 +140,8 @@
         /// </summary>
         private void UpdateSelectAbilityMenu()
         {
+            Console.Clear(); // Erase previous menu
+            
             // Create the menu actions
             List<(Window.ColoredString, Action)> attackActions = new();
             foreach (int abilityId in ActivePet!.Abilities)
@@ -214,6 +223,8 @@
         /// </summary>
         private void UpdateSelectTargetMenu()
         {
+            Console.Clear(); // Erase previous menu
+
             // Create the title
             Window.ColoredString title;
             int maxTarget = 1;
@@ -222,7 +233,7 @@
             if (_selectedTargets.Count >= maxTarget)
                 title = new("Maximum number of target reached.", ConsoleColor.Red, Window.DefaultBgColor);
             else
-                title = new("Select targets:");
+                title = new($"Select targets to use {_selectedAbility.Name.String}:");
 
             // Create the confirm button
             (Window.ColoredString, Action) confirm;
@@ -258,13 +269,12 @@
 
         /// <summary>
         /// Confirm the target(s) and use the ability on them.
-        /// 
+        /// Draw a confirm message.
         /// </summary>
         private void ConfirmTarget()
         {
             _selectedAbility.UseOn(_selectedTargets.ToArray(), ActivePet!);
             GoToNextTurn();
-            CurrentMenu = _selectActionMenu;
         }
 
         public void KeyPressed(ConsoleKey key)
@@ -280,7 +290,6 @@
                     CurrentMenu.After();
                     break;
                 case ConsoleKey.Enter:
-                    Console.Clear();
                     CurrentMenu.Confirm();
                     break;
                 case ConsoleKey.Escape:

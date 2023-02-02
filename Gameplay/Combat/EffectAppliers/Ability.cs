@@ -5,8 +5,8 @@
     /// </summary>
     public class Ability : EffectApplier
     {
-        protected Action<Pet, Pet> _effect;
-        public Ability(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet, Pet> effect) : base(name, type, target)
+        protected Action<Pet[], Pet> _effect;
+        public Ability(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet[], Pet> effect) : base(name, type, target)
         {
             _effect = effect;
         }
@@ -30,12 +30,10 @@
         {
             if (!CanTarget(EffectTarget.Multiple) && targets.Length > 1)
                 throw new Exception("This ability cannot be used on multiple targets.");
-            foreach (Pet t in targets)
-            {
-                _effect(t, user);
-            }
-            // Targets
-            string msg = user.Name + " used " + Name.String + " on ";
+            _effect(targets, user);
+            
+            // Draw Message
+            string msg = user.Name + " use " + Name.String + " on ";
             for (int i = 0; i < targets.Length; i++)
             {
                 msg += targets[i].Name;
@@ -44,7 +42,7 @@
                 else if (i < targets.Length - 1)
                     msg += " and ";
             }
-            msg += ".";
+            msg += "!";
             Window.Message(msg, true);
         }
     }

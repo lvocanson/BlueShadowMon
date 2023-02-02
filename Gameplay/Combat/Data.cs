@@ -26,7 +26,7 @@
 
         // Abilities
         private static Ability[] Abilities { get; } = new[] {
-            new Ability(new Window.ColoredString("Null Ability"), EffectType.Heal, EffectTarget.Self, (target, user) =>
+            new Ability(new Window.ColoredString("Null Ability"), EffectType.Heal, EffectTarget.Self, (targets, user) =>
             {
                 ;
             }),
@@ -34,8 +34,9 @@
             /// <summary>
             /// A physical attack that deals damage to a single target.
             /// </summary>
-            new Ability(new Window.ColoredString("Attack"), EffectType.Damage, EffectTarget.Enemy, (target, user) =>
+            new Ability(new Window.ColoredString("Attack"), EffectType.Damage, EffectTarget.Enemy, (targets, user) =>
             {
+                Pet target = targets[0]; // Only one target
                 target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
                     return health - Math.Max(user[PetStat.Power] - target[PetStat.Armor], 1);
@@ -43,21 +44,25 @@
             }),
 
             /// <summary>
-            /// Heal the target for 25% of the user's power.
+            /// Heal the targets for 50% of the user's power (splited between the tarets).
             /// </summary>
-            new Ability(new Window.ColoredString("Heal"), EffectType.Heal, EffectTarget.Multiple | EffectTarget.Ally, (target, user) =>
+            new Ability(new Window.ColoredString("Heal"), EffectType.Heal, EffectTarget.Multiple | EffectTarget.Ally, (targets, user) =>
             {
-                target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
+                foreach(Pet target in targets)
                 {
-                    return health + user[PetStat.Power] * 0.25F;
-                });
+                    target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
+                    {
+                        return Math.Min(health + user[PetStat.Power] * 0.5F / targets.Length, target.BaseStats[PetStat.Health]);
+                    });
+                }
             }),
 
             /// <summary>
             /// Buff the user's power by 25% for 3 turns.
             /// </summary>
-            new Ability(new Window.ColoredString("Power Buff"), EffectType.Buff, EffectTarget.Self, (target, user) =>
+            new Ability(new Window.ColoredString("Power Buff"), EffectType.Buff, EffectTarget.Self, (targets, user) =>
             {
+                Pet target = targets[0]; // Only one target
                 AlterationID aid = target.AlterStat(PetStat.Power, AlterationType.Multiplicative, (power) =>
                 {
                     return power * 1.25F;
@@ -69,10 +74,11 @@
             }),
 
             /// <summary>
-            /// Debuff the user's armor by 25% for 3 turns.
+            /// Debuff an enemy's power by 25% for 3 turns.
             /// </summary>
-            new Ability(new Window.ColoredString("Power Debuff"), EffectType.Debuff, EffectTarget.Enemy, (target, user) =>
+            new Ability(new Window.ColoredString("Power Debuff"), EffectType.Debuff, EffectTarget.Enemy, (targets, user) =>
             {
+                Pet target = targets[0]; // Only one target
                 AlterationID aid = target.AlterStat(PetStat.Power, AlterationType.Multiplicative, (power) =>
                 {
                     return power * 0.75F;
@@ -94,21 +100,21 @@
             {
                 target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
-                    return health + 20;
+                    return Math.Min(health + 20,  target.BaseStats[PetStat.Health]);
                 });
             }),
             new Consumable(new Window.ColoredString("Health Potion II"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
-                    return health + 50;
+                    return Math.Min(health + 70,  target.BaseStats[PetStat.Health]);
                 });
             }),
             new Consumable(new Window.ColoredString("Health Potion III"), EffectType.Heal, EffectTarget.Ally, (target) =>
             {
                 target.AlterStat(PetStat.Health, AlterationType.Additive, (health) =>
                 {
-                    return health + 150;
+                    return Math.Min(health + 150,  target.BaseStats[PetStat.Health]);
                 });
             })
         };
@@ -118,7 +124,7 @@
 
         public static Dictionary<PetStat, float> StarterStats { get; } = new()
         {
-            { PetStat.Health, 100 },
+            { PetStat.Health, 50 },
             { PetStat.Power, 10 },
             { PetStat.Armor, 5 },
         };
