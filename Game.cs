@@ -91,9 +91,9 @@
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
-        public static void SwitchToCombatScene(List<Pet> ennemies)
+        public static void SwitchToCombatScene(List<Pet> enemies)
         {
-            _combatScene.Init(new Combat(_player, ennemies));
+            _combatScene.Init( new Combat(_player, enemies));
             CurrScene = _combatScene;
         }
         public static void ToggleInventory()
@@ -113,13 +113,7 @@
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _npcs));
-            _combatScene = new CombatScene(new Combat(_player,
-                new(){
-                    new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
-                    new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
-                    new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
-                }
-            ));
+            _combatScene = new CombatScene(new Combat(_player, new List<Pet>()));
             _inventoryScene = new InventoryScene(_player);
             _previousScene = _menuScene;
         }

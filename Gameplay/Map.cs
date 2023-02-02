@@ -4,7 +4,7 @@
     {
         private char[,] _map { get; set; } = new char[0, 0];
         public char this[int y, int x] { get { return _map[y, x]; } }
-
+        
         public Player Player { get; }
         public NPC[] NPCs { get; }
         public int Width { get { return _map.GetLength(1); } }
@@ -103,7 +103,29 @@
         {
             float rand = (float)new Random().NextDouble();
             if (rand <= ChanceTriggerCombat)
-                Game.SwitchToCombatScene();
+            {
+                List<Pet> enemies = new List<Pet>();
+
+                int EnemyTeamCount = Player.Pets.Count();
+                for (int i = 0; i < EnemyTeamCount; i++)
+                {
+                    int randEnemyType = new Random().Next(0, 3);
+                    switch (randEnemyType)
+                    {
+                        case 0:
+                            enemies.Add(new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements));
+                            break;
+                        case 1:
+                            enemies.Add(new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements));
+                            break;
+                        case 2:
+                            enemies.Add(new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements));
+                            break;
+                    }
+                }
+
+                Game.SwitchToCombatScene(enemies);
+            }
 
         }
 
