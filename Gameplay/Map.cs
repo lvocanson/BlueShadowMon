@@ -9,6 +9,9 @@
         public NPC[] NPCs { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
+
+        public string Name { get; private set; }
+
         public static float ChanceTriggerCombat = 0.05F;
 
         public Map(string path, Player player, NPC[] npcs)
@@ -113,13 +116,13 @@
                     switch (randEnemyType)
                     {
                         case 0:
-                            enemies.Add(new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements));
+                            enemies.Add(new Pet(Name, PetType.Cat, Data.StarterStats, Data.StarterIncrements));
                             break;
                         case 1:
-                            enemies.Add(new Pet("EnemyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements));
+                            enemies.Add(new Pet(Name, PetType.Dog, Data.StarterStats, Data.StarterIncrements));
                             break;
                         case 2:
-                            enemies.Add(new Pet("EnemySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements));
+                            enemies.Add(new Pet(Name, PetType.Snake, Data.StarterStats, Data.StarterIncrements));
                             break;
                     }
                 }
