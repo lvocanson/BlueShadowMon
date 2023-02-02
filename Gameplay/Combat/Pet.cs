@@ -21,8 +21,7 @@ namespace BlueShadowMon
     {
         public string Name { get; }
         public PetType Type { get; }
-
-        // Stats
+        
         public Dictionary<PetStat, float> BaseStats { get
             {
                 Dictionary<PetStat, float> stats = new Dictionary<PetStat, float>();
@@ -39,50 +38,7 @@ namespace BlueShadowMon
         {
             get => _stats[stat].AlteratedValue;
         }
-
-        public AlterationID AlterStat(PetStat stat, AlterationType type, Func<float, float> alteration)
-        {
-            return _stats[stat].Alterate(type, alteration);
-        }
-
-        public void RemoveStatAlteration(PetStat stat, AlterationID id)
-        {
-            _stats[stat].RemoveAlteration(id);
-        }
         public bool IsAlive => this[PetStat.Health] > 0;
-
-        /// <summary>
-        /// Reset all stats to their base value.
-        /// </summary>
-        public void ResetStats() => ResetStats((PetStat[])Enum.GetValues(typeof(PetStat)));
-
-        /// <summary>
-        /// Reset given stats to their base value.
-        /// </summary>
-        /// <param name="stats">Stats to reset</param>
-        public void ResetStats(PetStat[] stats)
-        {
-            foreach (PetStat stat in stats)
-            {
-                _stats[stat].ResetAlterations();
-            }
-        }
-
-        // Experience
-        private int _xp = 0;
-        private int _xpForLvlUp = 10;
-        public int Xp
-        {
-            get { return _xp; }
-            set
-            {
-                if (IsMaxLevel)
-                    throw new Exception("Already Level Max!");
-                if (value < _xp)
-                    throw new Exception("A Pet can't lose experience!");
-                GainXp(value - _xp);
-            }
-        }
 
         private int _level = 1;
         public static int MaxLevel { get; } = 100;
@@ -113,6 +69,73 @@ namespace BlueShadowMon
                 LevelUp(value - _level);
             }
         }
+        
+        private int _xp = 0;
+        private int _xpForLvlUp = 10;
+        public int Xp
+        {
+            get { return _xp; }
+            set
+            {
+                if (IsMaxLevel)
+                    throw new Exception("Already Level Max!");
+                if (value < _xp)
+                    throw new Exception("A Pet can't lose experience!");
+                GainXp(value - _xp);
+            }
+        }
+        public int[] Abilities { get; private set; } = new[] { 1, 2, 3, 4 };
+        public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
+
+        private List<StatusEffect> _statusEffects = new List<StatusEffect>();
+        public StatusEffect[] StatusEffects => _statusEffects.ToArray();
+
+        /// <summary>
+        /// Create a new pet.
+        /// </summary>
+        /// <param name="name">Name</param>
+        /// <param name="type">Type</param>
+        /// <param name="stats">Statistics</param>
+        /// <param name="statsIncrements">Stats multipliers on level up</param>
+        public Pet(string name, PetType type, Dictionary<PetStat, float> baseStats, Dictionary<PetStat, (int, int, int, int)> statsIncrements)
+        {
+            Name = name;
+            Type = type;
+            _stats = new Dictionary<PetStat, Alterable<float>>();
+            foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
+            {
+                _stats.Add(stat, new Alterable<float>(baseStats[stat]));
+            }
+            _statsIncrements = statsIncrements;
+        }
+
+        public AlterationID AlterStat(PetStat stat, AlterationType type, Func<float, float> alteration)
+        {
+            return _stats[stat].Alterate(type, alteration);
+        }
+
+        public void RemoveStatAlteration(PetStat stat, AlterationID id)
+        {
+            _stats[stat].RemoveAlteration(id);
+        }
+        
+        /// <summary>
+        /// Reset all stats to their base value.
+        /// </summary>
+        public void ResetStats() => ResetStats((PetStat[])Enum.GetValues(typeof(PetStat)));
+
+        /// <summary>
+        /// Reset given stats to their base value.
+        /// </summary>
+        /// <param name="stats">Stats to reset</param>
+        public void ResetStats(PetStat[] stats)
+        {
+            foreach (PetStat stat in stats)
+            {
+                _stats[stat].ResetAlterations();
+            }
+        }
+        
 
         /// <summary>
         /// Gain experience points.
@@ -167,9 +190,6 @@ namespace BlueShadowMon
             }
         }
 
-        // Abilities
-        public int[] Abilities { get; private set; } = new[] { 1, 2, 3, 4 };
-        public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
 
         /// <summary>
         /// Learn an ability.
@@ -199,9 +219,6 @@ namespace BlueShadowMon
         /// <param name="targets">Pets</param>
         public void UseAbility(int index, Pet[] targets) => this[index].UseOn(targets, this);
 
-        // Status effects
-        private List<StatusEffect> _statusEffects = new List<StatusEffect>();
-        public StatusEffect[] StatusEffects => _statusEffects.ToArray();
 
         /// <summary>
         /// Add a status effect.
@@ -241,26 +258,6 @@ namespace BlueShadowMon
             if (porcent)
                 return _stats[stat].AlteratedValue / _stats[stat].BaseValue - 1;
             return _stats[stat].AlteratedValue - _stats[stat].BaseValue; 
-        }
-
-
-        /// <summary>
-        /// Create a new pet.
-        /// </summary>
-        /// <param name="name">Name</param>
-        /// <param name="type">Type</param>
-        /// <param name="stats">Statistics</param>
-        /// <param name="statsIncrements">Stats multipliers on level up</param>
-        public Pet(string name, PetType type, Dictionary<PetStat, float> baseStats, Dictionary<PetStat, (int, int, int, int)> statsIncrements)
-        {
-            Name = name;
-            Type = type;
-            _stats = new Dictionary<PetStat, Alterable<float>>();
-            foreach (PetStat stat in (PetStat[])Enum.GetValues(typeof(PetStat)))
-            {
-                _stats.Add(stat, new Alterable<float>(baseStats[stat]));
-            }
-            _statsIncrements = statsIncrements;
         }
     }
 }

@@ -26,7 +26,7 @@
         // NPC
         private static NPC[] _npcs { get; set; } = new NPC[]
         {
-            new NPC(389, 50, new string[]
+            new NPC(391, 50, new string[]
             {
                 "- Greatings, young trainer! I'll teach you the basics.",
                 "You can explore the world as you want!" + Environment.NewLine + "But be careful, you can encounter wild monsters in the grass!",
