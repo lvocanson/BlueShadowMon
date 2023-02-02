@@ -51,7 +51,7 @@
                "- Wow! You made it this far!" + Environment.NewLine + "You're a real hero!",
                "- I'm not a hero." + Environment.NewLine + "I'm training my Pets.",
                "- Oh, you're training to become one, I see." + Environment.NewLine + "Then, I'll gift you this.",
-               "(He gave you nothing.)",
+               "(He gave you nothing.)" + Environment.NewLine,
                "- . . ." + Environment.NewLine + "Uh... Thanks?",
             })
         };
@@ -113,7 +113,10 @@
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _npcs));
-            _combatScene = new CombatScene(new Combat(_player, new List<Pet>()));
+            _combatScene = new CombatScene(new Combat(_player, new List<Pet>()
+            {
+                new("Default", PetType.Dog, Data.StarterStats, Data.StarterIncrements)
+            }));
             _inventoryScene = new InventoryScene(_player);
             _previousScene = _menuScene;
         }

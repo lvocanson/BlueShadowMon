@@ -6,6 +6,7 @@ namespace BlueShadowMon
     {
         public List<Pet> Allies { get; private set; }
         public List<Pet> Enemies { get; private set; }
+        private List<Pet> _deadEnemies = new List<Pet>();
         public Menu CurrentMenu { get; private set; }
         private int _currentTurn = -1;
         public Pet? ActivePet { get; private set; }
@@ -77,6 +78,7 @@ namespace BlueShadowMon
                 if (!Enemies[i].IsAlive)
                 {
                     Window.Message("The " + Enemies[i].Name + " died!", true);
+                    _deadEnemies.Add(Enemies[i]);
                     Enemies.RemoveAt(i);
                 }
             }
@@ -85,9 +87,22 @@ namespace BlueShadowMon
             bool isPlayerWin = Enemies.All(pet => pet[PetStat.Health] <= 0);
             if (Allies.All(pet => pet[PetStat.Health] <= 0) || isPlayerWin)
             {
+                // Pop up a message
+                if (isPlayerWin)
+                    Window.Message("You won the battle!");
+                else
+                    Window.Message("You lost the battle!");
+
+                // Reset stats and status effects
+                foreach (Pet ally in Allies)
+                {
+                    ally.ResetStats();
+                    ally.ClearStatusEffects();
+                }
+
                 // Get the experience to give to the player
-                int xp = 0;
-                foreach (Pet enemy in Enemies)
+                int xp = 10;
+                foreach (Pet enemy in _deadEnemies)
                 {
                     xp += enemy.Level;
                 }
@@ -96,16 +111,14 @@ namespace BlueShadowMon
 
                 // Give the experience to the player's team
                 xp /= Allies.Count;
+                Window.Message($"All your pets have gained {xp} xp!");
                 foreach (Pet ally in Allies)
                 {
+                    int level = ally.Level;
                     ally.GainXp(xp);
+                    if (ally.Level > level)
+                        Window.Message($"{ally.Name} has leveled up!");
                 }
-
-                // Pop up a message
-                if (isPlayerWin)
-                    Window.Message("You won the battle!");
-                else
-                    Window.Message("You lost the battle!");
 
                 // Return to the map scene
                 Game.SwitchToMapScene();
@@ -290,6 +303,10 @@ namespace BlueShadowMon
             GoToNextTurn();
         }
 
+        /// <summary>
+        /// Handle a key press.
+        /// </summary>
+        /// <param name="key"></param>
         public void KeyPressed(ConsoleKey key)
         {
             switch (key)

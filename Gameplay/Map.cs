@@ -109,7 +109,7 @@
             {
                 List<Pet> enemies = new List<Pet>();
 
-                int EnemyTeamCount = Player.Pets.Count();
+                int EnemyTeamCount = Player.Pets.Count(p => p != null);
                 for (int i = 0; i < EnemyTeamCount; i++)
                 {
                     int randEnemyType = new Random().Next(0, 3);
