@@ -72,8 +72,8 @@
             for (int i = 0; i < Combat.Enemies.Count; i++)
             {
                 Pet pet = Combat.Enemies[i];
-                Window.Write(pet.Name, rightX, y, true);
-
+                cString.String = $"[{pet.Type}] {pet.Name} ";
+                Window.Write(cString, rightX, y, true);
                 // Health bar
                 y++;
                 Window.Write(cChar, Console.WindowWidth - screenOffset - width, y);
