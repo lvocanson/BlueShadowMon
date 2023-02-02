@@ -37,7 +37,8 @@
             for (int i = 0; i < Combat.Allies.Count; i++)
             {
                 Pet pet = Combat.Allies[i];
-                Window.Write(pet.Name, leftX, y, true);
+                cString.String = $"[{pet.Type}] {pet.Name} ";
+                Window.Write(cString, leftX, y, true);
                 
                 // Health bar
                 y++;
