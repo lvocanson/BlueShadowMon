@@ -84,11 +84,10 @@ namespace BlueShadowMon
                 GainXp(value - _xp);
             }
         }
-        public int[] Abilities { get; private set; } = new[] { 1, 2, 3, 4 };
+        public List<int> Abilities { get; private set; } = new() { 1, 2, 3, 4 };
         public Ability this[int index] { get { return Data.GetAbilityById[Abilities[index]]; } }
 
-        private List<StatusEffect> _statusEffects = new List<StatusEffect>(); 
-        public StatusEffect[] StatusEffects => _statusEffects.ToArray();
+        private List<StatusEffect> StatusEffects = new List<StatusEffect>(); 
 
         /// <summary>
         /// Create a new pet.
@@ -267,18 +266,18 @@ namespace BlueShadowMon
         /// Add a status effect.
         /// </summary>
         /// <param name="effect"></param>
-        public void AddStatusEffect(StatusEffect effect) => _statusEffects.Add(effect);
+        public void AddStatusEffect(StatusEffect effect) => StatusEffects.Add(effect);
 
         /// <summary>
         /// Remove a status effect.
         /// </summary>
         /// <param name="effect"></param>
-        public void RemoveStatusEffect(StatusEffect effect) => _statusEffects.Remove(effect);
+        public void RemoveStatusEffect(StatusEffect effect) => StatusEffects.Remove(effect);
 
         /// <summary>
         /// Clear all status effects.
         /// </summary>
-        public void ClearStatusEffects() => _statusEffects.Clear();
+        public void ClearStatusEffects() => StatusEffects.Clear();
 
         /// <summary>
         /// Update all status effects.
@@ -286,9 +285,9 @@ namespace BlueShadowMon
         /// </summary>
         public void UpdateStatusEffects()
         {
-            for (int i = 0; i < _statusEffects.Count; i++)
+            for (int i = 0; i < StatusEffects.Count; i++)
             {
-                _statusEffects[i].Update();
+                StatusEffects[i].Update();
             }
         }
     }

@@ -110,10 +110,12 @@ namespace BlueShadowMon
                     xp /= 10;
 
                 // Give the experience to the player's team
-                xp /= Allies.Count;
+                xp /= Allies.Count(p => !p.IsMaxLevel);
                 Window.Message($"All your pets have gained {xp} xp!");
                 foreach (Pet ally in Allies)
                 {
+                    if (ally.IsMaxLevel)
+                        continue;
                     int level = ally.Level;
                     ally.GainXp(xp);
                     if (ally.Level > level)

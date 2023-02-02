@@ -109,7 +109,7 @@
         /// </summary>
         static Game()
         {
-            _player = new Player((DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP));
+            _player = new Player(DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP);
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
             _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _npcs));

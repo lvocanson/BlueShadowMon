@@ -1,12 +1,10 @@
-﻿using System.Text.Json.Serialization;
-
-namespace BlueShadowMon
+﻿namespace BlueShadowMon
 {
     public class Player
     {
         public const int MAX_PETS = 3;
         public Dictionary<int, int> Inventory { get; private set; }
-        public Pet?[] Pets { get; }
+        public List<Pet> Pets { get; }
         public int x { get; private set; }
         public int y { get; private set; }
         
@@ -14,16 +12,14 @@ namespace BlueShadowMon
         /// Create a new player.
         /// </summary>
         /// <param name="mapPosition">Position on the map</param>
-        public Player((int x, int y) mapPosition)
+        public Player(int x, int y)
         {
             Inventory = new Dictionary<int, int>();
-            Pets = new Pet?[MAX_PETS]
+            Pets = new()
             {
-                new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
-                null,
-                null
+                new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements)
             };
-            (x, y) = mapPosition;
+            (this.x, this.y) = (x, y);
         }
 
         /// <summary>
@@ -46,16 +42,9 @@ namespace BlueShadowMon
         /// <exception cref="Exception"></exception>
         public void AddPet(Pet newPet)
         {
-            if (Pets.Count() >= MAX_PETS)
+            if (Pets.Count >= MAX_PETS)
                 throw new Exception($"Maximum number of Pets ({MAX_PETS}) exceeded.");
-            for (int i = 0; i < MAX_PETS; i++)
-            {
-                if (Pets[i] == null)
-                {
-                    Pets[i] = newPet;
-                    break;
-                }
-            }
+            Pets.Add(newPet);
         }
 
         /// <summary>
@@ -65,9 +54,8 @@ namespace BlueShadowMon
         /// <exception cref="Exception"></exception>
         public void RemovePet(Pet pet)
         {
-            if (!Pets.Contains(pet))
+            if (!Pets.Remove(pet))
                 throw new Exception("The Pet was not found.");
-            Pets[Array.IndexOf(Pets, pet)] = null;
         }
 
         /// <summary>
