@@ -1,5 +1,4 @@
 # BlueShadowMon
-<a name="readme-top"></a>
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -7,9 +6,6 @@
   <ol>
     <li>
       <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
@@ -20,54 +16,40 @@
 </details>
 
 
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-![BlueShadowMon](https://github.com/lvocanson/BlueShadowMon/tree/README/bin/GameScreenshot.png)
+Pokemon-Like C# game in Console.
 
-Pokemon-Like C# game in Console. We have developed this game for academic purposes.
- 
+Main menu:
+![BlueShadowMon](https://raw.githubusercontent.com/lvocanson/BlueShadowMon/main/bin/GameScreenshot.png)
 
-### Built With
+In game map:
+![BlueShadowMon](https://raw.githubusercontent.com/lvocanson/BlueShadowMon/main/bin/GameScreenshot2.png)
 
-The project is developed with C# 
-
+In game battle:
+![BlueShadowMon](https://raw.githubusercontent.com/lvocanson/BlueShadowMon/main/bin/GameScreenshot3.png)
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-Step 1 : Download/Fork the project 
+<u>Warning:</u> The prject may not work as intended if you are not on Windows 10.
 
-Step 2 : Open the project solution with Visual Studio 
-
+<li> Step 1 : Download/Fork the project </li>
+<li> Step 2 : Open the project in [Visual Studio](https://visualstudio.microsoft.com/fr/) </li>
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Contributers
 
-VOCANSON Lucas: [Github](https://github.com/lvocanson)
+<b>VOCANSON Lucas</b>: [Github](https://github.com/lvocanson), [LinkedIn](https://www.linkedin.com/in/lucas-vocanson-developpement-jv/)
 
-VOGT Nathanaël: [Github](https://github.com/Gotvna)
+<b>VOGT Nathanaël</b>: [Github](https://github.com/Gotvna), [LinkedIn](https://fr.linkedin.com/in/nathana%C3%ABl-vogt-54622620b)
 
-ZHI Jun: [Github](https://github.com/Juuunnne)
+<b>ZHI Jun</b>: [Github](https://github.com/Juuunnne), [LinkedIn](https://www.linkedin.com/in/jun-zhi-2411b8195/)
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
 Don't forget to give the project a star! Thanks again!
-
-
-
-<!-- CONTACT -->
-## Contact
-
-VOCANSON Lucas: [LinkedIn](https://www.linkedin.com/in/lucas-vocanson-developpement-jv/)
-
-VOGT Nathanaël: [LinkedIn](https://fr.linkedin.com/in/nathana%C3%ABl-vogt-54622620b)
-
-ZHI  Jun      : [LinkedIn](https://www.linkedin.com/in/jun-zhi-2411b8195/)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
