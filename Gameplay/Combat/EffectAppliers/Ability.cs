@@ -45,7 +45,7 @@
                     msg += " and ";
             }
             msg += ".";
-            Window.Message(msg);
+            Window.Message(msg, true);
         }
     }
 }

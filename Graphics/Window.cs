@@ -284,7 +284,7 @@ namespace BlueShadowMon
         /// Show a string in a box, centered on the screen.
         /// </summary>
         /// <param name="input"></param>
-        public static void Message(string input)
+        public static void Message(string input, bool clear = false)
         {
             int width = (int)(Console.WindowWidth * 0.66); // Message width
             string[] words = input.Split(' ');
@@ -344,7 +344,7 @@ namespace BlueShadowMon
 
             // Wait for a key press
             Console.ReadKey(true);
-            Console.Clear();
+            if (clear) Console.Clear();
         }
 
         /// <summary>

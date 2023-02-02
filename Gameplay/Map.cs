@@ -6,12 +6,12 @@
         public char this[int y, int x] { get { return _map[y, x]; } }
 
         public Player Player { get; }
-        public Pnj Pnj { get; }
+        public NPC[] NPCs { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
         public static float ChanceTriggerCombat = 0.05F;
 
-        public Map(string path, Player player, Pnj pnj)
+        public Map(string path, Player player, NPC[] npcs)
         {
             // Load file
             string[] lines = File.ReadAllLines(path);
@@ -35,9 +35,12 @@
                 throw new Exception("Player position is not valid!");
             Player = player;
 
-            if (pnj.x < 0 || Width <= pnj.x || pnj.y < 0 || Height <= pnj.y)
-                throw new Exception("Pnj position is not valid!");
-            Pnj = pnj;
+            foreach (NPC p in npcs)
+            {
+                if (p.x < 0 || Width <= p.x || p.y < 0 || Height <= p.y)
+                    throw new Exception("NPC position is not valid!");
+            }
+            NPCs = npcs;
         }
 
         private static bool IsCharWalkable(char c)
@@ -52,7 +55,6 @@
                     return true;
                 case '#': // Wall
                 case 'o': // Water
-                case 'P': // PNJ
                 default:  // Unknown
                     return false;
             }
@@ -70,21 +72,24 @@
             if (newX < 0 || Width <= newX || newY < 0 || Height <= newY)
                 return; // Can't move out of bounds
 
-            if (newX == Pnj.x && newY == Pnj.y)
+            foreach (NPC p in NPCs)
             {
-                RunDialogue();
-                return;
+                if (newX == p.x && newY == p.y)
+                {
+                    p.RunDialogue();
+                    return;
+                }
             }
-            
+
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
-                Player.Move(newX,newY);
-                
+                Player.Move(newX, newY);
+
                 if (_map[Player.y, Player.x] == '*' || _map[Player.y, Player.x] == '&')
                     WalkInBush();
             }
         }
-        
+
         public void WalkInBush()
         {
             float rand = (float)new Random().NextDouble();
@@ -93,13 +98,7 @@
 
         }
 
-        public void RunDialogue()
-        {
-            Window.Message("Hello, Young Pet Trainer !!");
-            Window.Message("I'm Bob, I'm here to help you.");
-            Window.Message("I can teach you how to play.");
-        }
-        
+
         internal void KeyPressed(ConsoleKey key)
         {
             switch (key)

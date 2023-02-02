@@ -19,15 +19,42 @@
 
         // Player
         private static Player _player { get; set; }
-        public const int DEFAULT_X_POS_ON_MAP = 285;
-        public const int DEFAULT_Y_POS_ON_MAP = 53;
+        public const int DEFAULT_X_POS_ON_MAP = 389;
+        public const int DEFAULT_Y_POS_ON_MAP = 50;
         public const string DEFAULT_MAP_PATH = "Map/Map.txt";
 
-        // PNJ
-        private static Pnj _pnj { get; set; }
-        public const int DEFAULT_X_POS_ON_MAP_PNJ = 371;
-        public const int DEFAULT_Y_POS_ON_MAP_PNJ = 39;
-
+        // NPC
+        private static NPC[] _npcs { get; set; } = new NPC[]
+        {
+            new NPC(389, 50, new string[]
+            {
+                "- Greatings, young trainer! I'll teach you the basics.",
+                "You can explore the world as you want!" + Environment.NewLine + "But be careful, you can encounter wild monsters in the grass!",
+                "Press I to open your inventory." + Environment.NewLine + "You can use it to store your items.",
+                "Press ESC to open the menu." + Environment.NewLine + "You can save, quit or access the settings from there.",
+                "Well then, good luck on your journey!" + Environment.NewLine,
+            }),
+            new NPC(370, 74, new string[] 
+            {
+                "- Hi! I'm Bob. I'm useless.",
+                "- Hi. I'm a Pet trainer.",
+                "- Ok."
+            }),
+            new NPC(398, 82, new string[]
+            {
+                "- Hi! I'm Terry. I'm supposed to be a merchant, but y'know..." + Environment.NewLine + "Developer's laziness...",
+                "- Hmm..." + Environment.NewLine + "Then, what are you doing here?",
+                "- I'm supposed to be a merchant, but I'm not." + Environment.NewLine + "So, I'm just here to waste your time.",
+            }),
+            new NPC(42, 104, new string[]
+            {
+               "- Wow! You made it this far!" + Environment.NewLine + "You're a real hero!",
+               "- I'm not a hero." + Environment.NewLine + "I'm training my Pets.",
+               "- Oh, you're training to become one, I see." + Environment.NewLine + "Then, I'll gift you this.",
+               "(He gave you nothing.)",
+               "- . . ." + Environment.NewLine + "Uh... Thanks?",
+            })
+        };
 
         // Scene Manager
         private static MenuScene _menuScene;
@@ -60,7 +87,7 @@
         public static void SwitchToMapScene(string path, (int x, int y) playerPos)
         {
             _player.Move(playerPos);
-            _mapScene.Init(new Map(path, _player, _pnj));
+            _mapScene.Init(new Map(path, _player, _npcs));
             CurrScene = _mapScene;
         }
         public static void SwitchToCombatScene() => CurrScene = _combatScene;
@@ -80,10 +107,9 @@
         static Game()
         {
             _player = new Player((DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP));
-            _pnj = new Pnj((DEFAULT_X_POS_ON_MAP_PNJ, DEFAULT_Y_POS_ON_MAP_PNJ));
             _menuScene = new MenuScene(Menus["Main Menu"]);
             _currScene = _menuScene;
-            _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _pnj));
+            _mapScene = new MapScene(new Map(DEFAULT_MAP_PATH, _player, _npcs));
             _combatScene = new CombatScene(new Combat(_player,
                 new(){
                     new Pet("EnemyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),

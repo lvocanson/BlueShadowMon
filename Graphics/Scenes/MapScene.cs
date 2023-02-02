@@ -12,20 +12,24 @@
         private static Window.ColoredChar _cBridge { get; } = new Window.ColoredChar(' ', ConsoleColor.DarkYellow, ConsoleColor.DarkYellow);
         private static Window.ColoredChar _cUnknown { get; } = new Window.ColoredChar('?', ConsoleColor.White, ConsoleColor.Black);
 
-        private Window.ColoredChar _cPlayer
+        private Window.ColoredChar _cPlayer(int x, int y)
         {
-            get { return new Window.ColoredChar(PlayerChar, PlayerColor, Parse(Map[Map.Player.y, Map.Player.x]).BackgroundColor); }
+            Window.ColoredChar parsed = new Window.ColoredChar(PlayerChar, PlayerColor, Parse(Map[y, x]).BackgroundColor);
+            if (Map[y, x] == ':' || Map[y, x] == '&')
+                parsed.ForegroundColor = ConsoleColor.Black;
+            return parsed;
         }
 
-        private Window.ColoredChar _cPnj
+        private Window.ColoredChar _cPnj(int x, int y)
         {
-            get { return new Window.ColoredChar(PnjChar, PnjColor, Parse(Map[Map.Pnj.y, Map.Pnj.x]).BackgroundColor); }
+            Window.ColoredChar parsed = _cPlayer(x, y);
+            parsed.Char = PnjChar;
+            return parsed;
         }
 
         public static char PlayerChar { get; set; } = '@';
         public static ConsoleColor PlayerColor { get; set; } = ConsoleColor.White;
-        public static char PnjChar { get; set; } = 'P';
-        public static ConsoleColor PnjColor { get; set; } = ConsoleColor.Black;
+        public static char PnjChar { get; set; } = '!';
 
         public MapScene(Map map)
         {
@@ -106,20 +110,23 @@
                     if (x == Map.Player.x && y == Map.Player.y)
                     {
                         toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
-                        parsed = _cPlayer;
-                        if (Map[y, x] == ':' || Map[y, x] == '&')
-                            parsed.ForegroundColor = ConsoleColor.Black;
+                        parsed = _cPlayer(x, y);
                         count = 1;
                         continue;
                     }
 
-                    if (x == Map.Pnj.x && y == Map.Pnj.y)
+                    bool npcDrawn = false;
+                    foreach (NPC npc in Map.NPCs)
                     {
-                        toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
-                        parsed = _cPnj;
-                        count = 1;
-                        continue;
+                        if (x == npc.x && y == npc.y)
+                        {
+                            toDraw.Add(new Window.ColoredString(new string(parsed.Char, count), parsed.ForegroundColor, parsed.BackgroundColor));
+                            parsed = _cPnj(x, y);
+                            count = 1;
+                            npcDrawn = true;
+                        }
                     }
+                    if (npcDrawn) continue;
 
                     // If we are out of bounds and we are building a wall string,
                     // or if we are in bounds and we are building the same string

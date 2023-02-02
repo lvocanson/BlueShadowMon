@@ -138,7 +138,7 @@ namespace BlueShadowMon
                 actions.Add((new Window.ColoredString("- Empty -"), () => { }));
             }
 
-            return new Menu(new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), actions.ToArray());
+            return new Menu(new Window.ColoredString("Inventory (Press ESC to close)", ConsoleColor.Yellow, Window.DefaultBgColor), actions.ToArray());
         }
     }
 }
