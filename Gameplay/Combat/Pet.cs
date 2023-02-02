@@ -169,7 +169,7 @@ namespace BlueShadowMon
             if (IsMaxLevel)
                 throw new Exception("Already Level Max!");
             _xp += amount;
-            while (_xp > _xpForLvlUp)
+            while (_xp >= _xpForLvlUp)
             {
                 _xp -= _xpForLvlUp;
                 LevelUp();

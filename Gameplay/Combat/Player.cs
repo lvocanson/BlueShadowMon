@@ -19,9 +19,9 @@ namespace BlueShadowMon
             Inventory = new Dictionary<int, int>();
             Pets = new Pet?[MAX_PETS]
             {
-                new Pet("MyCat", PetType.Cat, Data.StarterStats, Data.StarterIncrements),
                 new Pet("MyDog", PetType.Dog, Data.StarterStats, Data.StarterIncrements),
-                new Pet("MySnake", PetType.Snake, Data.StarterStats, Data.StarterIncrements)
+                null,
+                null
             };
             (x, y) = mapPosition;
         }
