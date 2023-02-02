@@ -6,9 +6,13 @@ namespace BlueShadowMon
         public Player Player { get; private set; }
         private Menu _inventoryMenu;
 
-        public InventoryScene(Player _player)
+        /// <summary>
+        /// Creates a new inventory scene.
+        /// </summary>
+        /// <param name="player">Player to display the inventory of</param>
+        public InventoryScene(Player player)
         {
-            Player = _player;
+            Player = player;
             _inventoryMenu = Player.CreateInventoryMenu();
         }
         

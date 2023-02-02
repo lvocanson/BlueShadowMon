@@ -6,6 +6,14 @@
     public class Ability : EffectApplier
     {
         protected Action<Pet[], Pet> _effect;
+
+        /// <summary>
+        /// Create a new ability.
+        /// </summary>
+        /// <param name="name">NAme of the ability</param>
+        /// <param name="type">Type of the ability</param>
+        /// <param name="target">Possible targets</param>
+        /// <param name="effect">Action to execute when the ability is cast</param>
         public Ability(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet[], Pet> effect) : base(name, type, target)
         {
             _effect = effect;
@@ -31,7 +39,7 @@
             if (!CanTarget(EffectTarget.Multiple) && targets.Length > 1)
                 throw new Exception("This ability cannot be used on multiple targets.");
             _effect(targets, user);
-            
+
             // Draw Message
             string msg = user.Name + " use " + Name.String + " on ";
             for (int i = 0; i < targets.Length; i++)

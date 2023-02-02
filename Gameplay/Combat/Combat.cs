@@ -18,6 +18,11 @@ namespace BlueShadowMon
         private Menu? _selectTargetMenu;
         private List<Pet> _selectedTargets = new();
 
+        /// <summary>
+        /// Create a new combat between the player's team and a list of ennemies.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="enemies"></param>
         public Combat(Player player, List<Pet> enemies)
         {
             Allies = new();
@@ -35,7 +40,15 @@ namespace BlueShadowMon
             new (Window.ColoredString, Action)[] {
                 (new Window.ColoredString("Attack", ConsoleColor.Red, Window.DefaultBgColor), () => { CurrentMenu = _selectAbilityMenu!; Console.Clear(); } ),
                 (new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), () => Game.ToggleInventory() ),
-                (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () => Game.SwitchToMapScene() )
+                (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () =>
+                {
+                    foreach (Pet p in Allies)
+                    {
+                        p.ResetStats();
+                        p.ClearStatusEffects();
+                    }
+                    Game.SwitchToMapScene();
+                })
             });
             CurrentMenu = _selectActionMenu;
         }

@@ -10,6 +10,10 @@ namespace BlueShadowMon
         public int x { get; private set; }
         public int y { get; private set; }
         
+        /// <summary>
+        /// Create a new player.
+        /// </summary>
+        /// <param name="mapPosition">Position on the map</param>
         public Player((int x, int y) mapPosition)
         {
             Inventory = new Dictionary<int, int>();

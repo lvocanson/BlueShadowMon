@@ -4,11 +4,19 @@
     {
         public Menu Menu { get; private set; }
 
+        /// <summary>
+        /// Creates a new menu scene.
+        /// </summary>
+        /// <param name="menu">Menu to display</param>
         public MenuScene(Menu menu)
         {
             Menu = menu;
         }
 
+        /// <summary>
+        /// Recycle the scene with a new menu.
+        /// </summary>
+        /// <param name="menu"></param>
         public void Init(Menu menu)
         {
             Menu = menu;

@@ -5,9 +5,14 @@
 
         private struct AiHelper
         {
+            /// <summary>
+            /// Calculate the most and least health, power and armor of a team.
+            /// </summary>
+            /// <param name="team"></param>
             public AiHelper(Pet[] team)
             {
                 leastHealth = team[0];
+                mostHealth = team[0];
                 mostPower = team[0];
                 leastPower = team[0];
                 mostArmor = team[0];
@@ -16,6 +21,8 @@
                 {
                     if (p[PetStat.Health] < leastHealth[PetStat.Health])
                         leastHealth = p;
+                    if (p[PetStat.Health] > mostHealth[PetStat.Health])
+                        mostHealth = p;
                     if (p[PetStat.Power] > mostPower[PetStat.Power])
                         mostPower = p;
                     if (p[PetStat.Power] < leastPower[PetStat.Power])
@@ -28,6 +35,7 @@
             }
 
             public Pet leastHealth;
+            public Pet mostHealth;
             public Pet mostPower;
             public Pet leastPower;
             public Pet mostArmor;
@@ -48,7 +56,7 @@
             // (deal damage? heal allies? apply buff?)
             AiHelper allyTeam = new(allies.ToArray());
             AiHelper enemyTeam = new(enemies.ToArray());
-            Dictionary<string, int> scores = new()
+            Dictionary<string, float> scores = new()
             {
                 { "Attack", 0},
                 { "Heal", 0},
@@ -57,108 +65,48 @@
             };
 
 
-            // Attack with Health condition
+            // Attack score
 
-            if (enemyTeam.leastPower[PetStat.Power] <= allyTeam.leastHealth[PetStat.Health])
+            scores["Attack"] += allyTeam.mostHealth[PetStat.Health] - allyTeam.leastHealth[PetStat.Health];
+
+            if (enemyTeam.mostPower == allyTeam.leastHealth)
             {
-                scores["Attack"] += 5;
+                scores["Attack"] *= 1.5f;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] >= allyTeam.leastHealth[PetStat.Health])
+            // Heal score
+
+            scores["Heal"] += (enemyTeam.mostHealth[PetStat.Health] - enemyTeam.leastHealth[PetStat.Health]) * 0.75f;
+
+            if (enemyTeam.leastHealth.GetBonusStat(PetStat.Health, true) == 0)
             {
-                scores["Attack"] += 20;
+                scores["Heal"] = 0;
+            }
+            else if (enemyTeam.leastHealth.GetBonusStat(PetStat.Health, true) < -0.65f)
+            {
+                scores["Heal"] *= 2f;
+            }
+            else if (enemyTeam.leastHealth.GetBonusStat(PetStat.Health, true) > -0.30f)
+            {
+                scores["Heal"] *= 1.5f;
             }
 
-            if (enemyTeam.mostPower[PetStat.Power] <= allyTeam.leastHealth[PetStat.Health])
+            // PowerBuff
+
+            if (activePet == enemyTeam.leastPower)
             {
-                scores["Attack"] += 5;
+                scores["PowerBuff"] += enemyTeam.mostPower[PetStat.Power];
+            }
+            else if (activePet == enemyTeam.mostPower)
+            {
+                scores["PowerBuff"] -= enemyTeam.leastPower[PetStat.Power];
             }
 
+            // PowerDebuff
 
-            // Attack with Armor Condition
-
-            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostArmor[PetStat.Armor])
+            if (allyTeam.mostPower.GetBonusStat(PetStat.Health) > -0.33f)
             {
-                scores["Attack"] += 10;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] <= allyTeam.mostArmor[PetStat.Armor])
-            {
-                scores["Attack"] += 5;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] <= allyTeam.leastArmor[PetStat.Armor])
-            {
-                scores["Attack"] += 5;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.leastArmor[PetStat.Armor])
-            {
-                scores["Attack"] += 20;
-            }
-
-
-            // Heal with Missing Health Condition
-
-            if (enemyTeam.mostPower == enemyTeam.leastHealth && enemyTeam.mostPower.GetBonusStat(PetStat.Health, true) < -0.35f)
-            {
-                if (enemyTeam.mostPower == enemyTeam.leastArmor)
-                {
-                    scores["Heal"] += 30;
-                }
-            }
-            if (enemyTeam.mostArmor == enemyTeam.leastHealth && enemyTeam.mostArmor.GetBonusStat(PetStat.Health, true) < -0.35f)
-            {
-                if (enemyTeam.mostArmor == enemyTeam.leastPower)
-                {
-                    scores["Heal"] += 15;
-                }
-            }
-
-
-            // PowerDebuff with Power Condition
-
-            if (enemyTeam.mostPower[PetStat.Power] <= allyTeam.mostPower[PetStat.Power])
-            {
-                scores["PowerDebuff"] += 20;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostPower[PetStat.Power])
-            {
-                scores["PowerDebuff"] += 10;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.leastPower[PetStat.Power])
-            {
-                scores["PowerDebuff"] += 5;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] <= allyTeam.leastPower[PetStat.Power])
-            {
-                scores["PowerDebuff"] += 10;
-            }
-
-
-            // PowerBuff with Armor Condition
-
-            if (enemyTeam.mostPower[PetStat.Power] > allyTeam.mostArmor[PetStat.Power])
-            {
-                scores["PowerBuff"] += 10;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] <= enemyTeam.mostArmor[PetStat.Armor])
-            {
-                scores["PowerBuff"] += 20;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] <= enemyTeam.leastArmor[PetStat.Armor])
-            {
-                scores["PowerBuff"] += 20;
-            }
-
-            if (enemyTeam.mostPower[PetStat.Power] > enemyTeam.leastArmor[PetStat.Armor])
-            {
-                scores["PowerBuff"] += 5;
+                scores["PowerDebuff"] += allyTeam.mostPower[PetStat.Power];
             }
 
             string bestAction = scores.Aggregate((l, r) => l.Value > r.Value ? l : r).Key;

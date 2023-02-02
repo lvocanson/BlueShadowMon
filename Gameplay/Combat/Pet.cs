@@ -109,16 +109,39 @@ namespace BlueShadowMon
             _statsIncrements = statsIncrements;
         }
 
+        /// <summary>
+        /// Alterate a stat by a certain value or porcentage.
+        /// </summary>
+        /// <param name="stat">The stat to alterate</param>
+        /// <param name="type">Additive or Multiplicative (Additive is calculated before Multiplicative)</param>
+        /// <param name="alteration">Function of the alteration to apply</param>
+        /// <returns>ID of the alteration</returns>
         public AlterationID AlterStat(PetStat stat, AlterationType type, Func<float, float> alteration)
         {
             return _stats[stat].Alterate(type, alteration);
         }
 
+        /// <summary>
+        /// Remove an alteration from a stat.
+        /// </summary>
+        /// <param name="stat">The stat</param>
+        /// <param name="id">ID of the operation to remove</param>
         public void RemoveStatAlteration(PetStat stat, AlterationID id)
         {
             _stats[stat].RemoveAlteration(id);
         }
-        
+
+        /// <summary>
+        /// Get the difference between the current and base value of a stat.
+        /// </summary>
+        /// <returns></returns>
+        public float GetBonusStat(PetStat stat, bool porcent = false)
+        {
+            if (porcent)
+                return _stats[stat].AlteratedValue / _stats[stat].BaseValue - 1;
+            return _stats[stat].AlteratedValue - _stats[stat].BaseValue;
+        }
+
         /// <summary>
         /// Reset all stats to their base value.
         /// </summary>
@@ -247,17 +270,6 @@ namespace BlueShadowMon
             {
                 _statusEffects[i].Update();
             }
-        }
-
-        /// <summary>
-        /// Get the difference between the current and base value of a stat.
-        /// </summary>
-        /// <returns></returns>
-        public float GetBonusStat(PetStat stat, bool porcent = false)
-        {
-            if (porcent)
-                return _stats[stat].AlteratedValue / _stats[stat].BaseValue - 1;
-            return _stats[stat].AlteratedValue - _stats[stat].BaseValue; 
         }
     }
 }

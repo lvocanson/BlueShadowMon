@@ -104,6 +104,9 @@
                 CurrScene = _inventoryScene;
         }
 
+        /// <summary>
+        /// Initialize the game
+        /// </summary>
         static Game()
         {
             _player = new Player((DEFAULT_X_POS_ON_MAP, DEFAULT_Y_POS_ON_MAP));
@@ -121,6 +124,10 @@
             _previousScene = _menuScene;
         }
 
+        /// <summary>
+        /// Entry point of the program. Will lunch
+        /// the game and handle everything.
+        /// </summary>
         static void Main()
         {
             Window.Setup();

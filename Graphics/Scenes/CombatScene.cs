@@ -4,11 +4,19 @@
     {
         public Combat Combat { get; private set; }
 
+        /// <summary>
+        /// Create a new CombatScene to display a combat.
+        /// </summary>
+        /// <param name="combat"></param>
         public CombatScene(Combat combat)
         {
             Combat = combat;
         }
 
+        /// <summary>
+        /// Recycle the CombatScene with a new combat.
+        /// </summary>
+        /// <param name="combat"></param>
         public void Init(Combat combat)
         {
             Combat = combat;
@@ -44,11 +52,13 @@
                 Window.Write(cString, screenOffset + 1, y);
                 Window.Write(cChar, screenOffset + width - 1, y);
 
-                // Power and armor
+                // Power, level and armor
                 y++;
                 cString.BackgroundColor = ConsoleColor.Black;
                 cString.String = $"Power: {Math.Round(pet[PetStat.Power], 2)}";
                 Window.Write(cString, screenOffset, y);
+                cString.String = $"Level: {pet.Level}";
+                Window.Write(cString, leftX, y, true);
                 cString.String = $"Armor: {Math.Round(pet[PetStat.Armor], 2)}";
                 Window.Write(cString, screenOffset + width - cString.String.Length, y);
                 
@@ -77,11 +87,13 @@
                 Window.Write(cString, Console.WindowWidth - screenOffset - width + 1, y);
                 Window.Write(cChar, Console.WindowWidth - screenOffset - 1, y);
 
-                // Power and armor
+                // Power, level and armor
                 y++;
                 cString.BackgroundColor = ConsoleColor.Black;
                 cString.String = $"Power: {Math.Round(pet[PetStat.Power], 2)}";
                 Window.Write(cString, Console.WindowWidth - screenOffset - width, y);
+                cString.String = $"Level: {pet.Level}";
+                Window.Write(cString, rightX, y, true);
                 cString.String = $"Armor: {Math.Round(pet[PetStat.Armor], 2)}";
                 Window.Write(cString, Console.WindowWidth - screenOffset - cString.String.Length, y);
 

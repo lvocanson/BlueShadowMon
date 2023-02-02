@@ -14,7 +14,19 @@ namespace BlueShadowMon
                 Formatting = Formatting.Indented,
             };
 
+        /// <summary>
+        /// Check if a save file is present.
+        /// </summary>
+        /// <returns>True if it is, false otherwise</returns>
+        public static bool IsSaveFilePresent()
+        {
+            return File.Exists(SAVE_FILE_PATH + SAVE_FILE_NAME);
+        }
 
+        /// <summary>
+        /// Save a player's data to a file.
+        /// </summary>
+        /// <param name="player"></param>
         public static void SaveGame(Player player)
         {
             // Create json data
@@ -29,12 +41,15 @@ namespace BlueShadowMon
             Window.Message("Game saved.", true);
         }
 
-        internal static Player? LoadGame()
+        /// <summary>
+        /// Create a new Player from the save file.
+        /// </summary>
+        /// <returns>A new Player if the load succeed, null otherwise</returns>
+        public static Player? LoadGame()
         {
-
-            if (!File.Exists(SAVE_FILE_PATH + SAVE_FILE_NAME))
+            if (!IsSaveFilePresent())
             {
-                Window.Message("Save file not found.", true);
+                Window.Message("No save file found.", true);
                 return null;
             }
 
@@ -49,11 +64,12 @@ namespace BlueShadowMon
             }
             catch (Exception e)
             {
-                Window.Message("Something went wrong while loading the save file.\n" + e, true);
+                Window.Message("Something went wrong while loading the save file." + Environment.NewLine + e, true);
                 return null;
             }
 
             Window.Message("Game loaded.", true);
+            Game.SwitchToMapScene();
             return player;
         }
     }

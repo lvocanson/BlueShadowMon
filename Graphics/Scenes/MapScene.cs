@@ -31,11 +31,19 @@
         public static ConsoleColor PlayerColor { get; set; } = ConsoleColor.White;
         public static char PnjChar { get; set; } = '!';
 
+        /// <summary>
+        /// Create a new MapScene to display a map.
+        /// </summary>
+        /// <param name="map"></param>
         public MapScene(Map map)
         {
             Map = map;
         }
 
+        /// <summary>
+        /// Recycle the MapScene to display a new map.
+        /// </summary>
+        /// <param name="map"></param>
         public void Init(Map map)
         {
             Map = map;

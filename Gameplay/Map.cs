@@ -43,6 +43,11 @@
             NPCs = npcs;
         }
 
+        /// <summary>
+        /// Check if the given char is walkable.
+        /// </summary>
+        /// <param name="c"></param>
+        /// <returns>True if the char is walkable, false otherwise</returns>
         private static bool IsCharWalkable(char c)
         {
             switch (c)
@@ -90,6 +95,10 @@
             }
         }
 
+        /// <summary>
+        /// Called when the player walks in a bush.
+        /// Has a chance to trigger a combat.
+        /// </summary>
         public void WalkInBush()
         {
             float rand = (float)new Random().NextDouble();
@@ -98,7 +107,10 @@
 
         }
 
-
+        /// <summary>
+        /// Called when the player presses a key.
+        /// </summary>
+        /// <param name="key"></param>
         internal void KeyPressed(ConsoleKey key)
         {
             switch (key)

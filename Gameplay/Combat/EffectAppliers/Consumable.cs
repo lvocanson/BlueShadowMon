@@ -6,6 +6,15 @@
     public class Consumable : EffectApplier
     {
         protected Action<Pet> _effect;
+
+        /// <summary>
+        /// Create a new consumable.
+        /// </summary>
+        /// <param name="name">Name of the consumable</param>
+        /// <param name="type">Type of the consumable</param>
+        /// <param name="target">Possible targets</param>
+        /// <param name="effect">Action to execute when the consumable is used</param>
+        /// <exception cref="ArgumentException"></exception>
         public Consumable(Window.ColoredString name, EffectType type, EffectTarget target, Action<Pet> effect) : base(name, type, target)
         {
             if (CanTarget(EffectTarget.Self))
