@@ -54,7 +54,7 @@
             {
                 if (!Allies[i].IsAlive)
                 {
-                    Window.Message("Your " + Allies[i].Name + " died!");
+                    Window.Message("Your " + Allies[i].Name + " died!", true);
                     Allies.RemoveAt(i);
                 }
             }
@@ -62,7 +62,7 @@
             {
                 if (!Enemies[i].IsAlive)
                 {
-                    Window.Message("The " + Enemies[i].Name + " died!");
+                    Window.Message("The " + Enemies[i].Name + " died!", true);
                     Enemies.RemoveAt(i);
                 }
             }

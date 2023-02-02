@@ -26,7 +26,7 @@ namespace BlueShadowMon
                 Directory.CreateDirectory(SAVE_FILE_PATH);
             }
             File.WriteAllText(SAVE_FILE_PATH + SAVE_FILE_NAME, json);
-            Window.Message("Game saved.");
+            Window.Message("Game saved.", true);
         }
 
         internal static Player? LoadGame()
@@ -34,7 +34,7 @@ namespace BlueShadowMon
 
             if (!File.Exists(SAVE_FILE_PATH + SAVE_FILE_NAME))
             {
-                Window.Message("Save file not found.");
+                Window.Message("Save file not found.", true);
                 return null;
             }
 
@@ -49,11 +49,11 @@ namespace BlueShadowMon
             }
             catch (Exception e)
             {
-                Window.Message("Something went wrong while loading the save file.\n" + e);
+                Window.Message("Something went wrong while loading the save file.\n" + e, true);
                 return null;
             }
 
-            Window.Message("Game loaded.");
+            Window.Message("Game loaded.", true);
             return player;
         }
     }

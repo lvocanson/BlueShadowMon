@@ -6,11 +6,12 @@
         public char this[int y, int x] { get { return _map[y, x]; } }
 
         public Player Player { get; }
+        public NPC[] NPCs { get; }
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
         public static float ChanceTriggerCombat = 0.05F;
-        
-        public Map(string path, Player player)
+
+        public Map(string path, Player player, NPC[] npcs)
         {
             // Load file
             string[] lines = File.ReadAllLines(path);
@@ -33,9 +34,16 @@
             if (player.x < 0 || Width <= player.x || player.y < 0 || Height <= player.y)
                 throw new Exception("Player position is not valid!");
             Player = player;
+
+            foreach (NPC p in npcs)
+            {
+                if (p.x < 0 || Width <= p.x || p.y < 0 || Height <= p.y)
+                    throw new Exception("NPC position is not valid!");
+            }
+            NPCs = npcs;
         }
 
-            private static bool IsCharWalkable(char c)
+        private static bool IsCharWalkable(char c)
         {
             switch (c)
             {
@@ -63,14 +71,25 @@
             int newY = Player.y + y;
             if (newX < 0 || Width <= newX || newY < 0 || Height <= newY)
                 return; // Can't move out of bounds
+
+            foreach (NPC p in NPCs)
+            {
+                if (newX == p.x && newY == p.y)
+                {
+                    p.RunDialogue();
+                    return;
+                }
+            }
+
             if (IsCharWalkable(_map[newY, newX])) // Can't move on a non-walkable char
             {
-                Player.Move(newX,newY);
+                Player.Move(newX, newY);
+
                 if (_map[Player.y, Player.x] == '*' || _map[Player.y, Player.x] == '&')
                     WalkInBush();
             }
         }
-        
+
         public void WalkInBush()
         {
             float rand = (float)new Random().NextDouble();
@@ -78,6 +97,7 @@
                 Game.SwitchToCombatScene();
 
         }
+
 
         internal void KeyPressed(ConsoleKey key)
         {
