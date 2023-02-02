@@ -10,8 +10,9 @@
     <li>
       <a href="#getting-started">Getting Started</a>
     </li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li>
+      <a href="#Contributers">Contributers</a>
+    </li>
   </ol>
 </details>
 
@@ -34,13 +35,13 @@ In game battle:
 <!-- GETTING STARTED -->
 ## Getting Started
 
-<u>Warning:</u> The prject may not work as intended if you are not on Windows 10.
+<u>Warning:</u> The project may not work as intended if you are not on Windows 10.
 
 <li> Step 1 : Download/Fork the project </li>
 <li> Step 2 : Open the project in Visual Studio </li>
 
 
-<!-- CONTRIBUTING -->
+<!-- Contributers -->
 ## Contributers
 
 <b>VOCANSON Lucas</b>: [Github](https://github.com/lvocanson), [LinkedIn](https://www.linkedin.com/in/lucas-vocanson-developpement-jv/)
