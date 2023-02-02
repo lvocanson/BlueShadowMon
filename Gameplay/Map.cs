@@ -10,9 +10,9 @@
         public int Width { get { return _map.GetLength(1); } }
         public int Height { get { return _map.GetLength(0); } }
 
-        public string Name { get; private set; }
-
         public static float ChanceTriggerCombat = 0.05F;
+        
+        private PetType type;
 
         public Map(string path, Player player, NPC[] npcs)
         {
@@ -104,27 +104,45 @@
         /// </summary>
         public void WalkInBush()
         {
+            string Name = "";
             float rand = (float)new Random().NextDouble();
             if (rand <= ChanceTriggerCombat)
             {
                 List<Pet> enemies = new List<Pet>();
+                
+                // Average level of the player's pets to determine the level of the enemies
+                int avgLevel = 0;
+                foreach (Pet pets in Player.Pets)
+                    avgLevel += pets.Level;
+                avgLevel /= Player.Pets.Count();
 
-                int EnemyTeamCount = Player.Pets.Count(p => p != null);
-                for (int i = 0; i < EnemyTeamCount; i++)
+                int enemyLevel = avgLevel + new Random().Next(-1, 2);
+
+                for (int i = 0; i < Player.Pets.Count(p => p != null); i++)
                 {
-                    int randEnemyType = new Random().Next(0, 3);
-                    switch (randEnemyType)
+                    List<string> catName = new List<string> { "Charlie", "Daisy", "Felix", "Kitty", "Harry" };
+                    List<string> dogName = new List<string> { "Bella", "Max", "Rocky", "Sadie", "Lucy" };
+                    List<string> snakeName = new List<string> { "Slinky", "Sssam", "Hissy", "Twisty", "Coily" };
+
+                    Random random = new Random();
+                    int randomIndex = random.Next(0, 5);
+
+                    switch (type)
                     {
-                        case 0:
-                            enemies.Add(new Pet(Name, PetType.Cat, Data.StarterStats, Data.StarterIncrements));
+                        case PetType.Cat:
+                            Name = catName[randomIndex];
                             break;
-                        case 1:
-                            enemies.Add(new Pet(Name, PetType.Dog, Data.StarterStats, Data.StarterIncrements));
+                        case PetType.Dog:
+                            Name = dogName[randomIndex];
                             break;
-                        case 2:
-                            enemies.Add(new Pet(Name, PetType.Snake, Data.StarterStats, Data.StarterIncrements));
+                        case PetType.Snake:
+                            Name = snakeName[randomIndex];
                             break;
                     }
+                    /// <summary>
+                    /// Create a random enemy team based on the number of pet in the player's team.
+                    /// </summary>
+                    enemies.Add(new Pet(Name, (PetType)(new Random().Next(0, 3)), Data.StarterStats, Data.StarterIncrements));
                 }
 
                 Game.SwitchToCombatScene(enemies);
