@@ -39,7 +39,7 @@ namespace BlueShadowMon
             _selectActionMenu = new Menu(
             new Window.ColoredString("What do you want to do?"),
             new (Window.ColoredString, Action)[] {
-                (new Window.ColoredString("Attack", ConsoleColor.Red, Window.DefaultBgColor), () => { CurrentMenu = _selectAbilityMenu!; Console.Clear(); } ),
+                (new Window.ColoredString("Ability", ConsoleColor.Red, Window.DefaultBgColor), () => { CurrentMenu = _selectAbilityMenu!; Console.Clear(); } ),
                 (new Window.ColoredString("Inventory", ConsoleColor.Yellow, Window.DefaultBgColor), () => Game.ToggleInventory() ),
                 (new Window.ColoredString("Run", ConsoleColor.DarkCyan, Window.DefaultBgColor), () =>
                 {
